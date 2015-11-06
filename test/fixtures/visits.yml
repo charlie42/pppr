@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  from: 
+  date: 
+  complaints: 
+  anamnesis: MyString
+  allerg: MyString
+  general_state: MyString
+  diagnosis: MyString
+
+two:
+  from: 
+  date: 
+  complaints: 
+  anamnesis: MyString
+  allerg: MyString
+  general_state: MyString
+  diagnosis: MyString
