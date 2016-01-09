@@ -7,7 +7,7 @@
 
 <p>
   <strong>Date:</strong>
-  <%= @visit.date %>
+  <%= @visit.created_at %>
 </p>
 
 <p>
@@ -16,24 +16,6 @@
 </p>
 
 <p>
-  <strong>Anamnesis:</strong>
-  <%= @visit.anamnesis %>
-</p>
-
-<p>
-  <strong>Allerg:</strong>
-  <%= @visit.allerg %>
-</p>
-
-<p>
-  <strong>General state:</strong>
-  <%= @visit.general_state %>
-</p>
-
-<p>
   <strong>Diagnosis:</strong>
   <%= @visit.diagnosis %>
 </p>
-
-<%= link_to 'Edit', edit_visit_path(@visit) %> |
-<%= link_to 'Back', visits_path %>

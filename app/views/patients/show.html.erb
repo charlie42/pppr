@@ -15,5 +15,11 @@
   <%= @patient.gender %>
 </p>
 
-<%= link_to 'Edit', edit_patient_path(@patient) %> |
-<%= link_to 'Back', patients_path %>
+<% if @patient.visits.any? %>
+      <h3>Visits (<%= @patient.visits.count %>)</h3>
+      <ol class="visits">
+        <%= render @visits %>
+      </ol>
+<% else %>
+      <h3>No Visits </h3>
+<% end %>

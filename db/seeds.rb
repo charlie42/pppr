@@ -5,3 +5,27 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+  name  = "Пациентка Пациентовна"
+  age = 20
+  gender = "Ж"
+  patient = Patient.find_by(id:2)
+
+  #Patient.create!(name:  name,
+             #    age: age,
+              #   gender: gender)
+
+  patient.visits.create!(
+    doctor_id: 1,
+    from: "a"
+  )
+
+patient.visits.create!(
+    doctor_id: 1, 
+    from: "b"
+  )
+patient.visits.create!(
+    doctor_id: 1, 
+    from: "c"
+  )
+ 

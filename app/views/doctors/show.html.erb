@@ -25,5 +25,11 @@
   <%= @doctor.specialization %>
 </p>
 
-<%= link_to 'Edit', edit_doctor_path(@doctor) %> |
-<%= link_to 'Back', doctors_path %>
+<% if @doctor.patients.any? %>
+      <h3>Patients (<%= @doctor.patients.count %>)</h3>
+      <ol class="patients">
+        <%= render @patients %>
+      </ol>
+<% else %>
+      <h3>No Patients </h3>
+<% end %>

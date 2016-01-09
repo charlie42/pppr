@@ -10,6 +10,9 @@ class PatientsController < ApplicationController
   # GET /patients/1
   # GET /patients/1.json
   def show
+     @patient = Patient.find(params[:id])
+     @visits = @patient.visits.all
+
   end
 
   # GET /patients/new

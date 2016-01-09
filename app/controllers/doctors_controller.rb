@@ -1,5 +1,6 @@
 class DoctorsController < ApplicationController
-  before_action :set_doctor, only: [:show, :edit, :update, :destroy]
+  #before_action :set_doctor, only: [:show, :edit, :update, :destroy]
+  before_action :set_doctor, only: [:show, :edit, :update, :destroy, :destroy]
 
   # GET /doctors
   # GET /doctors.json
@@ -10,6 +11,11 @@ class DoctorsController < ApplicationController
   # GET /doctors/1
   # GET /doctors/1.json
   def show
+   @doctor = Doctor.find(params[:id])
+    unless @doctor == current_doctor
+      redirect_to :back, :alert => "Access denied."
+    end
+    @patients = @doctor.patients
   end
 
   # GET /doctors/new
