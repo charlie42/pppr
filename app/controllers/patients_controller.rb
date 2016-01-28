@@ -10,6 +10,7 @@ class PatientsController < ApplicationController
   # GET /patients/1
   # GET /patients/1.json
   def show
+    @doctor = Doctor.find(params[:doctor_id])
      @patient = Patient.find(params[:id])
      @visits = @patient.visits.all
 
@@ -27,11 +28,13 @@ class PatientsController < ApplicationController
   # POST /patients
   # POST /patients.json
   def create
-    @patient = Patient.new(patient_params)
-
+    #@patient = Patient.new(patient_params)
+     @doctor = Doctor.find(params[:doctor_id])
+     @patient = Patient.new(patient_params)
+     
     respond_to do |format|
       if @patient.save
-        format.html { redirect_to @patient, notice: 'Patient was successfully created.' }
+        format.html { redirect_to doctor_patient_path(@doctor.id, @patient.id), notice: 'Patient was successfully created.' }
         format.json { render :show, status: :created, location: @patient }
       else
         format.html { render :new }

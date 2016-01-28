@@ -11,16 +11,6 @@
 </p>
 
 <p>
-  <strong>Password:</strong>
-  <%= @doctor.password %>
-</p>
-
-<p>
-  <strong>Password conformation:</strong>
-  <%= @doctor.password_conformation %>
-</p>
-
-<p>
   <strong>Specialization:</strong>
   <%= @doctor.specialization %>
 </p>
@@ -33,3 +23,5 @@
 <% else %>
       <h3>No Patients </h3>
 <% end %>
+
+<button><%= link_to "Новый пациент",  new_doctor_patient_path(@doctor.id) %></button>

@@ -4,20 +4,35 @@ class VisitsController < ApplicationController
   # GET /visits
   # GET /visits.json
   def index
+    @doctor = Doctor.find(params[:doctor_id])
+    @patient = Patient.find(params[:patient_id])
     @visits = Visit.all
+
   end
 
   # GET /visits/1
   # GET /visits/1.json
   def show
+    @doctor = Doctor.find(params[:doctor_id])
+    @patient = Patient.find(params[:patient_id])
     @visit = Visit.find(params[:id])
-    @patient = @visit.patient
-    @doctor = @visit.doctor
   end
 
   # GET /visits/new
   def new
+    @doctor = Doctor.find(params[:doctor_id])
+    @patient = Patient.find(params[:patient_id])
     @visit = Visit.new
+    #if @visit.save 
+      #params[:liver_conditions_attributes].each do |key, value|
+        #@visit.liver_conditions << LiverConditionVisit.new(:visit_id => params[:id], :liver_condition_id => value, :details => params[:details])
+     # @visit.liver_condition_visits << LiverConditionVisit.new(:visit_id => params[:id], :liver_condition_id => params[:liver_condition_id], :details => params[:details])
+      #end
+    #end
+    #@visit.doctor_id = @doctor.id
+    #@visit.patient_id = params[:patient_id]
+
+    puts params.inspect
   end
 
   # GET /visits/1/edit
@@ -27,11 +42,20 @@ class VisitsController < ApplicationController
   # POST /visits
   # POST /visits.json
   def create
+    @doctor = Doctor.find(params[:doctor_id])
+    @patient = Patient.find(params[:patient_id])
     @visit = Visit.new(visit_params)
+
+    h = params['visit']["liver_condition_visits"]["liver_condition_ids"]
+    h.each do |v|
+        @det = params['visit']["liver_condition_visits"]["details"]
+        @lc = @visit.liver_condition_visits.build(:visit_id => params[:id], :liver_condition_id => v, :details => @det)
+        @lc.save
+    end
 
     respond_to do |format|
       if @visit.save
-        format.html { redirect_to @visit, notice: 'Visit was successfully created.' }
+        format.html { redirect_to doctor_patient_visit_path(@doctor.id, @patient.id, @visit.id), notice: 'Visit was successfully created.' }
         format.json { render :show, status: :created, location: @visit }
       else
         format.html { render :new }
@@ -72,6 +96,18 @@ class VisitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def visit_params
-      params.require(:visit).permit(:from, :date, :complaints, :anamnesis, :allerg, :general_state, :diagnosis)
+      #{:post => params.require(:post).permit(:title, :body, images_posts_attributes: [:caption, image_attributes: [:image]] )}
+      params.require(:visit).permit(:from, 
+        :date, :complaints, :anamnesis, :allerg, :general_state_option_id, 
+        :diagnosis, :doctor_id, :patient_id, :constitution_option_id, 
+        :effleurage_option_id, :postural_pose_option_id, 
+        :subcutanious_fat_option_id, 
+        liver_condition_visits_attributes: 
+          [:details, 
+          :liver_condition_id]
+          
+        )
+      #params.require(:visit).permit(:from, :date, :complaints, :anamnesis, :allerg, :general_state_option_id, :diagnosis, :doctor_id, :patient_id, :constitution_option_id, :effleurage_option_id, :postural_pose_option_id, :subcutanious_fat_option_id)
+      #params.require(:liver_condition).permit(:details, :liver_condition_id)
     end
 end

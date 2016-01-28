@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151226135243) do
+ActiveRecord::Schema.define(version: 20160126122740) do
+
+  create_table "constitution_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "doctors", force: :cascade do |t|
     t.string   "name"
@@ -36,6 +42,35 @@ ActiveRecord::Schema.define(version: 20151226135243) do
   add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true
   add_index "doctors", ["reset_password_token"], name: "index_doctors_on_reset_password_token", unique: true
 
+  create_table "effleurage_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "general_state_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "liver_condition_visits", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "liver_conditions", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "liver_conditions_visits", id: false, force: :cascade do |t|
+    t.integer "visit_id",           null: false
+    t.integer "liver_condition_id", null: false
+    t.string  "details"
+  end
+
   create_table "patients", force: :cascade do |t|
     t.string   "name"
     t.integer  "age"
@@ -44,20 +79,42 @@ ActiveRecord::Schema.define(version: 20151226135243) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "postural_pose_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "subcutanious_fat_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "visits", force: :cascade do |t|
     t.string   "from"
-    t.datetime "created_at",    null: false
+    t.datetime "created_at",                 null: false
     t.string   "complaints"
     t.string   "anamnesis"
     t.string   "allerg"
     t.string   "general_state"
     t.string   "diagnosis"
-    t.datetime "updated_at",    null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "doctor_id"
     t.integer  "patient_id"
+    t.integer  "constitution_option_id"
+    t.integer  "general_state_option_id"
+    t.integer  "postural_pose_option_id"
+    t.integer  "subcutanious_fat_option_id"
+    t.integer  "effleurage_option_id"
   end
 
+  add_index "visits", ["constitution_option_id"], name: "index_visits_on_constitution_option_id"
   add_index "visits", ["doctor_id"], name: "index_visits_on_doctor_id"
+  add_index "visits", ["effleurage_option_id"], name: "index_visits_on_effleurage_option_id"
+  add_index "visits", ["general_state_option_id"], name: "index_visits_on_general_state_option_id"
   add_index "visits", ["patient_id"], name: "index_visits_on_patient_id"
+  add_index "visits", ["postural_pose_option_id"], name: "index_visits_on_postural_pose_option_id"
+  add_index "visits", ["subcutanious_fat_option_id"], name: "index_visits_on_subcutanious_fat_option_id"
 
 end

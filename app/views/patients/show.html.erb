@@ -23,3 +23,4 @@
 <% else %>
       <h3>No Visits </h3>
 <% end %>
+<button><%= link_to "Новый визит",  new_doctor_patient_visit_path(@doctor.id, @patient.id) %></button>

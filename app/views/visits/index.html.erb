@@ -20,15 +20,13 @@
     <% @visits.each do |visit| %>
       <tr>
         <td><%= visit.from %></td>
-        <td><%= visit.date %></td>
+
         <td><%= visit.complaints %></td>
         <td><%= visit.anamnesis %></td>
         <td><%= visit.allerg %></td>
         <td><%= visit.general_state %></td>
         <td><%= visit.diagnosis %></td>
-        <td><%= link_to 'Show', visit %></td>
-        <td><%= link_to 'Edit', edit_visit_path(visit) %></td>
-        <td><%= link_to 'Destroy', visit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
       </tr>
     <% end %>
   </tbody>
@@ -36,4 +34,4 @@
 
 <br>
 
-<%= link_to 'New Visit', new_visit_path %>
+<%= link_to 'New Visit', new_doctor_patient_visit_path %>

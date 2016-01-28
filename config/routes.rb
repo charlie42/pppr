@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  resources :liver_conditions
+  resources :effleurage_options
+  resources :subcutanious_fat_options
+  resources :postural_pose_options
+  resources :general_state_options
+  resources :constitution_options
   devise_for :doctors
   root 'static_pages#home'
 

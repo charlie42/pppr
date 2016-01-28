@@ -19,3 +19,20 @@
   <strong>Diagnosis:</strong>
   <%= @visit.diagnosis %>
 </p>
+
+<p>
+  <strong>doctor:</strong>
+  <%= @visit.doctor_id %>
+</p>
+
+<p>
+  <strong>patient:</strong>
+  <%= @visit.patient_id %>
+</p>
+
+<p>
+  <strong>liver:</strong>
+  <%= @visit.liver_conditions.first.details %>
+</p>
+
+<%= params.inspect %>
