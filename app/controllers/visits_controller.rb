@@ -53,6 +53,13 @@ class VisitsController < ApplicationController
         @lc.save
     end
 
+    h = params['visit']["abdominal_condition_visits"]["abdominal_condition_ids"]
+    h.each do |v|
+        @det = params['visit']["abdominal_condition_visits"]["details"]
+        @lc = @visit.abdominal_condition_visits.build(:visit_id => params[:id], :abdominal_condition_id => v, :details => @det)
+        @lc.save
+    end
+
     respond_to do |format|
       if @visit.save
         format.html { redirect_to doctor_patient_visit_path(@doctor.id, @patient.id, @visit.id), notice: 'Visit was successfully created.' }
@@ -104,8 +111,10 @@ class VisitsController < ApplicationController
         :subcutanious_fat_option_id, 
         liver_condition_visits_attributes: 
           [:details, 
-          :liver_condition_id]
-          
+          :liver_condition_id],
+        abdominal_condition_visits_attributes: 
+          [:details, 
+          :abdominal_condition_id]  
         )
       #params.require(:visit).permit(:from, :date, :complaints, :anamnesis, :allerg, :general_state_option_id, :diagnosis, :doctor_id, :patient_id, :constitution_option_id, :effleurage_option_id, :postural_pose_option_id, :subcutanious_fat_option_id)
       #params.require(:liver_condition).permit(:details, :liver_condition_id)

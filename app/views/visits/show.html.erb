@@ -32,7 +32,12 @@
 
 <p>
   <strong>liver:</strong>
-  <%= @visit.liver_conditions.first.details %>
+  <%= @visit.liver_condition_visits.first.liver_condition.name %>
+</p>
+
+<p>
+  <strong>живот:</strong>
+  <%= @visit.abdominal_condition_visits.first.abdominal_condition.name %>
 </p>
 
 <%= params.inspect %>

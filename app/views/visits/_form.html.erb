@@ -55,12 +55,16 @@
     Телосложение: <%= f.collection_select :subcutanious_fat_option_id, SubcutaniousFatOption.all, :id, :name %>
   </div>
   <div class="field">
-    
-  <%= f.fields_for :liver_condition_visits do |s| %>
-    Печень <%= s.collection_select(:liver_condition_ids, LiverCondition.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
-    Дополнительно <%= s.text_field :details %>
-  <% end %>
-
+    <%= f.fields_for :liver_condition_visits do |s| %>
+      Печень <%= s.collection_select(:liver_condition_ids, LiverCondition.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+      Дополнительно <%= s.text_field :details %>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= f.fields_for :abdominal_condition_visits do |s| %>
+      Печень <%= s.collection_select(:abdominal_condition_ids, AbdominalCondition.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+      Дополнительно <%= s.text_field :details %>
+    <% end %>
   </div>
   <div class="actions">
     <%= f.submit %>
