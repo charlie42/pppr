@@ -39,6 +39,22 @@ class VisitsController < ApplicationController
   def edit
   end
 
+  def populate_join_table h, det, name
+    h.each do |v|
+        @lc = @visit.send(name + "_condition_visits").build(:visit_id => params[:id], (name + "_condition_id").to_sym => v, :details => det)
+        @lc.save
+    end
+  end
+
+  def populate_join_table_custom_name h, det, join_table_name, id_name
+    i = 0
+    h.each do |v|
+        @lc = @visit.send(join_table_name).build(:visit_id => params[:id], (id_name).to_sym => v, :result => det)
+        @lc.save
+        i += 1
+    end
+  end
+
   # POST /visits
   # POST /visits.json
   def create
@@ -46,19 +62,21 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new(visit_params)
 
-    h = params['visit']["liver_condition_visits"]["liver_condition_ids"]
-    h.each do |v|
-        @det = params['visit']["liver_condition_visits"]["details"]
-        @lc = @visit.liver_condition_visits.build(:visit_id => params[:id], :liver_condition_id => v, :details => @det)
-        @lc.save
-    end
+    r = params['visit']["liver_condition_visits"]
+    populate_join_table r["liver_condition_ids"], r["details"], "liver" 
 
-    h = params['visit']["abdominal_condition_visits"]["abdominal_condition_ids"]
-    h.each do |v|
-        @det = params['visit']["abdominal_condition_visits"]["details"]
-        @lc = @visit.abdominal_condition_visits.build(:visit_id => params[:id], :abdominal_condition_id => v, :details => @det)
-        @lc.save
-    end
+    r = params['visit']["abdominal_condition_visits"]
+    populate_join_table r["abdominal_condition_ids"], r["details"], "abdominal"
+
+    @r = params['visit']["consultations"]
+    populate_join_table_custom_name @r["specialist_ids"], @r["result"], "consultations", "specialist_id"
+
+    #h = params['visit']["abdominal_condition_visits"]["abdominal_condition_ids"]
+    #h.each do |v|
+    #    @det = params['visit']["abdominal_condition_visits"]["details"]
+    #    @lc = @visit.abdominal_condition_visits.build(:visit_id => params[:id], :abdominal_condition_id => v, :details => @det)
+    #    @lc.save
+    #end
 
     respond_to do |format|
       if @visit.save
@@ -114,7 +132,10 @@ class VisitsController < ApplicationController
           :liver_condition_id],
         abdominal_condition_visits_attributes: 
           [:details, 
-          :abdominal_condition_id]  
+          :abdominal_condition_id],
+        consultations_attributes: 
+          [:result, 
+          :specialist_id]  
         )
       #params.require(:visit).permit(:from, :date, :complaints, :anamnesis, :allerg, :general_state_option_id, :diagnosis, :doctor_id, :patient_id, :constitution_option_id, :effleurage_option_id, :postural_pose_option_id, :subcutanious_fat_option_id)
       #params.require(:liver_condition).permit(:details, :liver_condition_id)

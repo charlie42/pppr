@@ -66,6 +66,11 @@
       Дополнительно <%= s.text_field :details %>
     <% end %>
   </div>
+  <div class="field">
+    <%= f.fields_for :consultations do |s| %>
+      Консультация <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+    <% end %>  
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

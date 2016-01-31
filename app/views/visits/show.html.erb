@@ -40,4 +40,9 @@
   <%= @visit.abdominal_condition_visits.first.abdominal_condition.name %>
 </p>
 
+<p>
+  <strong>консультация:</strong>
+  <%= @visit.consultations.first.specialist.name %>
+</p>
+
 <%= params.inspect %>
