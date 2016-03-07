@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Abdominal Conditions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @abdominal_conditions.each do |abdominal_condition| %>
+      <tr>
+        <td><%= abdominal_condition.name %></td>
+        <td><%= link_to 'Show', abdominal_condition %></td>
+        <td><%= link_to 'Edit', edit_abdominal_condition_path(abdominal_condition) %></td>
+        <td><%= link_to 'Destroy', abdominal_condition, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Abdominal condition', new_abdominal_condition_path %>

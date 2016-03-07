@@ -31,10 +31,7 @@
     <%= f.label :specialization %><br>
     <%= f.text_field :specialization %>
   </div>
-  <%= m.fields_for :liver_condition do |s| %>
-    Печень <%= f.collection_select(:liver_condition_ids, LiverCondition.all, :id, :name,{}, {:multiple => true}) %>
-    Дополнительно <%= s.text_field :details %>
-  <% end %>
+  
   
   <div class="actions">
     <%= f.submit %>

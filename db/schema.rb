@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131161906) do
+ActiveRecord::Schema.define(version: 20160307060034) do
 
   create_table "abdominal_condition_visits", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -27,6 +27,18 @@ ActiveRecord::Schema.define(version: 20160131161906) do
   create_table "abdominal_conditions_visits", id: false, force: :cascade do |t|
     t.integer "visit_id",               null: false
     t.integer "abdominal_condition_id", null: false
+    t.string  "details"
+  end
+
+  create_table "complication_diagnosis_visits", force: :cascade do |t|
+    t.integer "diagnosis_id"
+    t.integer "visit_id"
+    t.string  "details"
+  end
+
+  create_table "concomitant_diagnosis_visits", force: :cascade do |t|
+    t.integer "diagnosis_id"
+    t.integer "visit_id"
     t.string  "details"
   end
 
@@ -55,8 +67,6 @@ ActiveRecord::Schema.define(version: 20160131161906) do
 
   create_table "condition_visits", force: :cascade do |t|
     t.integer  "visit_id"
-    t.integer  "condition_type_id"
-    t.integer  "condition_name_id"
     t.integer  "condition_value_id"
     t.string   "details"
     t.datetime "created_at",         null: false
@@ -79,6 +89,12 @@ ActiveRecord::Schema.define(version: 20160131161906) do
     t.integer "visit_id",      null: false
     t.integer "specialist_id", null: false
     t.string  "result"
+  end
+
+  create_table "diagnoses", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "name"
   end
 
   create_table "doctors", force: :cascade do |t|
@@ -145,6 +161,14 @@ ActiveRecord::Schema.define(version: 20160131161906) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "primary_diagnosis_visits", force: :cascade do |t|
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "visit_id"
+    t.integer  "diagnosis_id"
+    t.string   "details"
   end
 
   create_table "specialists", force: :cascade do |t|

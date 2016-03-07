@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Subcutanious Fat Options</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subcutanious_fat_options.each do |subcutanious_fat_option| %>
+      <tr>
+        <td><%= subcutanious_fat_option.name %></td>
+        <td><%= link_to 'Show', subcutanious_fat_option %></td>
+        <td><%= link_to 'Edit', edit_subcutanious_fat_option_path(subcutanious_fat_option) %></td>
+        <td><%= link_to 'Destroy', subcutanious_fat_option, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Subcutanious fat option', new_subcutanious_fat_option_path %>

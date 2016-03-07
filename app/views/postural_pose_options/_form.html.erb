@@ -1,0 +1,21 @@
+<%= form_for(@postural_pose_option) do |f| %>
+  <% if @postural_pose_option.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@postural_pose_option.errors.count, "error") %> prohibited this postural_pose_option from being saved:</h2>
+
+      <ul>
+      <% @postural_pose_option.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -31,18 +31,25 @@
 </p>
 
 <p>
-  <strong>liver:</strong>
-  <%= @visit.liver_condition_visits.first.liver_condition.name %>
-</p>
-
-<p>
-  <strong>живот:</strong>
-  <%= @visit.abdominal_condition_visits.first.abdominal_condition.name %>
-</p>
-
-<p>
   <strong>консультация:</strong>
-  <%= @visit.consultations.first.specialist.name %>
+  <% if @visit.consultations.first %>
+  	<%= @visit.consultations.first.specialist.name %>
+  <% end %>
+</p>
+
+<p>
+  <strong>asdfghj,:</strong>
+  <% if @visit.condition_visits.first %>
+	  <% @visit.condition_visits.each do |v| %>
+	  	<%= v.condition_value.name %>
+	  	<br>
+	  <% end %>	
+  <% end %>
+</p>
+
+<p>
+  <strong>диагноз:</strong>
+  
 </p>
 
 <%= params.inspect %>

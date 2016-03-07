@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Liver Conditions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @liver_conditions.each do |liver_condition| %>
+      <tr>
+        <td><%= liver_condition.name %></td>
+        <td><%= link_to 'Show', liver_condition %></td>
+        <td><%= link_to 'Edit', edit_liver_condition_path(liver_condition) %></td>
+        <td><%= link_to 'Destroy', liver_condition, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Liver condition', new_liver_condition_path %>

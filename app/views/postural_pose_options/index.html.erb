@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Postural Pose Options</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @postural_pose_options.each do |postural_pose_option| %>
+      <tr>
+        <td><%= postural_pose_option.name %></td>
+        <td><%= link_to 'Show', postural_pose_option %></td>
+        <td><%= link_to 'Edit', edit_postural_pose_option_path(postural_pose_option) %></td>
+        <td><%= link_to 'Destroy', postural_pose_option, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Postural pose option', new_postural_pose_option_path %>

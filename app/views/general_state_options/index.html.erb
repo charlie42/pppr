@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing General State Options</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @general_state_options.each do |general_state_option| %>
+      <tr>
+        <td><%= general_state_option.name %></td>
+        <td><%= link_to 'Show', general_state_option %></td>
+        <td><%= link_to 'Edit', edit_general_state_option_path(general_state_option) %></td>
+        <td><%= link_to 'Destroy', general_state_option, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New General state option', new_general_state_option_path %>

@@ -54,23 +54,45 @@
   <div class="field">
     Телосложение: <%= f.collection_select :subcutanious_fat_option_id, SubcutaniousFatOption.all, :id, :name %>
   </div>
-  <div class="field">
-    <%= f.fields_for :liver_condition_visits do |s| %>
-      Печень <%= s.collection_select(:liver_condition_ids, LiverCondition.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
-      Дополнительно <%= s.text_field :details %>
-    <% end %>
-  </div>
-  <div class="field">
-    <%= f.fields_for :abdominal_condition_visits do |s| %>
-      Печень <%= s.collection_select(:abdominal_condition_ids, AbdominalCondition.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
-      Дополнительно <%= s.text_field :details %>
-    <% end %>
-  </div>
+  
   <div class="field">
     <%= f.fields_for :consultations do |s| %>
       Консультация <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
     <% end %>  
   </div>
+  
+  <div class="field">
+    <% ConditionType.all.each do |type| %>
+      <% ConditionName.all.each do |v| %>
+        <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
+          <%= f.fields_for :condition_visits do |s| %>
+            <%= v.name %> <%= s.collection_select(:condition_value_ids, ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values, :id, :name, {:include_hidden => false}, :multiple => true) %>
+            Дополнительно <%= s.text_field :details %>
+          <% end %>
+        <% end %> 
+        <br>
+      <% end %>
+      <hr>
+    <% end %>  
+  </div>
+
+  <div class="field">
+    <%= f.fields_for :primary_diagnosis_visits do |s| %>
+        Диагноз <%= s.collection_select(:diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+    <% end %>  
+  </div>
+  <div class="field">
+    <%= f.fields_for :concomitant_diagnosis_visits do |s| %>
+        Диагноз <%= s.collection_select(:diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+    <% end %>  
+  </div>
+  <div class="field">
+    <%= f.fields_for :complication_diagnosis_visits do |s| %>
+        Диагноз <%= s.collection_select(:diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+    <% end %>  
+  </div>
+
+
   <div class="actions">
     <%= f.submit %>
   </div>

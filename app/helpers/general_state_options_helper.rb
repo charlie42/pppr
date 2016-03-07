@@ -1,0 +1,2 @@
+module GeneralStateOptionsHelper
+end

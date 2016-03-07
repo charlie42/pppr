@@ -1,0 +1,5 @@
+<li id="visit-<%= visit.id %>">
+
+  <span class="from"><b>From:</b> <%= link_to visit.from, doctor_patient_visit_path(current_doctor.id, @patient.id, visit.id)%> </span>
+
+</li>

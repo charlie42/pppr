@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Constitution Options</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @constitution_options.each do |constitution_option| %>
+      <tr>
+        <td><%= constitution_option.name %></td>
+        <td><%= link_to 'Show', constitution_option %></td>
+        <td><%= link_to 'Edit', edit_constitution_option_path(constitution_option) %></td>
+        <td><%= link_to 'Destroy', constitution_option, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Constitution option', new_constitution_option_path %>

@@ -1,0 +1,2 @@
+module EffleurageOptionsHelper
+end

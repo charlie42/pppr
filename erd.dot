@@ -1,0 +1,209 @@
+digraph Demo3 {
+rankdir = "LR";
+ranksep = "0.5";
+nodesep = "0.4";
+pad = "0.4,0.4";
+margin = "0,0";
+concentrate = "true";
+labelloc = "t";
+fontsize = "13";
+fontname = "Arial BoldMT";
+node[ shape  =  "Mrecord" , fontsize  =  "10" , fontname  =  "ArialMT" , margin  =  "0.07,0.05" , penwidth  =  "1.0"];
+edge[ fontname  =  "ArialMT" , fontsize  =  "7" , dir  =  "both" , arrowsize  =  "0.9" , penwidth  =  "1.0" , labelangle  =  "32" , labeldistance  =  "1.8"];
+label = "Demo3 domain model\n\n";
+m_AbdominalCondition [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">AbdominalCondition</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_AbdominalConditionVisit [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">AbdominalConditionVisit</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="abdominal_condition_id">abdominal_condition_id <font face="Arial ItalicMT" color="grey60">integer ∗ FK</font></td></tr>
+  <tr><td align="left" width="130" port="details">details <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="visit_id">visit_id <font face="Arial ItalicMT" color="grey60">integer ∗ FK</font></td></tr>
+</table>
+>];
+m_ConditionName [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">ConditionName</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="condition_type_id">condition_type_id <font face="Arial ItalicMT" color="grey60">integer FK</font></td></tr>
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="unique">unique <font face="Arial ItalicMT" color="grey60">boolean</font></td></tr>
+</table>
+>];
+m_ConditionType [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">ConditionType</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_ConditionValue [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">ConditionValue</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="condition_name_id">condition_name_id <font face="Arial ItalicMT" color="grey60">integer FK</font></td></tr>
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_ConditionVisit [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">ConditionVisit</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="condition_value_id">condition_value_id <font face="Arial ItalicMT" color="grey60">integer FK</font></td></tr>
+  <tr><td align="left" width="130" port="details">details <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="visit_id">visit_id <font face="Arial ItalicMT" color="grey60">integer FK</font></td></tr>
+</table>
+>];
+m_ConstitutionOption [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">ConstitutionOption</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_Consultation [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">Consultation</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="result">result <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="specialist_id">specialist_id <font face="Arial ItalicMT" color="grey60">integer ∗ FK</font></td></tr>
+  <tr><td align="left" width="130" port="visit_id">visit_id <font face="Arial ItalicMT" color="grey60">integer ∗ FK</font></td></tr>
+</table>
+>];
+m_Doctor [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">Doctor</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="current_sign_in_at">current_sign_in_at <font face="Arial ItalicMT" color="grey60">datetime</font></td></tr>
+  <tr><td align="left" width="130" port="current_sign_in_ip">current_sign_in_ip <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="email">email <font face="Arial ItalicMT" color="grey60">string ∗ U</font></td></tr>
+  <tr><td align="left" width="130" port="encrypted_password">encrypted_password <font face="Arial ItalicMT" color="grey60">string ∗</font></td></tr>
+  <tr><td align="left" width="130" port="last_sign_in_at">last_sign_in_at <font face="Arial ItalicMT" color="grey60">datetime</font></td></tr>
+  <tr><td align="left" width="130" port="last_sign_in_ip">last_sign_in_ip <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="password">password <font face="Arial ItalicMT" color="grey60">string ∗</font></td></tr>
+  <tr><td align="left" width="130" port="password_conformation">password_conformation <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="remember_created_at">remember_created_at <font face="Arial ItalicMT" color="grey60">datetime</font></td></tr>
+  <tr><td align="left" width="130" port="reset_password_sent_at">reset_password_sent_at <font face="Arial ItalicMT" color="grey60">datetime</font></td></tr>
+  <tr><td align="left" width="130" port="reset_password_token">reset_password_token <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="sign_in_count">sign_in_count <font face="Arial ItalicMT" color="grey60">integer ∗</font></td></tr>
+  <tr><td align="left" width="130" port="specialization">specialization <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="username">username <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_EffleurageOption [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">EffleurageOption</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_GeneralStateOption [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">GeneralStateOption</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_LiverCondition [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">LiverCondition</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_LiverConditionVisit [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">LiverConditionVisit</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="details">details <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="liver_condition_id">liver_condition_id <font face="Arial ItalicMT" color="grey60">integer ∗ FK</font></td></tr>
+  <tr><td align="left" width="130" port="visit_id">visit_id <font face="Arial ItalicMT" color="grey60">integer ∗ FK</font></td></tr>
+</table>
+>];
+m_Patient [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">Patient</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="age">age <font face="Arial ItalicMT" color="grey60">integer</font></td></tr>
+  <tr><td align="left" width="130" port="gender">gender <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_PosturalPoseOption [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">PosturalPoseOption</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_Specialist [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">Specialist</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_SubcutaniousFatOption [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">SubcutaniousFatOption</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="name">name <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+</table>
+>];
+m_Visit [label = <<table border="0" align="center" cellspacing="0.5" cellpadding="0" width="134">
+  <tr><td align="center" valign="bottom" width="130"><font face="Arial BoldMT" point-size="11">Visit</font></td></tr>
+</table>
+|
+<table border="0" align="left" cellspacing="2" cellpadding="0" width="134">
+  <tr><td align="left" width="130" port="allerg">allerg <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="anamnesis">anamnesis <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="complaints">complaints <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="constitution_option_id">constitution_option_id <font face="Arial ItalicMT" color="grey60">integer</font></td></tr>
+  <tr><td align="left" width="130" port="diagnosis">diagnosis <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="doctor_id">doctor_id <font face="Arial ItalicMT" color="grey60">integer FK</font></td></tr>
+  <tr><td align="left" width="130" port="effleurage_option_id">effleurage_option_id <font face="Arial ItalicMT" color="grey60">integer</font></td></tr>
+  <tr><td align="left" width="130" port="from">from <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="general_state">general_state <font face="Arial ItalicMT" color="grey60">string</font></td></tr>
+  <tr><td align="left" width="130" port="general_state_option_id">general_state_option_id <font face="Arial ItalicMT" color="grey60">integer</font></td></tr>
+  <tr><td align="left" width="130" port="patient_id">patient_id <font face="Arial ItalicMT" color="grey60">integer FK</font></td></tr>
+  <tr><td align="left" width="130" port="postural_pose_option_id">postural_pose_option_id <font face="Arial ItalicMT" color="grey60">integer</font></td></tr>
+  <tr><td align="left" width="130" port="subcutanious_fat_option_id">subcutanious_fat_option_id <font face="Arial ItalicMT" color="grey60">integer</font></td></tr>
+</table>
+>];
+  m_Doctor -> m_Visit [arrowhead = "normal", arrowtail = "none", weight = "2"];
+  m_Visit -> m_AbdominalConditionVisit [arrowhead = "normal", arrowtail = "none", weight = "2"];
+  m_AbdominalCondition -> m_AbdominalConditionVisit [arrowhead = "normal", arrowtail = "none", weight = "1"];
+  m_ConditionType -> m_ConditionName [arrowhead = "normal", arrowtail = "none", weight = "2"];
+  m_ConditionName -> m_ConditionValue [arrowhead = "normal", arrowtail = "none", weight = "2"];
+  m_Visit -> m_ConditionVisit [arrowhead = "normal", arrowtail = "none", weight = "2"];
+  m_ConditionValue -> m_ConditionVisit [arrowhead = "normal", arrowtail = "none", weight = "1"];
+  m_Visit -> m_Consultation [arrowhead = "normal", arrowtail = "none", weight = "2"];
+  m_Specialist -> m_Consultation [arrowhead = "normal", arrowtail = "none", weight = "2"];
+  m_Visit -> m_LiverConditionVisit [arrowhead = "normal", arrowtail = "none", weight = "2"];
+  m_LiverCondition -> m_LiverConditionVisit [arrowhead = "normal", arrowtail = "none", weight = "1"];
+  m_Patient -> m_Visit [arrowhead = "normal", arrowtail = "none", weight = "2"];
+}

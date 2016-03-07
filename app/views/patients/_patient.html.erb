@@ -1,0 +1,7 @@
+<li id="patient-<%= patient.id %>">
+
+  <span class="doctor"><%= link_to patient.name, doctor_patient_path(current_doctor.id, patient.id)%></span>
+  <span class="gender"><%= patient.gender %></span>
+  <span class="age"><%= patient.age %></span>
+
+</li>

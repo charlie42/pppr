@@ -23,6 +23,9 @@ class VisitsController < ApplicationController
     @doctor = Doctor.find(params[:doctor_id])
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new
+
+    @visit.concomitant_diagnosis_visits.build
+    @visit.complication_diagnosis_visits.build
     #if @visit.save 
       #params[:liver_conditions_attributes].each do |key, value|
         #@visit.liver_conditions << LiverConditionVisit.new(:visit_id => params[:id], :liver_condition_id => value, :details => params[:details])
@@ -41,7 +44,7 @@ class VisitsController < ApplicationController
 
   def populate_join_table h, det, name
     h.each do |v|
-        @lc = @visit.send(name + "_condition_visits").build(:visit_id => params[:id], (name + "_condition_id").to_sym => v, :details => det)
+        @lc = @visit.send(name + "_visits").build(:visit_id => params[:id], (name + "_id").to_sym => v, :details => det)
         @lc.save
     end
   end
@@ -62,14 +65,51 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new(visit_params)
 
-    r = params['visit']["liver_condition_visits"]
-    populate_join_table r["liver_condition_ids"], r["details"], "liver" 
+    #r = params['visit']["diagnosis_visits"]
+    #if r["diagnosis_ids"]
+    #  populate_join_table r["diagnosis_ids"], r["diagnosis_types"], "diagnosis"
+    #end
 
-    r = params['visit']["abdominal_condition_visits"]
-    populate_join_table r["abdominal_condition_ids"], r["details"], "abdominal"
+    #r = params['visit']["diagnosis_visits"]
+    #ids = r["diagnosis_ids"]
+    #types = r["diagnosis_type_ids"]
+    #i = 0
+    #if r
+      #r.each do |v|
+         # @lc = @visit.diagnosis_visits.build(:visit_id => params[:id], :diagnosis_id => v["diagnosis_id"].to_i, :diagnosis_type_id => v["diagnosis_type_id"].to_i)
+         # @lc.save
+          #i += 1
+    #  end
+    #end
 
     @r = params['visit']["consultations"]
-    populate_join_table_custom_name @r["specialist_ids"], @r["result"], "consultations", "specialist_id"
+    if @r
+      populate_join_table_custom_name @r["specialist_ids"], @r["result"], "consultations", "specialist_id"
+    end
+    @r = params['visit']["concomitant_diagnoses"]
+    if @r
+      populate_join_table_custom_name @r["diagnosis_ids"], @r["details"], "concomitant_diagnosis_visits", "diagnosis_id"
+    end
+    @r = params['visit']["complication_diagnoses"]
+    if @r
+      populate_join_table_custom_name @r["diagnosis_ids"], @r["details"], "complication_diagnosis_visits", "diagnosis_id"
+    end
+    @r = params['visit']["primary_diagnoses"]
+    if @r
+      populate_join_table_custom_name @r["diagnosis_ids"], @r["details"], "primary_diagnosis_visits", "diagnosis_id"
+    end
+
+
+    @details = params['visit']["condition_visits"]["details"]
+    @ids = params['visit']["condition_visits"]["condition_value_ids"]
+    i = 0
+    if @ids
+      @ids.each do |v|
+          @lc = @visit.condition_visits.build(:visit_id => params[:id], :condition_value_id => v, :details => @details)
+          @lc.save
+          i += 1
+      end
+    end
 
     #h = params['visit']["abdominal_condition_visits"]["abdominal_condition_ids"]
     #h.each do |v|
@@ -127,15 +167,20 @@ class VisitsController < ApplicationController
         :diagnosis, :doctor_id, :patient_id, :constitution_option_id, 
         :effleurage_option_id, :postural_pose_option_id, 
         :subcutanious_fat_option_id, 
-        liver_condition_visits_attributes: 
-          [:details, 
-          :liver_condition_id],
-        abdominal_condition_visits_attributes: 
-          [:details, 
-          :abdominal_condition_id],
         consultations_attributes: 
           [:result, 
-          :specialist_id]  
+          :specialist_id],
+        primary_diagnosis_visits_attributes:
+          [:diagnosis_id,
+            :details],
+        concomitant_diagnosis_visits_attributes:
+        [:diagnosis_id,
+          :details],
+        complication_diagnosis_visits_attributes:
+        [:diagnosis_id,
+          :details],
+        condition_visits_attributes:
+          [:values, :details] 
         )
       #params.require(:visit).permit(:from, :date, :complaints, :anamnesis, :allerg, :general_state_option_id, :diagnosis, :doctor_id, :patient_id, :constitution_option_id, :effleurage_option_id, :postural_pose_option_id, :subcutanious_fat_option_id)
       #params.require(:liver_condition).permit(:details, :liver_condition_id)

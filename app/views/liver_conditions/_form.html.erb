@@ -1,0 +1,21 @@
+<%= form_for(@liver_condition) do |f| %>
+  <% if @liver_condition.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@liver_condition.errors.count, "error") %> prohibited this liver_condition from being saved:</h2>
+
+      <ul>
+      <% @liver_condition.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
