@@ -37,6 +37,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
  gem 'bcrypt', '~> 3.1.7'
 
+gem 'seed_dump'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
