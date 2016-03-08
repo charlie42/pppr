@@ -24,8 +24,10 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new
 
+    @visit.primary_diagnosis_visits.build
     @visit.concomitant_diagnosis_visits.build
     @visit.complication_diagnosis_visits.build
+
     #if @visit.save 
       #params[:liver_conditions_attributes].each do |key, value|
         #@visit.liver_conditions << LiverConditionVisit.new(:visit_id => params[:id], :liver_condition_id => value, :details => params[:details])
@@ -52,7 +54,7 @@ class VisitsController < ApplicationController
   def populate_join_table_custom_name h, det, join_table_name, id_name
     i = 0
     h.each do |v|
-        @lc = @visit.send(join_table_name).build(:visit_id => params[:id], (id_name).to_sym => v, :result => det)
+        @lc = @visit.send(join_table_name).build(:visit_id => params[:id], (id_name).to_sym => v, :result => det, :details => det)
         @lc.save
         i += 1
     end
@@ -86,17 +88,23 @@ class VisitsController < ApplicationController
     if @r
       populate_join_table_custom_name @r["specialist_ids"], @r["result"], "consultations", "specialist_id"
     end
-    @r = params['visit']["concomitant_diagnoses"]
-    if @r
-      populate_join_table_custom_name @r["diagnosis_ids"], @r["details"], "concomitant_diagnosis_visits", "diagnosis_id"
+    # @r = params['visit']["concomitant_diagnoses"]
+    # if @r
+    #   populate_join_table_custom_name @r["concomitant_diagnosis_ids"], @r["details"], "concomitant_diagnosis_visits", "concomitant_diagnosis_id"
+    # end
+
+    params['visit']["concomitant_diagnosis_visits"]["concomitant_diagnosis_ids"].each do |v|
+        @lc = @visit.concomitant_diagnoses.build(:visit_id => params[:id], :concomitant_diagnosis_id => v, :details => det)
+        @lc.save
     end
+
     @r = params['visit']["complication_diagnoses"]
     if @r
-      populate_join_table_custom_name @r["diagnosis_ids"], @r["details"], "complication_diagnosis_visits", "diagnosis_id"
+      populate_join_table_custom_name @r["complication_diagnosis_ids"], @r["details"], "complication_diagnosis_visits", "complication_diagnosis_id"
     end
     @r = params['visit']["primary_diagnoses"]
     if @r
-      populate_join_table_custom_name @r["diagnosis_ids"], @r["details"], "primary_diagnosis_visits", "diagnosis_id"
+      populate_join_table_custom_name @r["primary_diagnosis_ids"], @r["details"], "primary_diagnosis_visits", "primary_diagnosis_id"
     end
 
 
@@ -171,13 +179,13 @@ class VisitsController < ApplicationController
           [:result, 
           :specialist_id],
         primary_diagnosis_visits_attributes:
-          [:diagnosis_id,
+          [:primary_diagnosis_id,
             :details],
         concomitant_diagnosis_visits_attributes:
-        [:diagnosis_id,
+          [:concomitant_diagnosis_id,
           :details],
         complication_diagnosis_visits_attributes:
-        [:diagnosis_id,
+          [:complication_diagnosis_id,
           :details],
         condition_visits_attributes:
           [:values, :details] 

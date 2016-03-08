@@ -78,17 +78,17 @@
 
   <div class="field">
     <%= f.fields_for :primary_diagnosis_visits do |s| %>
-        Диагноз <%= s.collection_select(:diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+        Диагноз <%= s.collection_select(:primary_diagnosis_id, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
     <% end %>  
   </div>
   <div class="field">
     <%= f.fields_for :concomitant_diagnosis_visits do |s| %>
-        Диагноз <%= s.collection_select(:diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+        Диагноз <%= s.collection_select(:concomitant_diagnosis_id, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
     <% end %>  
   </div>
   <div class="field">
     <%= f.fields_for :complication_diagnosis_visits do |s| %>
-        Диагноз <%= s.collection_select(:diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+        Диагноз <%= s.collection_select(:complication_diagnosis_id, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
     <% end %>  
   </div>
 
