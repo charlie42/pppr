@@ -39,6 +39,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'seed_dump'
 
+gem "nested_form"
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'

@@ -24,9 +24,10 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new
 
-    @visit.primary_diagnosis_visits.build
-    @visit.concomitant_diagnosis_visits.build
-    @visit.complication_diagnosis_visits.build
+    #@visit.primary_diagnosis_visits.build
+    #@visit.concomitant_diagnosis_visits.build
+    #@visit.complication_diagnosis_visits.build
+
 
     #if @visit.save 
       #params[:liver_conditions_attributes].each do |key, value|
@@ -44,21 +45,30 @@ class VisitsController < ApplicationController
   def edit
   end
 
-  def populate_join_table h, det, name
-    h.each do |v|
-        @lc = @visit.send(name + "_visits").build(:visit_id => params[:id], (name + "_id").to_sym => v, :details => det)
-        @lc.save
-    end
-  end
+  # def populate_join_table h, det, name
+  #   h.each do |v|
+  #       @lc = @visit.send(name + "_visits").build(:visit_id => params[:id], (name + "_id").to_sym => v, :details => det)
+  #       @lc.save
+  #   end
+  # end
 
-  def populate_join_table_custom_name h, det, join_table_name, id_name
-    i = 0
-    h.each do |v|
-        @lc = @visit.send(join_table_name).build(:visit_id => params[:id], (id_name).to_sym => v, :result => det, :details => det)
-        @lc.save
-        i += 1
-    end
-  end
+  # def populate_join_table_custom_name_det h, det, join_table_name, id_name
+  #   i = 0
+  #   h.each do |v|
+  #       @lc = @visit.send(join_table_name).build(:visit_id => params[:id], (id_name).to_sym => v, :details => det)
+  #       @lc.save
+  #       i += 1
+  #   end
+  # end
+
+  # def populate_join_table_custom_name_res h, res, join_table_name, id_name
+  #   i = 0
+  #   h.each do |v|
+  #       @lc = @visit.send(join_table_name).build(:visit_id => params[:id], (id_name).to_sym => v, :result => res)
+  #       @lc.save
+  #       i += 1
+  #   end
+  # end
 
   # POST /visits
   # POST /visits.json
@@ -84,28 +94,88 @@ class VisitsController < ApplicationController
     #  end
     #end
 
-    @r = params['visit']["consultations"]
-    if @r
-      populate_join_table_custom_name @r["specialist_ids"], @r["result"], "consultations", "specialist_id"
-    end
-    # @r = params['visit']["concomitant_diagnoses"]
-    # if @r
-    #   populate_join_table_custom_name @r["concomitant_diagnosis_ids"], @r["details"], "concomitant_diagnosis_visits", "concomitant_diagnosis_id"
-    # end
-
-    params['visit']["concomitant_diagnosis_visits"]["concomitant_diagnosis_ids"].each do |v|
-        @lc = @visit.concomitant_diagnoses.build(:visit_id => params[:id], :concomitant_diagnosis_id => v, :details => det)
-        @lc.save
+    @result = params['visit']["consultations"]["result"]
+    @ids = params['visit']["consultations"]["specialist_ids"]
+    if @ids
+      i = 0
+      @ids.each do |v|
+          @lc = @visit.consultations.build(:visit_id => params[:id], :specialist_id => v, :result => @result)
+          @lc.save
+          i += 1
+      end
     end
 
-    @r = params['visit']["complication_diagnoses"]
-    if @r
-      populate_join_table_custom_name @r["complication_diagnosis_ids"], @r["details"], "complication_diagnosis_visits", "complication_diagnosis_id"
+    @details = params['visit']["treatments"]["details"]
+    @amount = params['visit']["treatments"]["amount"]
+    @ids = params['visit']["treatments"]["treatment_factor_ids"]
+    if @ids
+      i = 0
+      @ids.each do |v|
+          @lc = @visit.treatments.build(:visit_id => params[:id], :treatment_factor_id => v, :amount => @amount, :details => @details)
+          @lc.save
+          i += 1
+      end
     end
-    @r = params['visit']["primary_diagnoses"]
-    if @r
-      populate_join_table_custom_name @r["primary_diagnosis_ids"], @r["details"], "primary_diagnosis_visits", "primary_diagnosis_id"
+
+
+    # @lc = @visit.treatments.build(:visit_id => params[:id], :factor_id => params['visit']['treatment']['treatment_factor_id'], 
+    #       :amount => params['visit']['treatment']['amount'], :details => params['visit']['treatment']['details'])
+    # @lc.save
+
+
+    @details = params['visit']["examination_results"]["details"]
+    @result = params['visit']["examination_results"]["result"]
+    @ids = params['visit']["examination_results"]["examination_ids"]
+    if @ids
+      i = 0
+      @ids.each do |v|
+          @lc = @visit.examination_results.build(:visit_id => params[:id], :examination_id => v, :result => @result, :details => @details)
+          @lc.save
+          i += 1
+      end
     end
+
+
+    @lc = @visit.medications.build(:visit_id => params[:id], :medicine_id => params['visit']['medication']['medicine_id'], 
+          :duration => params['visit']['medication']['duration'], :dosage => params['visit']['medication']['dosage'], 
+          :details => params['visit']['medication']['details'])
+    @lc.save   
+
+
+    @details = params['visit']["concomitant_diagnosis_visits"]["details"]
+    @ids = params['visit']["concomitant_diagnosis_visits"]["concomitant_diagnosis_ids"]
+    if @ids
+      i = 0
+      @ids.each do |v|
+          @lc = @visit.concomitant_diagnosis_visits.build(:visit_id => params[:id], :concomitant_diagnosis_id => v, :details => @details)
+          @lc.save
+          i += 1
+      end
+    end
+
+    @details = params['visit']["complication_diagnosis_visits"]["details"]
+    @ids = params['visit']["complication_diagnosis_visits"]["complication_diagnosis_ids"]
+    if @ids
+      i = 0
+      @ids.each do |v|
+          @lc = @visit.complication_diagnosis_visits.build(:visit_id => params[:id], :complication_diagnosis_id => v, :details => @details)
+          @lc.save
+          i += 1
+      end
+    end
+
+    @details = params['visit']["primary_diagnosis_visits"]["details"]
+    @ids = params['visit']["primary_diagnosis_visits"]["primary_diagnosis_ids"]
+    #if @r
+      if @ids
+        i = 0
+        @ids.each do |v|
+            @lc = @visit.primary_diagnosis_visits.build(:visit_id => params[:id], :primary_diagnosis_id => v, :details => @details)
+            @lc.save
+            i += 1
+        end
+      end
+   # end
 
 
     @details = params['visit']["condition_visits"]["details"]
@@ -118,13 +188,6 @@ class VisitsController < ApplicationController
           i += 1
       end
     end
-
-    #h = params['visit']["abdominal_condition_visits"]["abdominal_condition_ids"]
-    #h.each do |v|
-    #    @det = params['visit']["abdominal_condition_visits"]["details"]
-    #    @lc = @visit.abdominal_condition_visits.build(:visit_id => params[:id], :abdominal_condition_id => v, :details => @det)
-    #    @lc.save
-    #end
 
     respond_to do |format|
       if @visit.save
@@ -175,20 +238,24 @@ class VisitsController < ApplicationController
         :diagnosis, :doctor_id, :patient_id, :constitution_option_id, 
         :effleurage_option_id, :postural_pose_option_id, 
         :subcutanious_fat_option_id, 
+        treatments_attributes:
+          [:id, :treatment_factor, :amount, :details, :_destroy],
+        examination_results_attributes:
+          [:examinations, :result, :details],
         consultations_attributes: 
-          [:result, 
-          :specialist_id],
+          [:result, :specialists],
+        medication_attributes: 
+          [:medicine, :dosage, :duration, :details],
         primary_diagnosis_visits_attributes:
-          [:primary_diagnosis_id,
-            :details],
+          [:primary_diagnoses],
         concomitant_diagnosis_visits_attributes:
-          [:concomitant_diagnosis_id,
-          :details],
+          [:concomitant_diagnoses],
         complication_diagnosis_visits_attributes:
-          [:complication_diagnosis_id,
-          :details],
+          [:complication_diagnoses],
         condition_visits_attributes:
-          [:values, :details] 
+          [:values],
+        condition_names_attributes:
+          [:names, :detailss]
         )
       #params.require(:visit).permit(:from, :date, :complaints, :anamnesis, :allerg, :general_state_option_id, :diagnosis, :doctor_id, :patient_id, :constitution_option_id, :effleurage_option_id, :postural_pose_option_id, :subcutanious_fat_option_id)
       #params.require(:liver_condition).permit(:details, :liver_condition_id)

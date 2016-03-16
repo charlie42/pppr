@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307060034) do
+ActiveRecord::Schema.define(version: 20160316070853) do
 
   create_table "abdominal_condition_visits", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -30,14 +30,14 @@ ActiveRecord::Schema.define(version: 20160307060034) do
     t.string  "details"
   end
 
-  create_table "complication_diagnosis_visits", force: :cascade do |t|
-    t.integer "diagnosis_id"
+  create_table "complication_diagnosis_visits", id: false, force: :cascade do |t|
+    t.integer "complication_diagnosis_id"
     t.integer "visit_id"
     t.string  "details"
   end
 
-  create_table "concomitant_diagnosis_visits", force: :cascade do |t|
-    t.integer "diagnosis_id"
+  create_table "concomitant_diagnosis_visits", id: false, force: :cascade do |t|
+    t.integer "concomitant_diagnosis_id"
     t.integer "visit_id"
     t.string  "details"
   end
@@ -126,6 +126,24 @@ ActiveRecord::Schema.define(version: 20160307060034) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "examination_results", force: :cascade do |t|
+    t.integer  "examination_id"
+    t.string   "result"
+    t.string   "details"
+    t.integer  "visit_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "examination_results", ["examination_id"], name: "index_examination_results_on_examination_id"
+  add_index "examination_results", ["visit_id"], name: "index_examination_results_on_visit_id"
+
+  create_table "examinations", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "general_state_options", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -149,6 +167,26 @@ ActiveRecord::Schema.define(version: 20160307060034) do
     t.string  "details"
   end
 
+  create_table "medications", force: :cascade do |t|
+    t.integer  "medicine_id"
+    t.string   "duration"
+    t.integer  "dosage"
+    t.string   "details"
+    t.integer  "visit_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "medications", ["medicine_id"], name: "index_medications_on_medicine_id"
+  add_index "medications", ["visit_id"], name: "index_medications_on_visit_id"
+
+  create_table "medicines", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "patients", force: :cascade do |t|
     t.string   "name"
     t.integer  "age"
@@ -163,11 +201,11 @@ ActiveRecord::Schema.define(version: 20160307060034) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "primary_diagnosis_visits", force: :cascade do |t|
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+  create_table "primary_diagnosis_visits", id: false, force: :cascade do |t|
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.integer  "visit_id"
-    t.integer  "diagnosis_id"
+    t.integer  "primary_diagnosis_id"
     t.string   "details"
   end
 
@@ -182,6 +220,24 @@ ActiveRecord::Schema.define(version: 20160307060034) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "treatment_factors", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "treatments", force: :cascade do |t|
+    t.integer  "factor_id"
+    t.integer  "amount"
+    t.string   "details"
+    t.integer  "visit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "treatments", ["factor_id"], name: "index_treatments_on_factor_id"
+  add_index "treatments", ["visit_id"], name: "index_treatments_on_visit_id"
 
   create_table "visits", force: :cascade do |t|
     t.string   "from"

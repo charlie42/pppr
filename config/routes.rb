@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :medicines
+  resources :examinations
+  resources :treatment_factors
   resources :diagnoses
   resources :specialists
   resources :abdominal_conditions

@@ -134,6 +134,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     nenv (0.2.0)
+    nested_form (0.3.2)
     nokogiri (1.6.7)
       mini_portile2 (~> 2.0.0.rc2)
     notiffany (0.0.8)
@@ -282,6 +283,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   launchy
+  nested_form
   omniauth
   omniauth-digitalocean
   rails (= 4.2.2)

@@ -38,7 +38,7 @@
 </p>
 
 <p>
-  <strong>asdfghj,:</strong>
+  <strong>condition names:</strong>
   <% if @visit.condition_visits.first %>
 	  <% @visit.condition_visits.each do |v| %>
 	  	<%= v.condition_value.name %>
@@ -49,7 +49,16 @@
 
 <p>
   <strong>диагноз:</strong>
-  
+  <% if @visit.primary_diagnosis_visits.first %>
+    <%= @visit.primary_diagnosis_visits.first.primary_diagnosis.name %>
+  <% end %>
+</p>
+
+<p>
+  <strong>лечение:</strong>
+  <% if @visit.treatments.first %>
+    <%= @visit.treatments.first.treatment_factor.name %>
+  <% end %>
 </p>
 
 <%= params.inspect %>
