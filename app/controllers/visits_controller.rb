@@ -24,6 +24,9 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new
 
+    @visit.treatments.build
+    @visit.medications.build
+
     #@visit.primary_diagnosis_visits.build
     #@visit.concomitant_diagnosis_visits.build
     #@visit.complication_diagnosis_visits.build
@@ -77,6 +80,11 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new(visit_params)
 
+
+    # if params['visit']['treatments']
+    #   @visit.treatments.build(:treatment_factor_id => params['visit']['treatments']['treatment_factor_id'])
+    # end
+
     #r = params['visit']["diagnosis_visits"]
     #if r["diagnosis_ids"]
     #  populate_join_table r["diagnosis_ids"], r["diagnosis_types"], "diagnosis"
@@ -105,17 +113,17 @@ class VisitsController < ApplicationController
       end
     end
 
-    @details = params['visit']["treatments"]["details"]
-    @amount = params['visit']["treatments"]["amount"]
-    @ids = params['visit']["treatments"]["treatment_factor_ids"]
-    if @ids
-      i = 0
-      @ids.each do |v|
-          @lc = @visit.treatments.build(:visit_id => params[:id], :treatment_factor_id => v, :amount => @amount, :details => @details)
-          @lc.save
-          i += 1
-      end
-    end
+    # @details = params['visit']["treatments"]["details"]
+    # @amount = params['visit']["treatments"]["amount"]
+    # @ids = params['visit']["treatments"]["treatment_factor_ids"]
+    # if @ids
+    #   i = 0
+    #   @ids.each do |v|
+    #       @lc = @visit.treatments.build(:visit_id => params[:id], :treatment_factor_id => v, :amount => @amount, :details => @details)
+    #       @lc.save
+    #       i += 1
+    #   end
+    # end
 
 
     # @lc = @visit.treatments.build(:visit_id => params[:id], :factor_id => params['visit']['treatment']['treatment_factor_id'], 
@@ -134,12 +142,6 @@ class VisitsController < ApplicationController
           i += 1
       end
     end
-
-
-    @lc = @visit.medications.build(:visit_id => params[:id], :medicine_id => params['visit']['medication']['medicine_id'], 
-          :duration => params['visit']['medication']['duration'], :dosage => params['visit']['medication']['dosage'], 
-          :details => params['visit']['medication']['details'])
-    @lc.save   
 
 
     @details = params['visit']["concomitant_diagnosis_visits"]["details"]
@@ -239,13 +241,13 @@ class VisitsController < ApplicationController
         :effleurage_option_id, :postural_pose_option_id, 
         :subcutanious_fat_option_id, 
         treatments_attributes:
-          [:id, :treatment_factor, :amount, :details, :_destroy],
+          [:id, :treatment_factor_id, :amount, :details, :_destroy],
+        medications_attributes: 
+          [:id, :medicine_id, :dosage, :duration, :details, :_destroy],
         examination_results_attributes:
           [:examinations, :result, :details],
         consultations_attributes: 
           [:result, :specialists],
-        medication_attributes: 
-          [:medicine, :dosage, :duration, :details],
         primary_diagnosis_visits_attributes:
           [:primary_diagnoses],
         concomitant_diagnosis_visits_attributes:

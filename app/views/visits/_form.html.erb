@@ -95,24 +95,25 @@
   </div>
 
   <div class="field">
-    <%= f.fields_for :treatment do |s| %>
-        Лечение <%= s.collection_select(:treatment_factor_id, TreatmentFactor.all, :id, :name, :multiple => false) %>
-        Дополнительно <%= s.text_field :details %>
-        Дополнительно <%= s.text_field :amount %>
+    1
+    <%= f.fields_for :treatments do |treatment| %>
+    2
+      <%= render 'treatment_fields', :f => treatment %>
+      3
+      <div class="links"> 
+        <%= link_to_add_association 'ДОБАВИТЬ ЛЕЧЕНИЕ', f, :treatments %>
+      </div>
     <% end %>  
   </div>
-  <a href=""> + </a>
-  
 
    <div class="field">
-    <%= f.fields_for :medication do |s| %>
-        Медикаментозное лечение <%= s.collection_select(:medicine_id, Medicine.all, :id, :name, :multiple => false) %>
-        Дополнительно <%= s.text_field :dosage %>
-        Дополнительно <%= s.text_field :duration %>
-        Дополнительно <%= s.text_field :details %>
+    <%= f.fields_for :medications do |medication| %>
+      <%= render 'medication_fields', :f => medication %>
+      <div class="links"> 
+        <%= link_to_add_association 'ДОБАВИТЬ МЕДИКАМЕНТОЗНОЕ ЛЕЧЕНИЕ', f, :medications %>
+      </div>
     <% end %>  
   </div>
-  <a href=""> + </a>
 
     <div class="field">
     <%= f.fields_for :consultations do |s| %>

@@ -23,7 +23,7 @@ class Visit < ActiveRecord::Base
   has_many :examination_results
 
   has_many :medicines, through: :medications
-  has_many :medications
+  has_many :medications, :dependent => :destroy
 
 
   accepts_nested_attributes_for :specialists
@@ -31,8 +31,8 @@ class Visit < ActiveRecord::Base
   accepts_nested_attributes_for :concomitant_diagnoses
   accepts_nested_attributes_for :complication_diagnoses
   accepts_nested_attributes_for :condition_values
-  accepts_nested_attributes_for :treatment_factors, :allow_destroy => true
-  accepts_nested_attributes_for :medicines
+  accepts_nested_attributes_for :treatments, :allow_destroy => true
+  accepts_nested_attributes_for :medications, :allow_destroy => true
   accepts_nested_attributes_for :examinations
   #accepts_nested_attributes_for :liver_condition_visits
   #validates :doctor_id, presence:true

@@ -1,0 +1,15 @@
+<div class = "nested-fields" >
+  <div class = "field"> 
+  	<%= f.hidden_field :_destroy, :class => 'removable' %>
+  </div>
+  <div class = "field"> 
+  	Лечение <%= f.collection_select(:treatment_factor_id, TreatmentFactor.all, :id, :name, :multiple => false) %>
+  </div>
+  <div class = "field"> 
+  	Дополнительно <%= f.text_field :details %>
+  </div>
+  <div class = "field"> 
+  	Количество <%= f.text_field :amount %>
+  </div>
+  <%= link_to_remove_association " - ", f %>
+</div>

@@ -228,16 +228,13 @@ ActiveRecord::Schema.define(version: 20160316070853) do
   end
 
   create_table "treatments", force: :cascade do |t|
-    t.integer  "factor_id"
+    t.integer  "treatment_factor_id"
     t.integer  "amount"
     t.string   "details"
     t.integer  "visit_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
-
-  add_index "treatments", ["factor_id"], name: "index_treatments_on_factor_id"
-  add_index "treatments", ["visit_id"], name: "index_treatments_on_visit_id"
 
   create_table "visits", force: :cascade do |t|
     t.string   "from"

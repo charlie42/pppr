@@ -1,5 +1,0 @@
-<%= f.hidden_field :_destroy, :class => 'removable' %>
-Лечение <%= f.collection_select(:treatment_factor_id, TreatmentFactor.all, :id, :name, :multiple => false) %>
-Дополнительно <%= f.text_field :details %>
-Количество <%= f.text_field :amount %>
-<%= remove_child_button "Remove"%>
