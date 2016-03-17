@@ -26,6 +26,7 @@ class VisitsController < ApplicationController
 
     @visit.treatments.build
     @visit.medications.build
+    @visit.examination_results.build
 
     #@visit.primary_diagnosis_visits.build
     #@visit.concomitant_diagnosis_visits.build
@@ -131,13 +132,14 @@ class VisitsController < ApplicationController
     # @lc.save
 
 
-    @details = params['visit']["examination_results"]["details"]
-    @result = params['visit']["examination_results"]["result"]
-    @ids = params['visit']["examination_results"]["examination_ids"]
+    # @details = params['visit']["examination_results"]["details"]
+    # @result = params['visit']["examination_results"]["result"]
+    @ids = params['visit']["examination_result"]["examination_ids"]
     if @ids
       i = 0
       @ids.each do |v|
-          @lc = @visit.examination_results.build(:visit_id => params[:id], :examination_id => v, :result => @result, :details => @details)
+          @lc = @visit.examination_results.build(:visit_id => params[:id], :examination_id => v#, :result => @result, :details => @details
+              )
           @lc.save
           i += 1
       end
@@ -245,7 +247,7 @@ class VisitsController < ApplicationController
         medications_attributes: 
           [:id, :medicine_id, :dosage, :duration, :details, :_destroy],
         examination_results_attributes:
-          [:examinations, :result, :details],
+          [:id, :examinations, :examination_id, :result, :details, :_destroy],
         consultations_attributes: 
           [:result, :specialists],
         primary_diagnosis_visits_attributes:

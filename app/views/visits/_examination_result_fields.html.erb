@@ -1,0 +1,11 @@
+<div class = "nested-fields" >
+  <div class = "field"> 
+  	<%= f.hidden_field :_destroy, :class => 'removable' %>
+  </div>
+  <div class = "field"> 
+    Результаты обследований <%= f.collection_select(:examination_id, Examination.all, :id, :name, {:include_hidden => false}, :multiple => false) %>
+  <div class = "field"> 
+	Результат <%= f.text_field :result %>
+  </div>
+  <%= link_to_remove_association " - ", f %>
+</div>

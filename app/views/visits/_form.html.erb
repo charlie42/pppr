@@ -123,7 +123,7 @@
   </div>
 
    <div class="field">
-    <%= f.fields_for :examination_results do |s| %>
+    <%= f.fields_for :examination_result do |s| %>
       Обследования <%= s.collection_select(:examination_ids, Examination.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
       <%= s.hidden_field :result, :value => ""  %>   
       <%= s.hidden_field :details, :value => ""  %>        
@@ -131,12 +131,13 @@
   </div>
 
    <div class="field">
-    <%= f.fields_for :examination_result do |s| %>
-      Результаты обследований <%= s.collection_select(:examination_ids, Examination.all, :id, :name, {:include_hidden => false}, :multiple => false) %>
-      Результат <%= s.text_field :result %>
+    <%= f.fields_for :examination_results do |examination_result| %>
+      <%= render 'examination_result_fields', :f => examination_result %>
+      <div class="links"> 
+        <%= link_to_add_association 'ДОБАВИТЬ РЕЗУЛЬТАТ ОБСЛЕДОВАНИЯ', f, :medications %>
+      </div>
     <% end %>  
   </div>
-  <a href=""> + </a>
 
 
   <div class="actions">
