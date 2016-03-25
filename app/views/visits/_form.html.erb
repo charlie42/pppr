@@ -62,11 +62,8 @@
       <% ConditionName.all.each do |v| %>
         <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
           <%= f.fields_for :condition_visits do |s| %>
-            <%= v.name %> <%= s.collection_select(:condition_value_ids, ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values, :id, :name, {:include_hidden => false}, :multiple => true) %>   
-          <% end %>
-          <%= f.fields_for :condition_names do |p| %>
-            <%= p.hidden_field :id, :value => v.id  %>
-            Дополнительно <%= p.text_field :details %>
+            <%= v.name %> <%= s.collection_select(:condition_value_id, ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values, :id, :name, {:include_hidden => false}, :multiple => true) %>   
+            Дополнительно <%= s.text_field :details %>
           <% end %> 
         <% end %> 
         <br>
@@ -95,11 +92,8 @@
   </div>
 
   <div class="field">
-    1
     <%= f.fields_for :treatments do |treatment| %>
-    2
       <%= render 'treatment_fields', :f => treatment %>
-      3
       <div class="links"> 
         <%= link_to_add_association 'ДОБАВИТЬ ЛЕЧЕНИЕ', f, :treatments %>
       </div>

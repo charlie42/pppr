@@ -28,6 +28,10 @@ class VisitsController < ApplicationController
     @visit.medications.build
     @visit.examination_results.build
 
+    @visit.condition_visits.build
+    
+    #@biz.save
+
     #@visit.primary_diagnosis_visits.build
     #@visit.concomitant_diagnosis_visits.build
     #@visit.complication_diagnosis_visits.build
@@ -102,6 +106,10 @@ class VisitsController < ApplicationController
           #i += 1
     #  end
     #end
+
+    @a = params["visit"]["condition_visits_attributes"]["0"]["condition_value_id"]
+    @visit.save
+    @biz = @visit.condition_visits.find_or_create_by condition_value_id: @a
 
     @result = params['visit']["consultations"]["result"]
     @ids = params['visit']["consultations"]["specialist_ids"]
@@ -182,16 +190,16 @@ class VisitsController < ApplicationController
    # end
 
 
-    @details = params['visit']["condition_visits"]["details"]
-    @ids = params['visit']["condition_visits"]["condition_value_ids"]
-    i = 0
-    if @ids
-      @ids.each do |v|
-          @lc = @visit.condition_visits.build(:visit_id => params[:id], :condition_value_id => v, :details => @details)
-          @lc.save
-          i += 1
-      end
-    end
+    # @details = params['visit']["condition_visits"]["details"]
+    # @ids = params['visit']["condition_visits"]["condition_value_ids"]
+    # i = 0
+    # if @ids
+    #   @ids.each do |v|
+    #       @lc = @visit.condition_visits.build(:visit_id => params[:id], :condition_value_id => v, :details => @details[i])
+    #       @lc.save
+    #       i += 1
+    #   end
+    # end
 
     respond_to do |format|
       if @visit.save
@@ -257,9 +265,10 @@ class VisitsController < ApplicationController
         complication_diagnosis_visits_attributes:
           [:complication_diagnoses],
         condition_visits_attributes:
-          [:values],
-        condition_names_attributes:
-          [:names, :detailss]
+           [:details, condition_value_id:[]]
+        #,
+        # condition_names_attributes:
+        #   [:names, :detailss]
         )
       #params.require(:visit).permit(:from, :date, :complaints, :anamnesis, :allerg, :general_state_option_id, :diagnosis, :doctor_id, :patient_id, :constitution_option_id, :effleurage_option_id, :postural_pose_option_id, :subcutanious_fat_option_id)
       #params.require(:liver_condition).permit(:details, :liver_condition_id)
