@@ -1,10 +1,104 @@
 <p id="notice"><%= notice %></p>
 
+<%= search_form_for @q, url: doctor_visits_path do |f| %>
+  <%= f.condition_fields do |c| %>
+  <div class="field">
+    <%= c.attribute_fields do |a| %>
+      <%= a.attribute_select associations: [:treatment_factors, :primary_diagnoses] %>
+    <% end %>
+    <%= c.predicate_select %>
+    <%= c.value_fields do |v| %>
+      <%= v.text_field :value %>
+    <% end %>
+    </div>
+  <% end %>
+  <div class="actions"><%= f.submit "Search" %></div>
+<% end %>
+
+<script>
+
+$(function () {
+    
+        // Create the chart
+        $('#container').highcharts({
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Browser market share, April, 2011'
+            },
+            yAxis: {
+                title: {
+                    text: 'Total percent market share'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    shadow: false,
+                    center: ['50%', '50%']
+                }
+            },
+            tooltip: {
+              valueSuffix: ''
+            },
+            series: [{
+                name: 'Всего',
+                data: [
+                    { name: "Все", y: <%=@arr[2]%> }
+                ],
+                size: '40%',
+                dataLabels: {
+                    formatter: function() {
+                        return this.y > 5 ? this.point.name : null;
+                    },
+                    color: 'white',
+                    distance: -30
+                }
+            }, {
+                name: 'Versions',
+                data: [
+                    { name: 'Первичные', y: <%=@arr[0]%> },
+                    { name: 'Вторичные', y: <%=@arr[1]%> }
+                ],
+                size: '70%',
+                innerSize: '40%',
+                dataLabels: { 
+                    formatter: function() {
+                        // display only if larger than 1
+                        return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
+                    }
+                }
+            }, {
+                name: 'Versions',
+                data: [2,2,3,4,6,5,6,5,1,1,2,1,2,1,4,4,2,3,2,3,2,3],
+                size: '80%',
+                innerSize: '70%',
+                dataLabels: {
+                    formatter: function() {
+                        // display only if larger than 1
+                        return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
+                    }
+                }
+            }]
+        });
+    });
+    
+
+
+
+</script>
 <h1>Listing Visits</h1>
 
-<table>
+<h2><%= @q.result.count %><% @all = @q.result.count %></h2>
+<%= link_to 'Добавить к отчету', doctor_visits_add_to_report_path, :method => :post, remote: true %>
+<div id = "testdiv"><h3></h3></div>
+<%= link_to 'Построить отчет', doctor_visits_build_report_path, :method => :get, remote: true %>
+<div id = "report"><h3></h3></div>
+
+<table id = "test">
   <thead>
     <tr>
+      <th>ID</th>
       <th>From</th>
       <th>Date</th>
       <th>Complaints</th>
@@ -13,20 +107,35 @@
       <th>General state</th>
       <th>Diagnosis</th>
       <th colspan="3"></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @visits.each do |visit| %>
       <tr>
+        <td><%= visit.id %></td>
         <td><%= visit.from %></td>
-
         <td><%= visit.complaints %></td>
         <td><%= visit.anamnesis %></td>
         <td><%= visit.allerg %></td>
         <td><%= visit.general_state %></td>
         <td><%= visit.diagnosis %></td>
-
+        <td>
+          <ul>
+            <% visit.treatment_factors.each do |treatment_factor| %>
+              <li><%= treatment_factor.name %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% visit.primary_diagnoses.each do |primary_diagnosis| %>
+              <li><%= primary_diagnosis.name %></li>
+            <% end %>
+          </ul>
+        </td>
+ 
       </tr>
     <% end %>
   </tbody>
@@ -34,4 +143,4 @@
 
 <br>
 
-<%= link_to 'New Visit', new_doctor_patient_visit_path %>
+

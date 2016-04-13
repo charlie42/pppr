@@ -1,3 +1,5 @@
+<%= include_gon(:init => true) %>
+    <%= Gon::Base.render_data({}) %>
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -14,6 +16,8 @@
   <strong>Specialization:</strong>
   <%= @doctor.specialization %>
 </p>
+
+<div id="container" style="width: 600px; height: 400px; margin: 0 auto"></div>
 
 <% if @doctor.patients.any? %>
       <h3>Patients (<%= @doctor.patients.count %>)</h3>

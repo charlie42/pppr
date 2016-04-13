@@ -18,3 +18,7 @@
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'diagnosis', 'diagnoses'
 end
+
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.irregular 'details', 'details_array'
+end

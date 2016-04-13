@@ -39,6 +39,18 @@ gem 'seed_dump'
 
 gem "cocoon"
 
+gem 'lazy_high_charts'
+
+gem 'gon'
+
+gem 'ransack'
+
+gem 'json'
+
+gem 'pry'
+
+gem "schema_plus"
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'

@@ -1,13 +1,67 @@
 class VisitsController < ApplicationController
+
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
+
+  @@report_hash = Hash.new 
+  @@param = Hash.new
+  @@all = 0
 
   # GET /visits
   # GET /visits.json
   def index
     @doctor = Doctor.find(params[:doctor_id])
-    @patient = Patient.find(params[:patient_id])
-    @visits = Visit.all
+    if (params[:patient_id])
+      @patient = Patient.find(params[:patient_id])
+    end
 
+    @q = Visit.search(params[:q]);
+    @visits = @q.result(distinct: true)#.includes(:treatments, :primary_diagnosis_visits).joins(:treatmentsrj)
+                        #.includes(:primary_diagnosis_visits).joins(:primary_diagnosis_visits)
+    @q.build_condition
+    # @visits = @q.result.includes(:department, :employees)
+
+    @param = params[:q]
+    @all = @visits.count
+    @@all = @all
+    @@param = @param
+    @first = 10
+    @second = 20
+    @arr = [10, 20, 30]
+
+  end
+
+  def add_to_report 
+    @param = @@param
+    @all = @@all    
+    
+    @@report_hash.merge!(@param => @all)
+    @report_hash = @@report_hash
+
+    respond_to do |format|
+      format.js
+    end
+    # redirect_to :back
+  end
+
+  def build_report 
+    @report_hash = @@report_hash
+    @report = Hash.new
+    @c = Array.new
+    @first = Array.new
+    @each_c = Array.new
+    @report_hash.each  do |key, value|
+      @c << key
+      @c.last.each do |key1, value1|
+        @first << value1
+        @first.each do |key2, value2| 
+          @each_c << value2
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /visits/1
@@ -16,6 +70,125 @@ class VisitsController < ApplicationController
     @doctor = Doctor.find(params[:doctor_id])
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.find(params[:id])
+
+
+    # @chart = LazyHighCharts::HighChart.new('graph') do |f|
+    #   f.title(text: "Population vs GDP For 5 Big Countries [2009]")
+    #   f.xAxis(categories: ["United States", "Japan", "China", "Germany", "France"])
+    #   f.series(name: "GDP in Billions", yAxis: 0, data: [14119, 5068, 4985, 3339, 2656])
+    #   f.series(name: "Population in Millions", yAxis: 1, data: [310, 127, 1340, 81, 65])
+
+    #   f.yAxis [
+    #     {title: {text: "GDP in Billions", margin: 70} },
+    #     {title: {text: "Population in Millions"}, opposite: true},
+    #   ]
+
+    #   f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+    #   f.chart({defaultSeriesType: "column"})
+    # end
+
+    # @chart1 = LazyHighCharts::HighChart.new('graph') do |f|
+    #   f.title({ :text=>"Combination chart"})
+    #   f.options[:xAxis][:categories] = ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
+    #   f.labels(:items=>[:html=>"Total fruit consumption", :style=>{:left=>"40px", :top=>"8px", :color=>"black"} ]) 
+    #   f.series(:type=> 'column',:name=> 'Jane',:data=> [3, 2, 1, 3, 4])
+    #   f.series(:type=> 'column',:name=> 'John',:data=> [2, 3, 5, 7, 6])
+    #   f.series(:type=> 'column', :name=> 'Joe',:data=> [4, 3, 3, 9, 0])
+    #   f.series(:type=> 'column', :name=> 'Joe',:data=> [4, 3, 3, 9, 0])
+    #   f.series(:type=> 'spline',:name=> 'Average', :data=> [3, 2.67, 3, 6.33, 3.33])
+    #   f.series(:type=> 'pie',:name=> 'Total consumption', 
+    #   :data=> [
+    #     {:name=> 'Jane', :y=> 13, :color=> 'red'}, 
+    #     {:name=> 'John', :y=> 23,:color=> 'green'},
+    #     {:name=> 'Joe', :y=> 19,:color=> 'blue'}
+    #   ],
+    #   :center=> [100, 80], :size=> 100, :showInLegend=> false)
+    #  end
+
+    # @chart2 = LazyHighCharts::HighChart.new('graph') do |f|
+    #   f.title(:text => "Population vs GDP For 5 Big Countries [2009]")
+    #   f.xAxis(:categories => ["United States", "Japan", "China", "Germany", "France"])
+    #   f.series(:name => "GDP in Billions", :yAxis => 0, :data => [14119, 5068, 4985, 3339, 2656])
+    #   f.series(:name => "Population in Millions", :yAxis => 1, :data => [310, 127, 1340, 81, 65])
+
+    #   f.yAxis [
+    #     {:title => {:text => "GDP in Billions", :margin => 70} },
+    #     {:title => {:text => "Population in Millions"},  :opposite => true},
+    #   ]
+
+    #   f.legend(:align => 'right', :verticalAlign => 'top', :y => 75, :x => -50, :layout => 'vertical',)
+    #   f.chart({:defaultSeriesType=>"column"})
+    #  end
+
+    # @chart3 = LazyHighCharts::HighChart.new('pie') do |f|
+    #   f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
+    #   series = {
+    #     :type=> 'pie',
+    #     :name=> 'Browser share',
+    #     :data=> [
+    #       ['Firefox', 45.0],
+    #       ['IE', 26.8],
+    #      {
+    #         :name=> 'Chrome', 
+    #         :y=> 12.8,
+    #         :sliced=> true,
+    #         :selected=> true
+    #      },
+    #       ['Safari', 8.5],
+    #       ['Opera', 6.2],
+    #       ['Others', 0.7]
+    #     ]
+    #   }
+    #   f.series(series)
+    #   f.options[:title][:text] = "THA PIE"
+    #   f.legend(:layout=> 'vertical',:style=> {:left=> 'auto', :bottom=> 'auto',:right=> '50px',:top=> '100px'}) 
+    #   f.plot_options(:pie=>{
+    #     :allowPointSelect=>true, 
+    #     :cursor=>"pointer" , 
+    #     :dataLabels=>{
+    #       :enabled=>true,
+    #       :color=>"black",
+    #       :style=>{
+    #         :font=>"13px Trebuchet MS, Verdana, sans-serif"
+    #       }
+    #     }
+    #   })
+    # end
+
+    #  @chart4 = LazyHighCharts::HighChart.new('column') do |f|
+    #   f.series(:name=>'John',:data=> [3, 20, 3, 5, 4, 10, 12 ])
+    #   f.series(:name=>'Jane',:data=>[1, 3, 4, 3, 3, 5, 4,-46] ) 
+    #   f.title({ :text=>"example test title from controller"})
+
+    #   ### Options for Bar
+    #   ### f.options[:chart][:defaultSeriesType] = "bar"
+    #   ### f.plot_options({:series=>{:stacking=>"normal"}})
+
+    #   ## or options for column
+    #   f.options[:chart][:defaultSeriesType] = "column"
+    #   f.plot_options({:column=>{:stacking=>"percent"}})
+    #  end
+
+
+    # @chart_globals = LazyHighCharts::HighChartGlobals.new do |f|
+    #   f.global(useUTC: false)
+    #   f.chart(
+    #     backgroundColor: {
+    #       linearGradient: [0, 0, 500, 500],
+    #       stops: [
+    #         [0, "rgb(255, 255, 255)"],
+    #         [1, "rgb(240, 240, 255)"]
+    #       ]
+    #     },
+    #     borderWidth: 2,
+    #     plotBackgroundColor: "rgba(255, 255, 255, .9)",
+    #     plotShadow: true,
+    #     plotBorderWidth: 1
+    #   )
+    #   f.lang(thousandsSep: ",")
+    #   f.colors(["#90ed7d", "#f7a35c", "#8085e9", "#f15c80", "#e4d354"])
+    # end
+    
   end
 
   # GET /visits/new
@@ -28,7 +201,7 @@ class VisitsController < ApplicationController
     @visit.medications.build
     @visit.examination_results.build
 
-    @visit.condition_visits.build
+    #@visit.condition_visits.build
     
     #@biz.save
 
@@ -107,9 +280,9 @@ class VisitsController < ApplicationController
     #  end
     #end
 
-    @a = params["visit"]["condition_visits_attributes"]["0"]["condition_value_id"]
-    @visit.save
-    @biz = @visit.condition_visits.find_or_create_by condition_value_id: @a
+    # @a = params["visit"]["condition_visits_attributes"]["0"]["condition_value_id"]
+    # @visit.save
+    # @biz = @visit.condition_visits.find_or_create_by condition_value_id: @a
 
     @result = params['visit']["consultations"]["result"]
     @ids = params['visit']["consultations"]["specialist_ids"]
@@ -121,6 +294,21 @@ class VisitsController < ApplicationController
           i += 1
       end
     end
+
+    @names = params['visit']["condition_visits"]
+    
+    #if @names
+      @names.each do |name|
+        @ids = name[1]["condition_value_id"]
+        @details = name[1]["details"]
+        if @ids
+          @ids.each do |v|
+            @lc = @visit.condition_visits.build(:visit_id => params[:id], :condition_value_id => v, :details => @details)
+            @lc.save
+          end
+        end
+      end
+    #end
 
     # @details = params['visit']["treatments"]["details"]
     # @amount = params['visit']["treatments"]["amount"]
@@ -182,7 +370,7 @@ class VisitsController < ApplicationController
       if @ids
         i = 0
         @ids.each do |v|
-            @lc = @visit.primary_diagnosis_visits.build(:visit_id => params[:id], :primary_diagnosis_id => v, :details => @details)
+            @lc = @visit.primary_diagnosis_visits.build(:visit_id => params[:id], :primary_diagnosis_id => v, :details => @details_array[i])
             @lc.save
             i += 1
         end
@@ -250,6 +438,7 @@ class VisitsController < ApplicationController
         :diagnosis, :doctor_id, :patient_id, :constitution_option_id, 
         :effleurage_option_id, :postural_pose_option_id, 
         :subcutanious_fat_option_id, 
+        from_attributes: [:specialist],
         treatments_attributes:
           [:id, :treatment_factor_id, :amount, :details, :_destroy],
         medications_attributes: 
@@ -264,8 +453,8 @@ class VisitsController < ApplicationController
           [:concomitant_diagnoses],
         complication_diagnosis_visits_attributes:
           [:complication_diagnoses],
-        condition_visits_attributes:
-           [:details, condition_value_id:[]]
+        condition_visits_attributes: 
+          [:condition_name_id, :details, condition_value_id:[]]
         #,
         # condition_names_attributes:
         #   [:names, :detailss]

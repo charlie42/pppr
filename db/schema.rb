@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316070853) do
+ActiveRecord::Schema.define(version: 20160413113627) do
 
   create_table "abdominal_condition_visits", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -143,6 +143,16 @@ ActiveRecord::Schema.define(version: 20160316070853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "froms", force: :cascade do |t|
+    t.integer  "visit_id"
+    t.integer  "specialist_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "froms", ["specialist_id"], name: "index_froms_on_specialist_id"
+  add_index "froms", ["visit_id"], name: "index_froms_on_visit_id"
 
   create_table "general_state_options", force: :cascade do |t|
     t.string   "name"

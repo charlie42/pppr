@@ -15,8 +15,9 @@
   <%= f.hidden_field :patient_id, :value => @patient.id  %>
 
   <div class="field">
-    <%= f.label :from %><br>
-    <%= f.text_field :from %>
+    <%= f.fields_for :from do |s| %>
+        От <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, :multiple => false) %>
+    <% end %>  
   </div>
   
   <div class="field">
@@ -54,19 +55,26 @@
   <div class="field">
     Телосложение: <%= f.collection_select :subcutanious_fat_option_id, SubcutaniousFatOption.all, :id, :name %>
   </div>
-  
 
-  
-  <div class="field">
+
+ <div class="field">
     <% ConditionType.all.each do |type| %>
       <% ConditionName.all.each do |v| %>
         <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
-          <%= f.fields_for :condition_visits do |s| %>
-            <%= v.name %> <%= s.collection_select(:condition_value_id, ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values, :id, :name, {:include_hidden => false}, :multiple => true) %>   
-            Дополнительно <%= s.text_field :details %>
-          <% end %> 
+
+          <select multiple="multiple" name="visit[condition_visits][<%= v.id %>][condition_value_id][]" id="visit_condition_visits_<%= v.id %>_condition_value_id">
+
+            <%  ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
+
+              <option value= <%= value.id %> > <%= value.name %> </option>
+
+            <% end %>  
+          
+          </select>
+
+          <input type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id">
+          <br>
         <% end %> 
-        <br>
       <% end %>
       <hr>
     <% end %>  
@@ -88,6 +96,7 @@
     <%= f.fields_for :complication_diagnosis_visits do |s| %>
         Диагноз <%= s.collection_select(:complication_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
         Дополнительно <%= s.text_field :details %>
+        <%= s.hidden_field :details, :value => "GGG"  %>   
     <% end %>  
   </div>
 
@@ -109,7 +118,7 @@
     <% end %>  
   </div>
 
-    <div class="field">
+  <div class="field">
     <%= f.fields_for :consultations do |s| %>
       Консультация <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
       Дополнительно <%= s.text_field :result %>
