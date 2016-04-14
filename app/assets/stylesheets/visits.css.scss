@@ -3,9 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 table {
-	.field { background-color:red;
-		# {
-			width: 90%;
-		}
+	input, select, textarea {
+		width: 90%;
 	}
 }

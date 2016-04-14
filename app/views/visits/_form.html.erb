@@ -13,43 +13,72 @@
 
   <%= f.hidden_field :doctor_id, :value => @doctor.id  %>
   <%= f.hidden_field :patient_id, :value => @patient.id  %>
-
-  <div class="field">
-    От: <%= f.collection_select :from_id, Specialist.all, :id, :name %>  
-  </div>
-
-  
-  <div class="field complaints">
-    <%= f.label :complaints %><br>
-    <%= f.text_field :complaint_list %>
-  </div>
-  <div class="field">
-    <%= f.label :anamnesis %><br>
-    <%= f.text_area :anamnesis %>
-  </div>
-  <div class="field">
-    <%= f.label :allerg %><br>
-    <%= f.text_field :allerg %>
-  </div>
-  <div class="field">
-    Телосложение: <%= f.collection_select :constitution_option_id, ConstitutionOption.all, :id, :name %>
-  </div>
-  <div class="field">
-    Телосложение: <%= f.collection_select :general_state_option_id, GeneralStateOption.all, :id, :name %>
-  </div>
-  <div class="field">
-    Телосложение: <%= f.collection_select :effleurage_option_id, EffleurageOption.all, :id, :name %>
-  </div>
-  <div class="field">
-    Телосложение: <%= f.collection_select :postural_pose_option_id, PosturalPoseOption.all, :id, :name %>
-  </div>
-  <div class="field">
-    Телосложение: <%= f.collection_select :subcutanious_fat_option_id, SubcutaniousFatOption.all, :id, :name %>
-  </div>
-
 <table>
+  <tr>
+    <div class="field">
+      <td>От</td> 
+      <td><%= f.collection_select :from_id, Specialist.all, :id, :name %>  </td>
+    </div>
+  </tr>
+
+  <tr>
+  <div class="field complaints">
+    <!-- <td><%= f.label :complaints %></td> -->
+    <td>Жалобы</td>
+    <td><%= f.text_field :complaint_list %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <!-- <td><%= f.label :anamnesis %></td> -->
+    <td>Анамнез</td>
+    <td><%= f.text_area :anamnesis %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <!-- <td><%= f.label :allerg %></td> -->
+    <td>Аллергия</td>
+    <td><%= f.text_field :allerg %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Телосложение:</td> <td><%= f.collection_select :constitution_option_id, ConstitutionOption.all, :id, :name %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Общее состояние:</td> <td><%= f.collection_select :general_state_option_id, GeneralStateOption.all, :id, :name %></td>
+  </div>
+  </tr>
+
+  <!-- <tr>
+  <div class="field">
+    <td>Телосложение:</td> <td><%= f.collection_select :effleurage_option_id, EffleurageOption.all, :id, :name %></td>
+  </div>
+  </tr> -->
+
+  <tr>
+  <div class="field">
+    <td>Положение тела:</td><td><%= f.collection_select :postural_pose_option_id, PosturalPoseOption.all, :id, :name %></td>
+  </div>
+  </tr>
+
+  <!-- <tr>
+  <div class="field">
+    <td>Телосложение:</td> <td><%= f.collection_select :subcutanious_fat_option_id, SubcutaniousFatOption.all, :id, :name %></td>
+  </div>
+  </tr> -->
+
+
   <div class="field">
     <% ConditionType.all.each do |type| %>
+      <tr><td><h3> <%= type.name %> </h3></td></tr>
       <% ConditionName.all.each do |v| %>
         <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
           <tr>
@@ -68,7 +97,7 @@
               </td>  
               <td>Дополнительно: <input type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id"></td>
             <% else  %>
-              <td><input type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id"></td>
+              <td><input style = "width: 90%" type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id"></td>
             <% end %> 
 
             <!-- <br> -->
@@ -78,70 +107,87 @@
       <!-- <hr> -->
     <% end %>  
   </div>
-</table>
-
+  <tr><td><h3> Диагноз </h3></td></tr>
+  <tr>
   <div class="field">
     <%= f.fields_for :primary_diagnosis_visits do |s| %>
-        Диагноз <%= s.collection_select(:primary_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
-        Дополнительно <%= s.text_field :details %>
+        <td>Основной диагноз</td>   <td><%= s.collection_select(:primary_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %></td>  
+        <td>Дополнительно <%= s.text_field :details %></td>  
     <% end %>  
   </div>
+  </tr>
+
+  <tr>
   <div class="field">
     <%= f.fields_for :concomitant_diagnosis_visits do |s| %>
-        Диагноз <%= s.collection_select(:concomitant_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
-        Дополнительно <%= s.text_field :details %>
+        <td>Сопутствующий иагноз</td>   <td><%= s.collection_select(:concomitant_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %></td>  
+        <td>Дополнительно <%= s.text_field :details %></td>  
     <% end %>  
   </div>
+  </tr>
+
+  <tr>
   <div class="field">
     <%= f.fields_for :complication_diagnosis_visits do |s| %>
-        Диагноз <%= s.collection_select(:complication_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
-        Дополнительно <%= s.text_field :details %>
-        <%= s.hidden_field :details, :value => "GGG"  %>   
+        <td>Осложнения</td>   <td><%= s.collection_select(:complication_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %></td>  
+        <td>Дополнительно <%= s.text_field :details %></td>  
     <% end %>  
   </div>
+  </tr>
 
+  <tr><td><h3> Лечение </h3></td></tr>
+  
   <div class="field">
     <%= f.fields_for :treatments do |treatment| %>
       <%= render 'treatment_fields', :f => treatment %>
-      <div class="links"> 
+      <tr><td><div class="links"> 
         <%= link_to_add_association 'ДОБАВИТЬ ЛЕЧЕНИЕ', f, :treatments %>
-      </div>
+      </div></td></tr>
     <% end %>  
   </div>
+  
 
-   <div class="field">
+  <tr>
+  <div class="field">
     <%= f.fields_for :medications do |medication| %>
       <%= render 'medication_fields', :f => medication %>
-      <div class="links"> 
+      <tr><td><div class="links"> 
         <%= link_to_add_association 'ДОБАВИТЬ МЕДИКАМЕНТОЗНОЕ ЛЕЧЕНИЕ', f, :medications %>
-      </div>
+      </div></td></tr>
     <% end %>  
   </div>
+  </tr>
 
+  <tr>
   <div class="field">
     <%= f.fields_for :consultations do |s| %>
-      Консультация <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
-      Дополнительно <%= s.text_field :result %>
+      <td>Консультация</td>   <td><%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, :multiple => true) %></td>  
+      <td>Дополнительно <%= s.text_field :result %></td>  
     <% end %>  
   </div>
+  </tr>
 
-   <div class="field">
+  <tr>
+  <div class="field">
     <%= f.fields_for :examination_result do |s| %>
-      Обследования <%= s.collection_select(:examination_ids, Examination.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
-      <%= s.hidden_field :result, :value => ""  %>   
-      <%= s.hidden_field :details, :value => ""  %>        
+      <td>Обследования</td>   <td><%= s.collection_select(:examination_ids, Examination.all, :id, :name, {:include_hidden => false}, :multiple => true) %></td>  
+      <td><%= s.hidden_field :result, :value => ""  %>   
+      <%= s.hidden_field :details, :value => ""  %>   </td>       
     <% end %>  
   </div>
+  </tr>
 
-   <div class="field">
+  
+  <div class="field">
     <%= f.fields_for :examination_results do |examination_result| %>
       <%= render 'examination_result_fields', :f => examination_result %>
-      <div class="links"> 
-        <%= link_to_add_association 'ДОБАВИТЬ РЕЗУЛЬТАТ ОБСЛЕДОВАНИЯ', f, :medications %>
-      </div>
+      <tr><td><div class="links"> 
+        <%= link_to_add_association 'ДОБАВИТЬ РЕЗУЛЬТАТ ОБСЛЕДОВАНИЯ', f, :examination_results %>
+      </div></td></tr>
     <% end %>  
   </div>
-
+  
+</table>
 
   <div class="actions">
     <%= f.submit %>

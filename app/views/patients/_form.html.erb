@@ -11,18 +11,124 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+<%= f.hidden_field :doctor_id, :value => @doctor.id  %>
+
+<table>
+  <tr>
+    <div class="field">
+      <td>Фамилия</td> 
+      <td><%= f.text_field :name %></td>
+    </div>
+  </tr>
+
+  <tr>
+  <div class="field complaints">
+    <td>Имя</td>
+    <td><%= f.text_field :surname %></td>
   </div>
+  </tr>
+
+  <tr>
   <div class="field">
-    <%= f.label :age %><br>
-    <%= f.text_field :age %>
+    <td>Отчество</td>
+    <td><%= f.text_area :second_name %></td>
   </div>
+  </tr>
+
+  <tr>
   <div class="field">
-    <%= f.label :gender %><br>
-    <%= f.text_field :gender %>
+    <td>Пол</td>
+    <td><%= f.text_field :gender %></td>
   </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Дата рождения</td>
+    <td><%= f.text_field :birthday %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Дата рождения</td>
+    <td><%= f.text_field :birthday %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Адрес</td>
+    <td><%= f.text_field :address %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Местность</td>
+    <td><%= f.text_field :area %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Полис ОМС</td>
+    <td>Серия <%= f.text_field :insurance_policy_series %><br>Номер <%= f.text_field :insurance_policy_number %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Наименование страховои медицинскои организации</td>
+    <td><%= f.text_field :insurance_company %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Код категории льготы</td>
+    <td><%= f.text_field :social_benefit_code %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Документ</td>
+    <td><%= f.text_field :document_name %> Серия <%= f.text_field :document_series %> Номер <%= f.text_field :document_number %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Семейное положение</td>
+    <td><%= f.text_field :martial_status %> </td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Образование</td>
+    <td><%= f.text_field :education %> </td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Занятость</td>
+    <td><%= f.text_field :employment %> </td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Инвалидность</td>
+    <td>Группа <%= f.text_field :diability %> Первичная/повторная <%= f.text_field :diability_time %> Дата <%= f.text_field :diability_date %> </td>
+  </div>
+  </tr>
+
+  
+</table>
+
   <div class="actions">
     <%= f.submit %>
   </div>

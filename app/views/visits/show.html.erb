@@ -1,64 +1,243 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>From:</strong>
-  <%= @visit.from_id %>
-</p>
+<table>
+  <tr>
+    <div class="field">
+      <td>От</td> 
+      <td><%= @visit.from.name %>  </td>
+    </div>
+  </tr>
 
-<p>
-  <strong>Date:</strong>
-  <%= @visit.created_at %>
-</p>
+  <tr>
+  <div class="field complaints">
+    
+    <td>Жалобы</td>
+    <td><%= @visit.complaint_list %></td>
+  </div>
+  </tr>
 
-<p>
-  <strong>Complaints:</strong>
-  <%= @visit.complaint_list %>
-</p>
+  <tr>
+  <div class="field">
+   
+    <td>Анамнез</td>
+    <td><%= @visit.anamnesis %></td>
+  </div>
+  </tr>
 
-<p>
-  <strong>Diagnosis:</strong>
-  <%= @visit.diagnosis %>
-</p>
+  <tr>
+  <div class="field">
+    
+    <td>Аллергия</td>
+    <td><%= @visit.allerg %></td>
+  </div>
+  </tr>
 
-<p>
-  <strong>doctor:</strong>
-  <%= @visit.doctor_id %>
-</p>
+  <tr>
+  <div class="field">
+    <td>Телосложение</td> <td><%= @visit.constitution_option.name %></td>
+  </div>
+  </tr>
 
-<p>
-  <strong>patient:</strong>
-  <%= @visit.patient_id %>
-</p>
+  <tr>
+  <div class="field">
+    <td>Общее состояние</td> <td><%= @visit.general_state_option.name %></td>
+  </div>
+  </tr>
 
-<p>
-  <strong>консультация:</strong>
-  <% if @visit.consultations.first && @visit.consultations.first.specialist %>
-  	<%= @visit.consultations.first.specialist.name %>
-  <% end %>
-</p>
 
-<p>
-  <strong>condition names:</strong>
-  <% if @visit.condition_visits.first %>
-	  <% @visit.condition_visits.each do |v| %>
-	  	<%= v.condition_value.name %>
-	  	<br>
-	  <% end %>	
-  <% end %>
-</p>
+  <tr>
+  <div class="field">
+    <td>Положение тела</td><td><%= @visit.postural_pose_option.name %></td>
+  </div>
+  </tr>
 
-<p>
-  <strong>диагноз:</strong>
-  <% if @visit.primary_diagnosis_visits.first %>
-    <%= @visit.primary_diagnosis_visits.first.primary_diagnosis.name %>
-  <% end %>
-</p>
+  
 
-<p>
-  <strong>лечение:</strong>
-  <% if @visit.treatments.first && @visit.treatments.first.treatment_factor %>
-    <%= @visit.treatments.first.treatment_factor.name %>
-  <% end %>
-</p>
 
-<%= params.inspect %>
+  <div class="field">
+    <% ConditionType.all.each do |type| %>
+      <tr><td><h3> <%= type.name %> </h3></td></tr>
+      <% ConditionName.all.each do |v| %>
+        <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
+          <tr>
+            <td><%= v.name %></td>
+            
+            <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
+            <% if @values.any? %>
+              <td>
+                <% ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
+                   <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => @visit.id) %>
+                    <b><%= value.name %></b> <br>
+                    <% @condition_value_details = ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => @visit.id).details %>
+                   <% else %>
+                    <%= value.name %> <br> 
+                    <% @condition_value_details = nil %>
+                   <% end %>  
+                <% end %>  
+              </td>  
+              <% if @condition_value_details %>
+                <td>  <%= @condition_value_details %></td>
+              <% end %>  
+              <% else  %>
+                <td> - </td>
+            <% end %> 
+
+            <!-- <br> -->
+          </tr>
+        <% end %> 
+      <% end %>
+      <!-- <hr> -->
+    <% end %> 
+  </div>
+  <tr><td><h3> Диагноз </h3></td></tr>
+  <tr>
+  <div class="field">
+    <% if @visit.primary_diagnoses.any? %>
+    <td>Основной диагноз</td> 
+    <td>
+      <% @visit.primary_diagnoses.each do |pd| %>
+      <%= pd.name %><br>
+      <% end %></td>  
+      <td> <%= @visit.primary_diagnosis_visits.first.details %></td>  
+    <% end %>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <% if @visit.concomitant_diagnoses.any? %>
+    <td>Сопутствующий диагноз</td>   
+    <td>
+      <% @visit.concomitant_diagnoses.each do |pd| %>
+      <%= pd.name %><br>
+      <% end %></td>  
+      <td> <%= @visit.concomitant_diagnosis_visits.first.details %></td>  
+    <% end %>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <% if @visit.complication_diagnoses.any? %>
+    <td>Осложнения</td>  
+    <td>
+      <% @visit.complication_diagnoses.each do |pd| %>
+      <%= pd.name %><br>
+      <% end %></td>  
+      <td> <%= @visit.complication_diagnosis_visits.first.details %></td>   
+    <% end %>
+  </div>
+  </tr>
+
+  <tr><td><h3> Лечение </h3></td></tr>
+  
+  <div class="field">
+    <% if @visit.treatments.any? %>
+      <% @visit.treatments.each do |t| %>
+      <tr>
+        <div class = "nested-fields" >
+          <div class = "field"> 
+            <td>Лечение</td> <td> <%= t.treatment_factor.name %> </td>
+          </div>
+          <td><div class = "field"> 
+             <%= t.details %>
+          </div>
+          <div class = "field"> 
+            <%= t.amount %>
+          </div></td>
+        </div>
+      </tr> 
+      <% end %>
+    <% end %>
+  </div>
+  
+
+  <tr>
+  <div class="field">
+    <% if @visit.medications.any? %>
+    <% @visit.medications.each do |m| %>
+    <tr>
+        <div class = "nested-fields" >
+          <div class = "field"> 
+            <td>Медикаментозное лечение</td> <td> <%= m.medicine.name %> </td>
+          </div>
+          <td><div class = "field"> 
+             <%= m.details %>
+          </div>
+          <div class = "field"> 
+            <%= m.dosage %>
+          </div>
+          <div class = "field"> 
+            <%= m.duration %>
+          </div></td>
+        </div>
+      </tr>
+      <% end %> 
+    <% end %>
+  </tr>
+
+
+  <tr>
+  <div class="field">
+    <% if @visit.consultations.any? %>
+    <% @visit.consultations.each do |c| %>
+    <tr>
+        <div class = "nested-fields" >
+          <div class = "field"> 
+            <td>Консультации</td> <td> <%= c.specialist.name %> </td>
+          </div>
+          
+        </div>
+      </tr> 
+      <% end %>
+      <% end %>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <% @exs = Array.new %>
+    <% @exs = ExaminationResult.where(:visit_id => @visit.id, :result => nil).limit(nil) %>
+    <% if @exs.any? %>
+    <% @exs.each do |e| %>
+    <tr>
+        <div class = "nested-fields" >
+          <div class = "field"> 
+            <td>Обследование</td> <td> <%= e.examination.name %> </td>
+          </div>
+          <td><div class = "field"> 
+             <%= e.details %>
+          </div></td>
+        </div>
+      </tr> 
+      <% end %>
+    <% end %>
+  </div>
+  </tr>
+
+  
+  <div class="field">
+    <% @exs = Array.new %>
+    <% @except = Array.new %>
+    <% @exs =  ExaminationResult.where(:visit_id => @visit.id).limit(nil) %>
+    <% @except = ExaminationResult.where(:visit_id => @visit.id, :result => nil).limit(nil) %>
+    <% @exs -= @except %>
+    <% if @exs.any? %>
+    <% @exs.each do |e| %>
+      <tr>
+        <div class = "nested-fields" >
+          <div class = "field"> 
+            <td>Результаты обследований</td> <td> <%= e.examination.name %> </td>
+          </div>
+          <td><div class = "field"> 
+             <%= e.result %>
+          </div></td>
+        </div>
+      </tr> 
+      <% end %>
+    <% end %>
+  </div>
+  
+</table>
+
+<%= link_to 'Пациент', doctor_patient_path(@visit.doctor, @visit.patient) %> 

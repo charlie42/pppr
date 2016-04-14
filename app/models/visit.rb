@@ -12,7 +12,10 @@ class Visit < ActiveRecord::Base
   has_many :specialists, through: :consultations
   has_many :consultations
 
-  has_one :specialist
+  belongs_to :from, :class_name => 'Specialist'
+  belongs_to :constitution_option
+  belongs_to :general_state_option
+  belongs_to :postural_pose_option
   
   has_many :concomitant_diagnoses, through: :concomitant_diagnosis_visits
   has_many :concomitant_diagnosis_visits

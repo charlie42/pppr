@@ -370,7 +370,7 @@ class VisitsController < ApplicationController
       if @ids
         i = 0
         @ids.each do |v|
-            @lc = @visit.primary_diagnosis_visits.build(:visit_id => params[:id], :primary_diagnosis_id => v, :details => @details_array[i])
+            @lc = @visit.primary_diagnosis_visits.build(:visit_id => params[:id], :primary_diagnosis_id => v, :details => @details)
             @lc.save
             i += 1
         end
