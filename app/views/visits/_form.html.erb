@@ -15,30 +15,21 @@
   <%= f.hidden_field :patient_id, :value => @patient.id  %>
 
   <div class="field">
-    <%= f.fields_for :from do |s| %>
-        От <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, :multiple => false) %>
-    <% end %>  
+    От: <%= f.collection_select :from_id, Specialist.all, :id, :name %>  
   </div>
+
   
-  <div class="field">
+  <div class="field complaints">
     <%= f.label :complaints %><br>
-    <%= f.text_field :complaints %>
+    <%= f.text_field :complaint_list %>
   </div>
   <div class="field">
     <%= f.label :anamnesis %><br>
-    <%= f.text_field :anamnesis %>
+    <%= f.text_area :anamnesis %>
   </div>
   <div class="field">
     <%= f.label :allerg %><br>
     <%= f.text_field :allerg %>
-  </div>
-  <div class="field">
-    <%= f.label :general_state %><br>
-    <%= f.text_field :general_state %>
-  </div>
-  <div class="field">
-    <%= f.label :diagnosis %><br>
-    <%= f.text_field :diagnosis %>
   </div>
   <div class="field">
     Телосложение: <%= f.collection_select :constitution_option_id, ConstitutionOption.all, :id, :name %>
@@ -56,29 +47,38 @@
     Телосложение: <%= f.collection_select :subcutanious_fat_option_id, SubcutaniousFatOption.all, :id, :name %>
   </div>
 
-
- <div class="field">
+<table>
+  <div class="field">
     <% ConditionType.all.each do |type| %>
       <% ConditionName.all.each do |v| %>
         <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
+          <tr>
+            <td><%= v.name %></td>
+            
+            <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
+            <% if @values.any? %>
+              <td>
+                <select style = "width: 90%" multiple="multiple" name="visit[condition_visits][<%= v.id %>][condition_value_id][]" id="visit_condition_visits_<%= v.id %>_condition_value_id">
 
-          <select multiple="multiple" name="visit[condition_visits][<%= v.id %>][condition_value_id][]" id="visit_condition_visits_<%= v.id %>_condition_value_id">
+                  <%  ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
+                    <option value= <%= value.id %> > <%= value.name %> </option>
+                  <% end %>  
 
-            <%  ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
+                </select>
+              </td>  
+              <td>Дополнительно: <input type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id"></td>
+            <% else  %>
+              <td><input type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id"></td>
+            <% end %> 
 
-              <option value= <%= value.id %> > <%= value.name %> </option>
-
-            <% end %>  
-          
-          </select>
-
-          <input type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id">
-          <br>
+            <!-- <br> -->
+          </tr>
         <% end %> 
       <% end %>
-      <hr>
+      <!-- <hr> -->
     <% end %>  
   </div>
+</table>
 
   <div class="field">
     <%= f.fields_for :primary_diagnosis_visits do |s| %>
@@ -147,3 +147,16 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+<script>
+$(document).ready(function() {
+    $('#visit_complaint_list')
+        .select2( {
+            theme: "bootstrap",
+            tags: true,
+            tokenSeparators: [',', ' '],
+            tags: []
+        })
+        .end();
+});
+</script>

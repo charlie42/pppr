@@ -48,4 +48,7 @@ class Visit < ActiveRecord::Base
   #validates :doctor_id, presence:true
   #validates :patient_id, presence:true
 
+  acts_as_taggable # Alias for acts_as_taggable_on :tags
+  acts_as_taggable_on :complaints, :condition_values
+
 end

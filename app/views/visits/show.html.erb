@@ -2,7 +2,7 @@
 
 <p>
   <strong>From:</strong>
-  <%= @visit.from %>
+  <%= @visit.from_id %>
 </p>
 
 <p>
@@ -12,7 +12,7 @@
 
 <p>
   <strong>Complaints:</strong>
-  <%= @visit.complaints %>
+  <%= @visit.complaint_list %>
 </p>
 
 <p>
@@ -32,7 +32,7 @@
 
 <p>
   <strong>консультация:</strong>
-  <% if @visit.consultations.first %>
+  <% if @visit.consultations.first && @visit.consultations.first.specialist %>
   	<%= @visit.consultations.first.specialist.name %>
   <% end %>
 </p>
@@ -56,7 +56,7 @@
 
 <p>
   <strong>лечение:</strong>
-  <% if @visit.treatments.first %>
+  <% if @visit.treatments.first && @visit.treatments.first.treatment_factor %>
     <%= @visit.treatments.first.treatment_factor.name %>
   <% end %>
 </p>

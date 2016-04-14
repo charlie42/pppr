@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require_tree .
 //= require cocoon
-
+//= require select2-full
+//= require select2_locale_ru

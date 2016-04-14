@@ -437,8 +437,7 @@ class VisitsController < ApplicationController
         :date, :complaints, :anamnesis, :allerg, :general_state_option_id, 
         :diagnosis, :doctor_id, :patient_id, :constitution_option_id, 
         :effleurage_option_id, :postural_pose_option_id, 
-        :subcutanious_fat_option_id, 
-        from_attributes: [:specialist],
+        :subcutanious_fat_option_id, :from_id, :complaint_list,
         treatments_attributes:
           [:id, :treatment_factor_id, :amount, :details, :_destroy],
         medications_attributes: 

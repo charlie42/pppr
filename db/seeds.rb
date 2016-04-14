@@ -313,23 +313,23 @@
 #   {name: "Диагноз8"},
 #   {name: "Диагноз9"}
 # ])
-PrimaryDiagnosisVisit.create!([
-  {visit_id: 29, primary_diagnosis_id: 1, details: 1},
-  {visit_id: 29, primary_diagnosis_id: 2, details: 2},
-  {visit_id: 30, primary_diagnosis_id: 1, details: 3},
-  {visit_id: 30, primary_diagnosis_id: 2, details: 4},
-  {visit_id: 30, primary_diagnosis_id: 3, details: 5},
-  {visit_id: 31, primary_diagnosis_id: 1, details: 6}
-])
-Treatment.create!([
-  {visit_id: 29, treatment_factor_id: 0, details: 1, amount: 2},
-  {visit_id: 29, treatment_factor_id: 1, details: 1, amount: 2},
-  {visit_id: 30, treatment_factor_id: 0, details: 1, amount: 2},
-  {visit_id: 30, treatment_factor_id: 1, details: 1, amount: 2},
-  {visit_id: 31, treatment_factor_id: 0, details: 1, amount: 2},
-  {visit_id: 31, treatment_factor_id: 1, details: 1, amount: 2},
-  {visit_id: 32, treatment_factor_id: 0, details: 1, amount: 2}
-])
+# # PrimaryDiagnosisVisit.create!([
+# #   {visit_id: 29, primary_diagnosis_id: 1, details: 1},
+# #   {visit_id: 29, primary_diagnosis_id: 2, details: 2},
+# #   {visit_id: 30, primary_diagnosis_id: 1, details: 3},
+# #   {visit_id: 30, primary_diagnosis_id: 2, details: 4},
+# #   {visit_id: 30, primary_diagnosis_id: 3, details: 5},
+# #   {visit_id: 31, primary_diagnosis_id: 1, details: 6}
+# # ])
+# # Treatment.create!([
+# #   {visit_id: 29, treatment_factor_id: 0, details: 1, amount: 2},
+# #   {visit_id: 29, treatment_factor_id: 1, details: 1, amount: 2},
+# #   {visit_id: 30, treatment_factor_id: 0, details: 1, amount: 2},
+# #   {visit_id: 30, treatment_factor_id: 1, details: 1, amount: 2},
+# #   {visit_id: 31, treatment_factor_id: 0, details: 1, amount: 2},
+# #   {visit_id: 31, treatment_factor_id: 1, details: 1, amount: 2},
+# #   {visit_id: 32, treatment_factor_id: 0, details: 1, amount: 2}
+# # ])
 # Specialist.create!([
 #   {name: "Терапевт"},
 #   {name: "Физиотерапевт"}
