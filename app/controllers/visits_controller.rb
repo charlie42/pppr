@@ -1,3 +1,4 @@
+require "awesome_print"
 class VisitsController < ApplicationController
 
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
@@ -5,6 +6,8 @@ class VisitsController < ApplicationController
   @@report_hash = Hash.new 
   @@param = Hash.new
   @@all = 0
+  @@ri
+  @@vertical_counter = 0
 
   # GET /visits
   # GET /visits.json
@@ -28,14 +31,88 @@ class VisitsController < ApplicationController
     @second = 20
     @arr = [10, 20, 30]
 
+    @ri = ReportItem.find_or_create_by(name: "Отчет") do |x| 
+      x.quantity = -1 
+      x.horizontal_counter = 0
+    end 
+    @ri = @ri.children.find_or_create_by(name: "Всего посещений") do |x| 
+      x.quantity = @all
+      x.horizontal_counter = 0 
+      @@vertical_counter = 1
+    end 
+    @ri = ReportItem.order("created_at").last
+    
+    @@ri = @ri
+    #ri = @ri.children.create(name: "1", quantity: @all)
+
   end
 
   def add_to_report 
-    @param = @@param
+    @param = @@param.to_s#.tr('"', "'") 
     @all = @@all    
+    @ri = @@ri
     
     @@report_hash.merge!(@param => @all)
     @report_hash = @@report_hash
+
+    logger.debug " RI QUANTITY #{@ri.quantity} ALL #{@all}"
+
+    while @ri.quantity <= @all do 
+      logger.debug " RI QUANTITY loop1 #{@ri.quantity}"
+      @ri = @ri.parent 
+      @@vertical_counter -= 1
+      if not (@ri && @ri.parent)
+         break
+      end   
+    end
+
+    while @ri.quantity >= @all do 
+      logger.debug " RI QUANTITY loop2 #{@ri.quantity}"
+      
+      if @ri.children.first
+        @ri = @ri.children.first 
+        @@vertical_counter += 1
+      end
+      if not (@ri && @ri.children.first)
+         break
+      end 
+      
+    end
+
+    logger.debug " RI QUANTITY AFTER LOOP #{@ri.quantity}"
+
+    #@name = "Поле "
+    #@name += t @@param.first.second.first.second.first.second.first.second.first.second.to_s
+    #@name += " "
+    #@name += t @@param.first.second.first.second["p"]
+    #@name += ' "'
+    #@name += @@param.first.second.first.second["v"].first.second.first.second
+    #@name += '" '
+
+    #@name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last
+    
+    @name = "Поле "
+    @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"]
+    @name += " "
+    @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["p"]
+    @name += ' "'
+    @name +=  @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["v"].first.second.first.second
+    @name += '" '
+
+    if ReportItem.first.descendants.exists?(name: @name)
+      logger.debug " IF "
+      @ri = ReportItem.find_by(name: @name).siblings.create(name: @name, 
+            quantity: @all)
+    else
+      @ri = @ri.children.create(name: @name, quantity: @all)
+    end
+    #
+    # counter = 0
+    # ri.siblings.each do |s|
+    #   s.horizontal_counter = counter
+    #   counter += 1
+    # end
+    @@ri = @ri
 
     respond_to do |format|
       format.js
@@ -44,20 +121,22 @@ class VisitsController < ApplicationController
   end
 
   def build_report 
-    @report_hash = @@report_hash
-    @report = Hash.new
-    @c = Array.new
-    @first = Array.new
-    @each_c = Array.new
-    @report_hash.each  do |key, value|
-      @c << key
-      @c.last.each do |key1, value1|
-        @first << value1
-        @first.each do |key2, value2| 
-          @each_c << value2
-        end
-      end
-    end
+    # @report_hash = @@report_hash
+    # @report = Hash.new
+    # @c = Array.new
+    # @first = Array.new
+    # @each_c = Array.new
+    # @report_hash.each  do |key, value|
+    #   @c << key
+    #   @c.last.each do |key1, value1|
+    #     @first << value1
+    #     @first.each do |key2, value2| 
+    #       @each_c << value2
+    #     end
+    #   end
+    # end
+
+    r = ReportItem.all.destroy_all
 
     respond_to do |format|
       format.js

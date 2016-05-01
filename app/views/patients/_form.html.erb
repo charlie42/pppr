@@ -10,8 +10,8 @@
       </ul>
     </div>
   <% end %>
-
-<%= f.hidden_field :doctor_id, :value => @doctor.id  %>
+<!-- 
+<%= f.hidden_field :doctor_id, :value => @doctor.id  %> -->
 
 <table>
   <tr>
@@ -22,7 +22,7 @@
   </tr>
 
   <tr>
-  <div class="field complaints">
+  <div class="field">
     <td>Имя</td>
     <td><%= f.text_field :surname %></td>
   </div>
@@ -49,12 +49,6 @@
   </div>
   </tr>
 
-  <tr>
-  <div class="field">
-    <td>Дата рождения</td>
-    <td><%= f.text_field :birthday %></td>
-  </div>
-  </tr>
 
   <tr>
   <div class="field">
@@ -94,7 +88,7 @@
   <tr>
   <div class="field">
     <td>Документ</td>
-    <td><%= f.text_field :document_name %> Серия <%= f.text_field :document_series %> Номер <%= f.text_field :document_number %></td>
+    <td><%= f.text_field :document_name %> Серия <%= f.text_field :document_series %><br> Номер <%= f.text_field :document_number %></td>
   </div>
   </tr>
 
@@ -122,7 +116,7 @@
   <tr>
   <div class="field">
     <td>Инвалидность</td>
-    <td>Группа <%= f.text_field :diability %> Первичная/повторная <%= f.text_field :diability_time %> Дата <%= f.text_field :diability_date %> </td>
+    <td>Группа <%= f.text_field :disability %> <br>Первичная/повторная <%= f.text_field :disability_time %><br> Дата<br> <%= f.text_field :disability_date %> </td>
   </div>
   </tr>
 

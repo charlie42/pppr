@@ -1,19 +1,111 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @patient.name %>
-</p>
+<table>
+  <tr>
+    <div class="field">
+      <td>Фамилия</td> 
+      <td><%= @patient.name %></td>
+    </div>
+  </tr>
+  <tr>
+  <div class="field">
+    <td>Имя</td>
+    <td><%= @patient.surname %></td>
+  </div>
+  </tr>
 
-<p>
-  <strong>Age:</strong>
-  <%= @patient.age %>
-</p>
+  <tr>
+  <div class="field">
+    <td>Отчество</td>
+    <td><%= @patient.second_name %></td>
+  </div>
+  </tr>
 
-<p>
-  <strong>Gender:</strong>
-  <%= @patient.gender %>
-</p>
+  <tr>
+  <div class="field">
+    <td>Пол</td>
+    <td><%= @patient.gender %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Дата рождения</td>
+    <td><%= @patient.birthday %></td>
+  </div>
+  </tr>
+
+
+  <tr>
+  <div class="field">
+    <td>Адрес</td>
+    <td><%= @patient.address %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Местность</td>
+    <td><%= @patient.area %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Полис ОМС</td>
+    <td>Серия <%= @patient.insurance_policy_series %><br>Номер <%= @patient.insurance_policy_number %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Наименование страховои медицинскои организации</td>
+    <td><%= @patient.insurance_company %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Код категории льготы</td>
+    <td><%= @patient.social_benefit_code %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Документ</td>
+    <td><%= @patient.document_name %> Серия <%= @patient.document_series %><br> Номер <%= @patient.document_number %></td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Семейное положение</td>
+    <td><%= @patient.martial_status %> </td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Образование</td>
+    <td><%= @patient.education %> </td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Занятость</td>
+    <td><%= @patient.employment %> </td>
+  </div>
+  </tr>
+
+  <tr>
+  <div class="field">
+    <td>Инвалидность</td>
+    <td>Группа <%= @patient.disability %> <br>Первичная/повторная <%= @patient.disability_time %><br> Дата<br> <%= @patient.disability_date %> </td>
+  </div>
+  </tr>
+</table>
 
 <% if @patient.visits.any? %>
       <h3>Visits (<%= @patient.visits.count %>)</h3>

@@ -56,6 +56,8 @@ gem 'taps'
 gem 'acts-as-taggable-on'
 
 gem "select2-rails"
+gem 'awesome_print', :require => 'ap'
+gem 'ancestry'
 
 group :development, :test do
   gem 'rspec-rails'

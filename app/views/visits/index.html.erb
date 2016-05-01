@@ -1,92 +1,20 @@
+
+<pre><%= ReportItem.arrange_serializable.to_yaml %></pre>
 <p id="notice"><%= notice %></p>
+
+<%= @ri.quantity %>
+name <%= @name %>
+<%= @param.first.second.first.first.to_s if @param %>
 
 <%= search_form_for @q, url: doctor_visits_path do |f| %>
   <%= f.condition_fields do |c| %>
-  <div class="field">
-    <%= c.attribute_fields do |a| %>
-      <%= a.attribute_select associations: [:treatment_factors, :primary_diagnoses] %>
-    <% end %>
-    <%= c.predicate_select %>
-    <%= c.value_fields do |v| %>
-      <%= v.text_field :value %>
-    <% end %>
-    </div>
+    <%= render "condition_fields", f: c%>
   <% end %>
+  <p><%= link_to_add_fields "Add Conditions", f, :condition %>
   <div class="actions"><%= f.submit "Search" %></div>
 <% end %>
 
-<script>
 
-$(function () {
-    
-        // Create the chart
-        $('#container').highcharts({
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: 'Browser market share, April, 2011'
-            },
-            yAxis: {
-                title: {
-                    text: 'Total percent market share'
-                }
-            },
-            plotOptions: {
-                pie: {
-                    shadow: false,
-                    center: ['50%', '50%']
-                }
-            },
-            tooltip: {
-              valueSuffix: ''
-            },
-            series: [{
-                name: 'Всего',
-                data: [
-                    { name: "Все", y: <%=@arr[2]%> }
-                ],
-                size: '40%',
-                dataLabels: {
-                    formatter: function() {
-                        return this.y > 5 ? this.point.name : null;
-                    },
-                    color: 'white',
-                    distance: -30
-                }
-            }, {
-                name: 'Versions',
-                data: [
-                    { name: 'Первичные', y: <%=@arr[0]%> },
-                    { name: 'Вторичные', y: <%=@arr[1]%> }
-                ],
-                size: '70%',
-                innerSize: '40%',
-                dataLabels: { 
-                    formatter: function() {
-                        // display only if larger than 1
-                        return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
-                    }
-                }
-            }, {
-                name: 'Versions',
-                data: [2,2,3,4,6,5,6,5,1,1,2,1,2,1,4,4,2,3,2,3,2,3],
-                size: '80%',
-                innerSize: '70%',
-                dataLabels: {
-                    formatter: function() {
-                        // display only if larger than 1
-                        return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
-                    }
-                }
-            }]
-        });
-    });
-    
-
-
-
-</script>
 <h1>Listing Visits</h1>
 
 <h2><%= @q.result.count %><% @all = @q.result.count %></h2>
@@ -115,8 +43,14 @@ $(function () {
     <% @visits.each do |visit| %>
       <tr>
         <td><%= visit.id %></td>
-        <td><%= visit.from %></td>
-        <td><%= visit.complaints %></td>
+        <td><%= visit.from.name if visit.from %></td>
+        <td>
+          <ul>
+            <% visit.complaints.each do |complaint| %>
+              <li><%= complaint %></li>
+            <% end %>
+          </ul>
+        </td>
         <td><%= visit.anamnesis %></td>
         <td><%= visit.allerg %></td>
         <td><%= visit.general_state %></td>
@@ -143,4 +77,70 @@ $(function () {
 
 <br>
 
+<div id="container" style="width: 600px; height: 400px; margin: 0 auto"></div>
+
+<script>
+
+$(function () {
+    
+        // Create the chart
+      $('#container').highcharts({
+          chart: {
+              type: 'pie'
+          },
+          title: {
+              text: 'Browser market share, April, 2011'
+          },
+          yAxis: {
+              title: {
+                  text: 'Total percent market share'
+              }
+          },
+          plotOptions: {
+              pie: {
+                  shadow: false,
+                  center: ['50%', '50%']
+              }
+          },
+          tooltip: {
+            valueSuffix: '%'
+          },
+          series: [{
+              name: 'Browsers',
+              data: [11,23,14,15],
+              size: '40%',
+              dataLabels: {
+                  formatter: function() {
+                      return this.y > 5 ? this.point.name : null;
+                  },
+                  color: 'white',
+                  distance: -30
+              }
+          }, {
+              name: 'Versions',
+              data: [4,7,11,11,2,3,3,8,5,5,5],
+              size: '70%',
+              innerSize: '40%',
+              dataLabels: {
+                  formatter: function() {
+                      // display only if larger than 1
+                      return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
+                  }
+              }
+          }, {
+              name: 'Versions',
+              data: [2,2,3,4,6,5,6,5,1,1,2,1,2,1,4,4,2,3,2,3,2,3],
+              size: '80%',
+              innerSize: '70%',
+              dataLabels: {
+                  formatter: function() {
+                      // display only if larger than 1
+                      return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
+                  }
+              }
+          }]
+      });
+  });
+    
+</script>
 

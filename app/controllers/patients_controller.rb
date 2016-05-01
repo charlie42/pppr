@@ -10,7 +10,7 @@ class PatientsController < ApplicationController
   # GET /patients/1
   # GET /patients/1.json
   def show
-    @doctor = Doctor.find(params[:doctor_id])
+     @doctor = Doctor.find(params[:doctor_id])
      @patient = Patient.find(params[:id])
      @visits = @patient.visits.all
 
@@ -19,6 +19,7 @@ class PatientsController < ApplicationController
   # GET /patients/new
   def new
     @patient = Patient.new
+    @doctor = Doctor.find(params[:doctor_id])
   end
 
   # GET /patients/1/edit
@@ -30,7 +31,7 @@ class PatientsController < ApplicationController
   def create
     #@patient = Patient.new(patient_params)
      @doctor = Doctor.find(params[:doctor_id])
-     @patient = Patient.new(patient_params)
+     @patient = Patient.new(patient_params.except(:doctor_id))
      
     respond_to do |format|
       if @patient.save
@@ -75,6 +76,10 @@ class PatientsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def patient_params
-      params.require(:patient).permit(:name, :age, :gender)
+      params.require(:patient).permit(:doctor_id, :name, :age, :gender, :birthday, :surname, :second_name,
+        :address, :registration_address, :phone, :work_phone, :disability, :work_place, :work_position, :dependant, :area, 
+        :insurance_police_series, :insurance_police_number, :social_benefit_code, :document_series, :document_number,
+        :martial_status, :education, :employment, :disability_time, :disability_date, :blood_type, :rh_factor, :insurance_company,
+        :document_name)
     end
 end
