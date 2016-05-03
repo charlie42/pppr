@@ -20,16 +20,29 @@ module ApplicationHelper
 	end
 
 	def hash_list_tag(hash)
-  html = content_tag(:ul) {
-    ul_contents = ""
-    ul_contents << content_tag(:li, hash[:parent])
-    if hash[:children] 
-    	hash[:children].each do |child|
-      ul_contents << hash_list_tag(child)
-    end
-end
+    html = content_tag(:ul) {
+      ul_contents = ""
+      ul_contents << content_tag(:li, hash[:parent])
+      if hash[:children] 
+      	hash[:children].each do |child|
+          ul_contents << hash_list_tag(child)
+        end
+      end
+      ul_contents.html_safe
+    }.html_safe
+  end
 
-    ul_contents.html_safe
-  }.html_safe
-end
+  def print_report(r, margin) 
+    final = Array.new
+    r.children.each do |i|
+      final << content_tag(:tr, content_tag(:td, i.name + " " + i.quantity.to_s, {:style => "padding-left: #{margin}px"}))
+      if i.has_children?
+        # hfhewjfhe
+
+        final << print_report(i, margin + 30)
+        
+      end
+    end
+    final.join(' ').html_safe 
+  end
 end

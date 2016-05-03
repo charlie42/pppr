@@ -34,11 +34,13 @@ class VisitsController < ApplicationController
     @ri = ReportItem.find_or_create_by(name: "Отчет") do |x| 
       x.quantity = -1 
       x.horizontal_counter = 0
+      x.full_name = "Отчет"
     end 
-    @ri = @ri.children.find_or_create_by(name: "Всего посещений") do |x| 
+    @ri = @ri.children.find_or_create_by(name: "Всего") do |x| 
       x.quantity = @all
       x.horizontal_counter = 0 
       @@vertical_counter = 1
+      x.full_name = "Всего посещений"
     end 
     @ri = ReportItem.order("created_at").last
     
@@ -90,22 +92,50 @@ class VisitsController < ApplicationController
     #@name += '" '
 
     #@name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last
-    
-    @name = "Поле "
-    @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"]
-    @name += " "
-    @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["p"]
-    @name += ' "'
-    @name +=  @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["v"].first.second.first.second
-    @name += '" '
+    if @@param
+      @name = "Поле "
+      @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"]
+      @name += " "
+      @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["p"]
+      @name += ' "'
+      @name +=  @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["v"].first.second.first.second
+      @name += '" '
 
-    if ReportItem.first.descendants.exists?(name: @name)
-      logger.debug " IF "
-      @ri = ReportItem.find_by(name: @name).siblings.create(name: @name, 
-            quantity: @all)
-    else
-      @ri = @ri.children.create(name: @name, quantity: @all)
+      @full_name = ""
+    #@full_name += @@param.to_unsafe_h.to_a.first.to_a.last.to_a.to_s + " = "
+    
+      @@param.to_unsafe_h.to_a.first.to_a.last.to_a.each { |x| 
+        #@full_name += x.last.to_a.last.to_a.last.first.second.first.second["name"].to_s
+        #@full_name += x.last.to_a.last.to_a.last["p"].to_s
+        #@full_name += x.last.to_a.last.to_a.last["v"].first.second.first.second.to_s
+        @full_name += "Поле "
+        @full_name += t x.last.to_a.first.second.first.second["name"].to_s
+        @full_name += " "
+        @full_name += t x.last.to_a.second.last.to_s
+        @full_name += ' "'
+        @full_name += x.last.to_a.last.last.first.second.first.second.to_s
+        @full_name += '" '
+        @full_name += " && "
+      }
+      @full_name.chomp!(" && ")
+    else 
+      @name = "Всего"
+      @full_name = "Всего посещений"
     end
+
+
+    if ReportItem.first.descendants.exists?(name: @name, full_name: @full_name)
+      logger.debug " IF "
+      @ri = ReportItem.find_by(name: @name, full_name: @full_name).siblings.create(name: @name, 
+            quantity: @all, full_name: @full_name)
+    else
+      @ri = @ri.children.create(name: @name, full_name: @full_name, quantity: @all)
+    end
+
+    ReportItem.where.not(id: ReportItem.group(:full_name, :quantity, :ancestry).pluck('max(report_items.id)')).each { |x|
+      x.delete if x.is_childless? 
+    }
+    @ri = ReportItem.order("created_at").last
     #
     # counter = 0
     # ri.siblings.each do |s|

@@ -1,10 +1,10 @@
+<table style = "background-color: red">
+<%= print_report(ReportItem.roots.first, 0) %>
+</table>
 
-<pre><%= ReportItem.arrange_serializable.to_yaml %></pre>
+<!-- <pre><%= ReportItem.arrange_serializable.to_yaml %></pre> -->
+
 <p id="notice"><%= notice %></p>
-
-<%= @ri.quantity %>
-name <%= @name %>
-<%= @param.first.second.first.first.to_s if @param %>
 
 <%= search_form_for @q, url: doctor_visits_path do |f| %>
   <%= f.condition_fields do |c| %>
