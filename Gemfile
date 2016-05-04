@@ -5,8 +5,7 @@ gem "better_errors"
 gem "binding_of_caller"
 gem 'bootstrap-sass',       '3.2.0.0'
 #gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
-gem "twitter-bootstrap-rails"
-
+gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git', :branch => 'master'
 gem 'therubyracer'
 gem 'devise'
 gem 'devise-i18n' 

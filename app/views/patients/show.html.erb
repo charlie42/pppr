@@ -1,118 +1,75 @@
-<p id="notice"><%= notice %></p>
+<%- model_class = Patient -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
 
-<table>
-  <tr>
-    <div class="field">
-      <td>Фамилия</td> 
-      <td><%= @patient.name %></td>
-    </div>
-  </tr>
-  <tr>
-  <div class="field">
-    <td>Имя</td>
-    <td><%= @patient.surname %></td>
-  </div>
-  </tr>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
+  <dd><%= @patient.name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:age) %>:</strong></dt>
+  <dd><%= @patient.age %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:gender) %>:</strong></dt>
+  <dd><%= @patient.gender %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:birthday) %>:</strong></dt>
+  <dd><%= @patient.birthday %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:surname) %>:</strong></dt>
+  <dd><%= @patient.surname %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:second_name) %>:</strong></dt>
+  <dd><%= @patient.second_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:address) %>:</strong></dt>
+  <dd><%= @patient.address %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:registration_address) %>:</strong></dt>
+  <dd><%= @patient.registration_address %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:phone) %>:</strong></dt>
+  <dd><%= @patient.phone %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:work_phone) %>:</strong></dt>
+  <dd><%= @patient.work_phone %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:disability) %>:</strong></dt>
+  <dd><%= @patient.disability %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:work_place) %>:</strong></dt>
+  <dd><%= @patient.work_place %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:work_position) %>:</strong></dt>
+  <dd><%= @patient.work_position %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:dependant) %>:</strong></dt>
+  <dd><%= @patient.dependant %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:area) %>:</strong></dt>
+  <dd><%= @patient.area %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:insurance_policy_series) %>:</strong></dt>
+  <dd><%= @patient.insurance_policy_series %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:insurance_policy_number) %>:</strong></dt>
+  <dd><%= @patient.insurance_policy_number %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:social_benefit_code) %>:</strong></dt>
+  <dd><%= @patient.social_benefit_code %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:document_series) %>:</strong></dt>
+  <dd><%= @patient.document_series %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:document_number) %>:</strong></dt>
+  <dd><%= @patient.document_number %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:martial_status) %>:</strong></dt>
+  <dd><%= @patient.martial_status %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:education) %>:</strong></dt>
+  <dd><%= @patient.education %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:employment) %>:</strong></dt>
+  <dd><%= @patient.employment %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:disability_time) %>:</strong></dt>
+  <dd><%= @patient.disability_time %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:disability_date) %>:</strong></dt>
+  <dd><%= @patient.disability_date %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:blood_type) %>:</strong></dt>
+  <dd><%= @patient.blood_type %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:Rh_factor) %>:</strong></dt>
+  <dd><%= @patient.Rh_factor %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:insurance_company) %>:</strong></dt>
+  <dd><%= @patient.insurance_company %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:document_name) %>:</strong></dt>
+  <dd><%= @patient.document_name %></dd>
+</dl>
 
-  <tr>
-  <div class="field">
-    <td>Отчество</td>
-    <td><%= @patient.second_name %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Пол</td>
-    <td><%= @patient.gender %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Дата рождения</td>
-    <td><%= @patient.birthday %></td>
-  </div>
-  </tr>
-
-
-  <tr>
-  <div class="field">
-    <td>Адрес</td>
-    <td><%= @patient.address %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Местность</td>
-    <td><%= @patient.area %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Полис ОМС</td>
-    <td>Серия <%= @patient.insurance_policy_series %><br>Номер <%= @patient.insurance_policy_number %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Наименование страховои медицинскои организации</td>
-    <td><%= @patient.insurance_company %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Код категории льготы</td>
-    <td><%= @patient.social_benefit_code %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Документ</td>
-    <td><%= @patient.document_name %> Серия <%= @patient.document_series %><br> Номер <%= @patient.document_number %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Семейное положение</td>
-    <td><%= @patient.martial_status %> </td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Образование</td>
-    <td><%= @patient.education %> </td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Занятость</td>
-    <td><%= @patient.employment %> </td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Инвалидность</td>
-    <td>Группа <%= @patient.disability %> <br>Первичная/повторная <%= @patient.disability_time %><br> Дата<br> <%= @patient.disability_date %> </td>
-  </div>
-  </tr>
-</table>
-
-<% if @patient.visits.any? %>
-      <h3>Visits (<%= @patient.visits.count %>)</h3>
-      <ol class="visits">
-        <%= render @visits %>
-      </ol>
-<% else %>
-      <h3>No Visits </h3>
-<% end %>
-<button><%= link_to "Новый визит",  new_doctor_patient_visit_path(@doctor.id, @patient.id) %></button>
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              doctor_patients_path(@doctor), :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_doctor_patient_path(@doctor, @patient), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              doctor_patient_path(@doctor, @patient),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

@@ -1,129 +1,230 @@
-<%= form_for ([@doctor, @patient]), :html => { :multipart => true }, :url => {:controller => 'patients', :action => 'create'}  do |f| %>
-  <% if @patient.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@patient.errors.count, "error") %> prohibited this patient from being saved:</h2>
+<%= form_for ([@doctor, @patient]), :html => { :class => "form-horizontal patient" } do |f| %>
 
-      <ul>
-      <% @patient.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <% if @patient.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@patient.errors.count, "error") %> prohibited this patient from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @patient.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
-<!-- 
-<%= f.hidden_field :doctor_id, :value => @doctor.id  %> -->
 
-<table>
-  <tr>
-    <div class="field">
-      <td>Фамилия</td> 
-      <td><%= f.text_field :name %></td>
+  <div class="form-group">
+    <%= f.label :name, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :name, :class => 'form-control' %>
     </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Имя</td>
-    <td><%= f.text_field :surname %></td>
+    <%=f.error_span(:name) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Отчество</td>
-    <td><%= f.text_area :second_name %></td>
+  <div class="form-group">
+    <%= f.label :age, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :age, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:age) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Пол</td>
-    <td><%= f.text_field :gender %></td>
+  <div class="form-group">
+    <%= f.label :gender, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :gender, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:gender) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Дата рождения</td>
-    <td><%= f.text_field :birthday %></td>
+  <div class="form-group">
+    <%= f.label :birthday, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :birthday, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:birthday) %>
   </div>
-  </tr>
-
-
-  <tr>
-  <div class="field">
-    <td>Адрес</td>
-    <td><%= f.text_field :address %></td>
+  <div class="form-group">
+    <%= f.label :surname, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :surname, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:surname) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Местность</td>
-    <td><%= f.text_field :area %></td>
+  <div class="form-group">
+    <%= f.label :second_name, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :second_name, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:second_name) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Полис ОМС</td>
-    <td>Серия <%= f.text_field :insurance_policy_series %><br>Номер <%= f.text_field :insurance_policy_number %></td>
+  <div class="form-group">
+    <%= f.label :address, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :address, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:address) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Наименование страховои медицинскои организации</td>
-    <td><%= f.text_field :insurance_company %></td>
+  <div class="form-group">
+    <%= f.label :registration_address, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :registration_address, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:registration_address) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Код категории льготы</td>
-    <td><%= f.text_field :social_benefit_code %></td>
+  <div class="form-group">
+    <%= f.label :phone, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :phone, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:phone) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Документ</td>
-    <td><%= f.text_field :document_name %> Серия <%= f.text_field :document_series %><br> Номер <%= f.text_field :document_number %></td>
+  <div class="form-group">
+    <%= f.label :work_phone, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :work_phone, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:work_phone) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Семейное положение</td>
-    <td><%= f.text_field :martial_status %> </td>
+  <div class="form-group">
+    <%= f.label :disability, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :disability, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:disability) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Образование</td>
-    <td><%= f.text_field :education %> </td>
+  <div class="form-group">
+    <%= f.label :work_place, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :work_place, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:work_place) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Занятость</td>
-    <td><%= f.text_field :employment %> </td>
+  <div class="form-group">
+    <%= f.label :work_position, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :work_position, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:work_position) %>
   </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Инвалидность</td>
-    <td>Группа <%= f.text_field :disability %> <br>Первичная/повторная <%= f.text_field :disability_time %><br> Дата<br> <%= f.text_field :disability_date %> </td>
+  <div class="form-group">
+    <%= f.label :dependant, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :dependant, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:dependant) %>
   </div>
-  </tr>
-
-  
-</table>
-
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-group">
+    <%= f.label :area, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :area, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:area) %>
   </div>
+  <div class="form-group">
+    <%= f.label :insurance_policy_series, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :insurance_policy_series, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:insurance_policy_series) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :insurance_policy_number, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :insurance_policy_number, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:insurance_policy_number) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :social_benefit_code, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :social_benefit_code, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:social_benefit_code) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :document_series, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :document_series, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:document_series) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :document_number, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :document_number, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:document_number) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :martial_status, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :martial_status, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:martial_status) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :education, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :education, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:education) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :employment, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :employment, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:employment) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :disability_time, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :disability_time, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:disability_time) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :disability_date, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :disability_date, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:disability_date) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :blood_type, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :blood_type, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:blood_type) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :Rh_factor, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :Rh_factor, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:Rh_factor) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :insurance_company, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :insurance_company, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:insurance_company) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :document_name, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :document_name, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:document_name) %>
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                doctor_patients_path(@doctor), :class => 'btn btn-default' %>
+    </div>
+  </div>
+
 <% end %>
