@@ -2,6 +2,14 @@
 
 <h1>Listing Patients</h1>
 
+<%= search_form_for @q, url: doctor_patients_path(@doctor) do |f| %>
+  <%= f.condition_fields do |c| %>
+    <%= render "condition_fields", f: c%>
+  <% end %>
+  <p><%= link_to_add_fields "Add Conditions", f, :condition %>
+  <div class="actions"><%= f.submit "Search" %></div>
+<% end %>
+
 <table>
   <thead>
     <tr>
@@ -18,7 +26,6 @@
         <td><%= patient.name %></td>
         <td><%= patient.age %></td>
         <td><%= patient.gender %></td>
-        
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +33,4 @@
 
 <br>
 
-<%= link_to 'New Patient', new_doctor_patient_path %>
+<%= link_to 'New Patient', new_doctor_patient_path(@doctor) %>

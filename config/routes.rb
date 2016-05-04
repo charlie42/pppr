@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  devise_for :admins
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :medicines
   resources :examinations
   resources :treatment_factors
@@ -13,7 +15,8 @@ Rails.application.routes.draw do
   resources :general_state_options
   resources :constitution_options
   devise_for :doctors
-  root 'static_pages#home'
+
+  root to: 'patients#index'
 
   get 'static_pages/help'
 

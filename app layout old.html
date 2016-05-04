@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Office</title>
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <%= csrf_meta_tags %>
+  
+</head>
+<body>
+<header>  
+<ul class="nav pull-right">
+  <li><%= link_to "Home",       root_path %></li>
+  <li><%= link_to "Help",         root_path %></li>
+  <% if doctor_signed_in? %>
+    <li id="fat-menu" class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Account <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu">
+        <li><%= link_to "Profile", edit_doctor_registration_path %></li>
+        <li><%= link_to "Settings", '#' %></li>
+        <li class="divider"></li>
+        <li>
+          <%= link_to "Logout", destroy_doctor_session_path, :method => :delete %>
+        </li>
+      </ul>
+    </li>
+    <li> <%= link_to "Logout", destroy_doctor_session_path, :method => :delete %></li>
+  <% else %>
+    <li><%= link_to "Sign in", new_doctor_session_path %></li>
+  <% end %>
+</ul>
+</header>
+<p class="alert"><%= alert %></p>
+<p class="notice"><%= notice %></p>
+<%= yield %>
+
+</body>
+</html>

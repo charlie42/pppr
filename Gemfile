@@ -1,12 +1,15 @@
 source 'https://rubygems.org'
 
-gem 'bootstrap-will_paginate', '0.0.10'
+#gem 'bootstrap-will_paginate', '0.0.10'
 gem "better_errors"
 gem "binding_of_caller"
 gem 'bootstrap-sass',       '3.2.0.0'
+#gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+gem "twitter-bootstrap-rails"
 
 gem 'therubyracer'
 gem 'devise'
+gem 'devise-i18n' 
 gem 'omniauth'
 gem 'omniauth-digitalocean'
 
@@ -39,9 +42,9 @@ gem 'seed_dump'
 
 gem "cocoon"
 
-gem 'lazy_high_charts'
+#gem 'lazy_high_charts'
 
-gem 'gon'
+#gem 'gon'
 
 gem 'ransack'
 
@@ -56,8 +59,11 @@ gem 'taps'
 gem 'acts-as-taggable-on'
 
 gem "select2-rails"
-gem 'awesome_print', :require => 'ap'
+#gem 'awesome_print', :require => 'ap'
 gem 'ancestry'
+gem 'rails_admin'
+gem 'cancancan', '~> 1.10'
+gem 'kaminari'
 
 group :development, :test do
   gem 'rspec-rails'

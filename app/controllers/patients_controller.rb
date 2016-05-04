@@ -4,16 +4,28 @@ class PatientsController < ApplicationController
   # GET /patients
   # GET /patients.json
   def index
-    @patients = Patient.all
+    #@patients = Patient.all
+    @doctor = current_doctor
+
+    @q = Patient.search(params[:q]);
+    @patients = @q.result(distinct: true)#.includes(:treatments, :primary_diagnosis_visits).joins(:treatmentsrj)
+                        #.includes(:primary_diagnosis_visits).joins(:primary_diagnosis_visits)
+    @q.build_condition
   end
 
   # GET /patients/1
   # GET /patients/1.json
   def show
-     @doctor = Doctor.find(params[:doctor_id])
+
+    # @doctor = Doctor.find(params[:id])
+    # unless @doctor == current_doctor
+    #   redirect_to :back, :alert => "Access denied."
+    # end
+    # @patients = @doctor.patients
+
+     @doctor = current_doctor
      @patient = Patient.find(params[:id])
      @visits = @patient.visits.all
-
   end
 
   # GET /patients/new
