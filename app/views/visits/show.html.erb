@@ -1,243 +1,156 @@
-<p id="notice"><%= notice %></p>
+<%- model_class = Visit -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
 
-<table>
-  <tr>
-    <div class="field">
-      <td>От</td> 
-      <td><%= @visit.from.name %>  </td>
-    </div>
-  </tr>
-
-  <tr>
-  <div class="field complaints">
-    
-    <td>Жалобы</td>
-    <td><%= @visit.complaint_list %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-   
-    <td>Анамнез</td>
-    <td><%= @visit.anamnesis %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    
-    <td>Аллергия</td>
-    <td><%= @visit.allerg %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Телосложение</td> <td><%= @visit.constitution_option.name %></td>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <td>Общее состояние</td> <td><%= @visit.general_state_option.name %></td>
-  </div>
-  </tr>
-
-
-  <tr>
-  <div class="field">
-    <td>Положение тела</td><td><%= @visit.postural_pose_option.name %></td>
-  </div>
-  </tr>
-
-  
-
-
-  <div class="field">
-    <% ConditionType.all.each do |type| %>
-      <tr><td><h3> <%= type.name %> </h3></td></tr>
-      <% ConditionName.all.each do |v| %>
-        <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
-          <tr>
-            <td><%= v.name %></td>
-            
-            <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
-            <% if @values.any? %>
-              <td>
-                <% ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
-                   <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => @visit.id) %>
-                    <b><%= value.name %></b> <br>
-                    <% @condition_value_details = ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => @visit.id).details %>
-                   <% else %>
-                    <%= value.name %> <br> 
-                    <% @condition_value_details = nil %>
-                   <% end %>  
-                <% end %>  
-              </td>  
-              <% if @condition_value_details %>
-                <td>  <%= @condition_value_details %></td>
-              <% end %>  
-              <% else  %>
-                <td> - </td>
-            <% end %> 
-
-            <!-- <br> -->
-          </tr>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:complaints) %>:</strong></dt>
+  <dd><%= @visit.complaints %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:anamnesis) %>:</strong></dt>
+  <dd><%= @visit.anamnesis %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:allerg) %>:</strong></dt>
+  <dd><%= @visit.allerg %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:general_state) %>:</strong></dt>
+  <dd><%= @visit.general_state %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:diagnosis) %>:</strong></dt>
+  <dd><%= @visit.diagnosis %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:doctor_id) %>:</strong></dt>
+  <dd><%= @visit.doctor_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:patient_id) %>:</strong></dt>
+  <dd><%= @visit.patient_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:constitution_option_id) %>:</strong></dt>
+  <dd><%= @visit.constitution_option_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:general_state_option_id) %>:</strong></dt>
+  <dd><%= @visit.general_state_option_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:postural_pose_option_id) %>:</strong></dt>
+  <dd><%= @visit.postural_pose_option_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:subcutanious_fat_option_id) %>:</strong></dt>
+  <dd><%= @visit.subcutanious_fat_option_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:effleurage_option_id) %>:</strong></dt>
+  <dd><%= @visit.effleurage_option_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:from_id) %>:</strong></dt>
+  <dd><%= @visit.from_id %></dd>
+  <% ConditionType.all.each do |type| %>
+    <dt><strong> <%= type.name %> </strong></dt>
+    <% ConditionName.all.each do |v| %>
+      <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
+        <dt><%= v.name %></dt>
+        
+        <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
+        <% if @values.any? %>
+          <dd>
+            <% ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
+               <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => @visit.id) %>
+                <b><%= value.name %></b> <br>
+                <% @condition_value_details = ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => @visit.id).details %>
+               <% else %>
+                <%= value.name %> <br> 
+                <% @condition_value_details = nil %>
+               <% end %>  
+            <% end %>  
+          </dd>
+          <% if @condition_value_details %>
+            <dd><%= @condition_value_details %></dd>
+          <% end %>  
+          <% else  %>
+            <dd> - </dd>
         <% end %> 
-      <% end %>
-      <!-- <hr> -->
-    <% end %> 
-  </div>
-  <tr><td><h3> Диагноз </h3></td></tr>
-  <tr>
-  <div class="field">
-    <% if @visit.primary_diagnoses.any? %>
-    <td>Основной диагноз</td> 
-    <td>
-      <% @visit.primary_diagnoses.each do |pd| %>
-      <%= pd.name %><br>
-      <% end %></td>  
-      <td> <%= @visit.primary_diagnosis_visits.first.details %></td>  
-    <% end %>
-  </div>
-  </tr>
 
-  <tr>
-  <div class="field">
-    <% if @visit.concomitant_diagnoses.any? %>
-    <td>Сопутствующий диагноз</td>   
-    <td>
-      <% @visit.concomitant_diagnoses.each do |pd| %>
-      <%= pd.name %><br>
-      <% end %></td>  
-      <td> <%= @visit.concomitant_diagnosis_visits.first.details %></td>  
-    <% end %>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
-    <% if @visit.complication_diagnoses.any? %>
-    <td>Осложнения</td>  
-    <td>
-      <% @visit.complication_diagnoses.each do |pd| %>
-      <%= pd.name %><br>
-      <% end %></td>  
-      <td> <%= @visit.complication_diagnosis_visits.first.details %></td>   
-    <% end %>
-  </div>
-  </tr>
-
-  <tr><td><h3> Лечение </h3></td></tr>
-  
-  <div class="field">
-    <% if @visit.treatments.any? %>
-      <% @visit.treatments.each do |t| %>
-      <tr>
-        <div class = "nested-fields" >
-          <div class = "field"> 
-            <td>Лечение</td> <td> <%= t.treatment_factor.name %> </td>
-          </div>
-          <td><div class = "field"> 
-             <%= t.details %>
-          </div>
-          <div class = "field"> 
-            <%= t.amount %>
-          </div></td>
-        </div>
-      </tr> 
-      <% end %>
-    <% end %>
-  </div>
-  
-
-  <tr>
-  <div class="field">
-    <% if @visit.medications.any? %>
-    <% @visit.medications.each do |m| %>
-    <tr>
-        <div class = "nested-fields" >
-          <div class = "field"> 
-            <td>Медикаментозное лечение</td> <td> <%= m.medicine.name %> </td>
-          </div>
-          <td><div class = "field"> 
-             <%= m.details %>
-          </div>
-          <div class = "field"> 
-            <%= m.dosage %>
-          </div>
-          <div class = "field"> 
-            <%= m.duration %>
-          </div></td>
-        </div>
-      </tr>
+          <!-- <br> -->
       <% end %> 
     <% end %>
-  </tr>
-
-
-  <tr>
-  <div class="field">
-    <% if @visit.consultations.any? %>
-    <% @visit.consultations.each do |c| %>
-    <tr>
-        <div class = "nested-fields" >
-          <div class = "field"> 
-            <td>Консультации</td> <td> <%= c.specialist.name %> </td>
-          </div>
-          
-        </div>
-      </tr> 
+    <!-- <hr> -->
+  <% end %> 
+  <dt><strong><%= model_class.human_attribute_name(:primary_diagnosis) %>:</strong></dt>
+  <dd>
+    <% if @visit.primary_diagnoses.any? %>
+      <% @visit.concomitant_diagnoses.each do |pd| %>
+        <%= pd.name %><br>
       <% end %>
+      <dd><%= @visit.primary_diagnosis_visits.first.details %> </dd>  
+    <% end %>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:concomitant_diagnosis) %>:</strong></dt>
+  <dd>
+    <% if @visit.concomitant_diagnoses.any? %>
+      <% @visit.concomitant_diagnoses.each do |pd| %>
+        <%= pd.name %><br>
       <% end %>
-  </div>
-  </tr>
-
-  <tr>
-  <div class="field">
+      <dd><%= @visit.concomitant_diagnosis_visits.first.details %> </dd>  
+    <% end %>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:complication_diagnosis) %>:</strong></dt>
+  <dd>
+    <% if @visit.complication_diagnoses.any? %>
+      <% @visit.complication_diagnoses.each do |pd| %>
+        <%= pd.name %><br>
+      <% end %>
+      <dd><%= @visit.complication_diagnosis_visits.first.details %> </dd>  
+    <% end %>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:treatment) %>:</strong></dt>
+  <dd>
+     <% if @visit.treatments.any? %>
+      <% @visit.treatments.each do |t| %>
+        <%= t.treatment_factor.name %><br>
+        <dd><%= t.amount %></dd>
+        <dd><%= t.details %></dd>
+      <% end %>
+    <% end %>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:medication) %>:</strong></dt>
+  <dd>
+     <% if @visit.medications.any? %>
+      <% @visit.medications.each do |m| %>
+        <%= m.medicine.name %>
+        <%= m.dosage %>
+        <dd><%= m.details %></dd>
+        <%= m.duration %>
+      <% end %>
+    <% end %>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:consultation) %>:</strong></dt>
+  <dd>
+     <% if @visit.consultations.any? %>
+      <% @visit.consultations.each do |c| %>
+        <%= c.specialist.name %> 
+      <% end %>
+    <% end %>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:examintaion) %>:</strong></dt>
+  <dd>
     <% @exs = Array.new %>
     <% @exs = ExaminationResult.where(:visit_id => @visit.id, :result => nil).limit(nil) %>
     <% if @exs.any? %>
-    <% @exs.each do |e| %>
-    <tr>
-        <div class = "nested-fields" >
-          <div class = "field"> 
-            <td>Обследование</td> <td> <%= e.examination.name %> </td>
-          </div>
-          <td><div class = "field"> 
-             <%= e.details %>
-          </div></td>
-        </div>
-      </tr> 
+      <% @exs.each do |e| %>
+        <%= e.name %> 
+        <%= e.details %>
       <% end %>
     <% end %>
-  </div>
-  </tr>
-
-  
-  <div class="field">
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:examintaion) %>:</strong></dt>
+  <dd>
     <% @exs = Array.new %>
     <% @except = Array.new %>
     <% @exs =  ExaminationResult.where(:visit_id => @visit.id).limit(nil) %>
     <% @except = ExaminationResult.where(:visit_id => @visit.id, :result => nil).limit(nil) %>
     <% @exs -= @except %>
     <% if @exs.any? %>
-    <% @exs.each do |e| %>
-      <tr>
-        <div class = "nested-fields" >
-          <div class = "field"> 
-            <td>Результаты обследований</td> <td> <%= e.examination.name %> </td>
-          </div>
-          <td><div class = "field"> 
-             <%= e.result %>
-          </div></td>
-        </div>
-      </tr> 
+      <% @exs.each do |e| %>
+        <%= e.name %> 
+        <%= e.details %>
+        <%= e.result %>
       <% end %>
     <% end %>
-  </div>
-  
-</table>
+  </dd>
+</dl>
 
-<%= link_to 'Пациент', doctor_patient_path(@visit.doctor, @visit.patient) %> 
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              doctor_patient_visits_path(@doctor, @patient), :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_doctor_patient_visit_path(@doctor, @patient, @visit), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              doctor_patient_visit_path(@doctor, @patient, @visit),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

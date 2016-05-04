@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/gordienko/jquery-dadata-rails.git
+  revision: 85ac74547036e1f9f411e1e8fdc1c2f3b5237ffb
+  branch: master
+  specs:
+    jquery-dadata-rails (1.0.0)
+
+GIT
   remote: https://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: c6893c3db02108bcdee7f8f333531b99806779ac
   branch: master
@@ -92,6 +99,8 @@ GEM
       warden (~> 1.2.3)
     devise-i18n (1.0.1)
     diff-lcs (1.2.5)
+    enumerize (1.1.1)
+      activesupport (>= 3.2)
     erubis (2.7.0)
     execjs (2.6.0)
     factory_girl (4.5.0)
@@ -411,10 +420,12 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   devise
   devise-i18n
+  enumerize
   factory_girl_rails
   faker
   guard-rspec
   jbuilder (~> 2.0)
+  jquery-dadata-rails!
   jquery-rails
   json
   kaminari

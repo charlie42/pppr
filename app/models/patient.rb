@@ -8,6 +8,19 @@ class Patient < ActiveRecord::Base
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
   end
 
+  extend Enumerize
+
+  enumerize :gender, in: [:male, :female, :unknown]
+  enumerize :area, in: [:urban, :rural]
+  enumerize :martial_status, in: [:married, :single, :unknown]
+  enumerize :education, in: [:higher, :secondary, 
+    :general_secondary, :general_basic, :general_primary, :unknown]
+  enumerize :employment, in: [:job, :military, 
+    :retirement, :student, :unemployed, :other]
+  enumerize :disability_time, in: [:primary, :secondary]
+  enumerize :Rh_factor, in: [:positive, :negative]
+
+
   #validates :gender, length: {maximum: 1}
   #validates :name, presence:true
   #validates :gender, presence:true

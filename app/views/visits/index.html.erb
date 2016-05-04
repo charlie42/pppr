@@ -1,10 +1,11 @@
-<table style = "background-color: red">
+<%- model_class = Visit -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+
+<table class="table table-striped">
 <%= print_report(ReportItem.roots.first, 0) %>
 </table>
-
-<!-- <pre><%= ReportItem.arrange_serializable.to_yaml %></pre> -->
-
-<p id="notice"><%= notice %></p>
 
 <%= search_form_for @q, url: doctor_visits_path do |f| %>
   <%= f.condition_fields do |c| %>
@@ -14,47 +15,56 @@
   <div class="actions"><%= f.submit "Search" %></div>
 <% end %>
 
-
-<h1>Listing Visits</h1>
-
 <h2><%= @q.result.count %><% @all = @q.result.count %></h2>
 <%= link_to 'Добавить к отчету', doctor_visits_add_to_report_path, :method => :post, remote: true %>
 <div id = "testdiv"><h3></h3></div>
-<%= link_to 'Построить отчет', doctor_visits_build_report_path, :method => :get, remote: true %>
+<%= link_to 'Очистить', doctor_visits_build_report_path, :method => :get, remote: true %>
 <div id = "report"><h3></h3></div>
 
-<table id = "test">
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>From</th>
-      <th>Date</th>
-      <th>Complaints</th>
-      <th>Anamnesis</th>
-      <th>Allerg</th>
-      <th>General state</th>
-      <th>Diagnosis</th>
-      <th colspan="3"></th>
-      <th colspan="3"></th>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:complaints) %></th>
+      <th><%= model_class.human_attribute_name(:anamnesis) %></th>
+      <th><%= model_class.human_attribute_name(:allerg) %></th>
+      <th><%= model_class.human_attribute_name(:general_state) %></th>
+      <th><%= model_class.human_attribute_name(:diagnosis) %></th>
+      <th><%= model_class.human_attribute_name(:doctor_id) %></th>
+      <th><%= model_class.human_attribute_name(:patient_id) %></th>
+      <th><%= model_class.human_attribute_name(:constitution_option_id) %></th>
+      <th><%= model_class.human_attribute_name(:general_state_option_id) %></th>
+      <th><%= model_class.human_attribute_name(:postural_pose_option_id) %></th>
+      <th><%= model_class.human_attribute_name(:subcutanious_fat_option_id) %></th>
+      <th><%= model_class.human_attribute_name(:effleurage_option_id) %></th>
+      <th><%= model_class.human_attribute_name(:from_id) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:treatment_factor) %></th>
+      <th><%= model_class.human_attribute_name(:primary_diagnosis) %></th>
     </tr>
   </thead>
-
   <tbody>
     <% @visits.each do |visit| %>
       <tr>
-        <td><%= visit.id %></td>
-        <td><%= visit.from.name if visit.from %></td>
-        <td>
-          <ul>
+        <td><%= link_to visit.id, doctor_patient_visit_path(@doctor,visit.patient,visit) %></td>
+        <td><ul>
             <% visit.complaints.each do |complaint| %>
               <li><%= complaint %></li>
             <% end %>
-          </ul>
-        </td>
+          </ul></td>
         <td><%= visit.anamnesis %></td>
         <td><%= visit.allerg %></td>
         <td><%= visit.general_state %></td>
         <td><%= visit.diagnosis %></td>
+        <td><%= visit.doctor_id %></td>
+        <td><%= visit.patient_id %></td>
+        <td><%= visit.constitution_option_id %></td>
+        <td><%= visit.general_state_option_id %></td>
+        <td><%= visit.postural_pose_option_id %></td>
+        <td><%= visit.subcutanious_fat_option_id %></td>
+        <td><%= visit.effleurage_option_id %></td>
+        <td><%= visit.from_id %></td>
+        <td><%=l visit.created_at %></td>
         <td>
           <ul>
             <% visit.treatment_factors.each do |treatment_factor| %>
@@ -69,78 +79,7 @@
             <% end %>
           </ul>
         </td>
- 
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<div id="container" style="width: 600px; height: 400px; margin: 0 auto"></div>
-
-<script>
-
-$(function () {
-    
-        // Create the chart
-      $('#container').highcharts({
-          chart: {
-              type: 'pie'
-          },
-          title: {
-              text: 'Browser market share, April, 2011'
-          },
-          yAxis: {
-              title: {
-                  text: 'Total percent market share'
-              }
-          },
-          plotOptions: {
-              pie: {
-                  shadow: false,
-                  center: ['50%', '50%']
-              }
-          },
-          tooltip: {
-            valueSuffix: '%'
-          },
-          series: [{
-              name: 'Browsers',
-              data: [11,23,14,15],
-              size: '40%',
-              dataLabels: {
-                  formatter: function() {
-                      return this.y > 5 ? this.point.name : null;
-                  },
-                  color: 'white',
-                  distance: -30
-              }
-          }, {
-              name: 'Versions',
-              data: [4,7,11,11,2,3,3,8,5,5,5],
-              size: '70%',
-              innerSize: '40%',
-              dataLabels: {
-                  formatter: function() {
-                      // display only if larger than 1
-                      return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
-                  }
-              }
-          }, {
-              name: 'Versions',
-              data: [2,2,3,4,6,5,6,5,1,1,2,1,2,1,4,4,2,3,2,3,2,3],
-              size: '80%',
-              innerSize: '70%',
-              dataLabels: {
-                  formatter: function() {
-                      // display only if larger than 1
-                      return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
-                  }
-              }
-          }]
-      });
-  });
-    
-</script>
-

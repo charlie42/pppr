@@ -17,3 +17,4 @@
 //= require cocoon
 //= require select2-full
 //= require select2_locale_ru
+//= require jquery.suggestions.js

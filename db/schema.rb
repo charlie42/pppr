@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160503154418) do
+ActiveRecord::Schema.define(version: 20160504162850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,8 @@ ActiveRecord::Schema.define(version: 20160503154418) do
     t.text     "Rh_factor"
     t.text     "insurance_company"
     t.text     "document_name"
+    t.string   "insurance_certificate"
+    t.string   "allergy"
   end
 
   create_table "final_diagnosis_lists", force: :cascade do |t|

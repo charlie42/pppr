@@ -63,6 +63,8 @@ gem 'ancestry'
 gem 'rails_admin'
 gem 'cancancan', '~> 1.10'
 gem 'kaminari'
+gem 'enumerize'
+gem 'jquery-dadata-rails', :git => "https://github.com/gordienko/jquery-dadata-rails.git", :branch => 'master'
 
 group :development, :test do
   gem 'rspec-rails'
