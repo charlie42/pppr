@@ -1,6 +1,7 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "visits.scss";
+@import "select2-bootstrap.css.scss";
 
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files

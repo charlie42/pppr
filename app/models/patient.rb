@@ -20,6 +20,9 @@ class Patient < ActiveRecord::Base
   enumerize :disability_time, in: [:primary, :secondary]
   enumerize :Rh_factor, in: [:positive, :negative]
 
+  acts_as_taggable # Alias for acts_as_taggable_on :tags
+  acts_as_taggable_on :allergy, :document_name
+
 
   #validates :gender, length: {maximum: 1}
   #validates :name, presence:true

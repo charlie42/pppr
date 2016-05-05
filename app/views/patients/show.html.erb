@@ -61,7 +61,9 @@
   <dt><strong><%= model_class.human_attribute_name(:insurance_company) %>:</strong></dt>
   <dd><%= @patient.insurance_company %></dd>
   <dt><strong><%= model_class.human_attribute_name(:document_name) %>:</strong></dt>
-  <dd><%= @patient.document_name %></dd>
+  <dd><%= @patient.document_name.each.first %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:allergy) %>:</strong></dt>
+  <dd><% @patient.allergy.each do |a| %> <%= a %> <br> <% end %> </dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

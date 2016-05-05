@@ -32,6 +32,7 @@ class PatientsController < ApplicationController
   def new
     @patient = Patient.new
     @doctor = Doctor.find(params[:doctor_id])
+    @allergy_list = Patient.allergy_counts
   end
 
   # GET /patients/1/edit
@@ -42,8 +43,11 @@ class PatientsController < ApplicationController
   # POST /patients.json
   def create
     #@patient = Patient.new(patient_params)
+     @params = patient_params
      @doctor = Doctor.find(params[:doctor_id])
-     @patient = Patient.new(patient_params.except(:doctor_id))
+     @patient = Patient.new(patient_params.except(:document_name, :allergy))
+     @patient.allergy_list.add(@params["allergy"])
+     @patient.document_name_list.add(@params["document_name"])
      
     respond_to do |format|
       if @patient.save
@@ -92,6 +96,6 @@ class PatientsController < ApplicationController
         :address, :registration_address, :phone, :work_phone, :disability, :work_place, :work_position, :dependant, :area, 
         :insurance_police_series, :insurance_police_number, :social_benefit_code, :document_series, :document_number,
         :martial_status, :education, :employment, :disability_time, :disability_date, :blood_type, :rh_factor, :insurance_company,
-        :document_name)
+        :document_name, :allergy => [])
     end
 end
