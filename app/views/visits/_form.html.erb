@@ -21,11 +21,10 @@
   <div class="form-group">
     <%= f.label :from, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.collection_select :from_id, Specialist.all, :id, :name %> 
+      <%= f.collection_select :from_id, Specialist.all, :id, :name, {}, {:class => "form-control"} %> 
     </div>
     <%=f.error_span(:complaints) %>
   </div>
-
   <div class="form-group">
     <%= f.label :complaints, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
@@ -34,12 +33,20 @@
     <%=f.error_span(:complaints) %>
   </div>
   <div class="form-group">
+    <%= f.label :an_morbi, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_area :an_morbi, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:an_morbi) %>
+  </div>
+  <div class="form-group">
     <%= f.label :anamnesis, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :anamnesis, :class => 'form-control' %>
+      <%= f.text_area :anamnesis, :class => 'form-control' %>
     </div>
     <%=f.error_span(:anamnesis) %>
   </div>
+
   <div class="form-group">
     <%= f.label :allerg, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
@@ -50,115 +57,149 @@
   <div class="form-group">
     <%= f.label :constitution_option, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.collection_select :constitution_option_id, ConstitutionOption.all, :id, :name %>
+      <%= f.collection_select :constitution_option_id, ConstitutionOption.all, :id, :name, {}, {:class => "form-control"}  %>
     </div>
     <%=f.error_span(:allerg) %>
   </div>
   <div class="form-group">
     <%= f.label :general_state_option, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.collection_select :general_state_option_id, GeneralStateOption.all, :id, :name %>
+      <%= f.collection_select :general_state_option_id, GeneralStateOption.all, :id, :name, {}, {:class => "form-control"}  %>
     </div>
     <%=f.error_span(:general_state) %>
   </div>
   <div class="form-group">
     <%= f.label :postural_pose_option, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.collection_select :postural_pose_option_id, PosturalPoseOption.all, :id, :name %>
+      <%= f.collection_select :postural_pose_option_id, PosturalPoseOption.all, :id, :name, {}, {:class => "form-control"}  %>
     </div>
     <%=f.error_span(:general_state) %>
   </div>
   <div class="form-group">
-    <%= f.label :condition_value, :class => 'control-label col-lg-2' %>
+    <%= f.label :weight, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <% ConditionType.all.each do |type| %>
-      <h3> <%= type.name %> </h3>
-      <% ConditionName.all.each do |v| %>
-        <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
-          
-            <%= v.name %>
-            
-            <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
-            <% if @values.any? %>
-              
-                <select style = "width: 90%" multiple="multiple" name="visit[condition_visits][<%= v.id %>][condition_value_id][]" id="visit_condition_visits_<%= v.id %>_condition_value_id">
-
-                  <%  ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
-                    <option value= <%= value.id %> > <%= value.name %> </option>
-                  <% end %>  
-
-                </select>
-              
-              Дополнительно: <input type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id">
-            <% else  %>
-              <input style = "width: 90%" type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id">
-            <% end %> 
-
-            <!-- <br> -->
-          
-        <% end %> 
-      <% end %>
-      <!-- <hr> -->
-    <% end %>  
+      <%= f.select :weight, options_for_select((1..500)), {}, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:general_state) %>
+    <%=f.error_span(:weight) %>
   </div>
-  
   <div class="form-group">
-    <%= f.label :diagnosis, :class => 'control-label col-lg-2' %>
+    <%= f.label :height, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.select :height, options_for_select((10..250)), {}, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:height) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :temp, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.select :temp, options_for_select((35.0..42.0).step(0.1).to_a), {}, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:temp) %>
+  </div>
+
+  <div class = "accordion" id = "condition-values">
+    <div class = "accordion-group">
+      <div class="form-group">
+        <%= f.label :condition_value, :class => 'control-label col-lg-2' %>
+        <div class="col-lg-10">
+          <% ConditionType.all.each do |type| %>
+          <div class = "accordion-heading">
+            <a class = "accordion-toggle btn" data-toggle = "collapse" href = <%= '#' + type.id.to_s %> data-parent = "#condition-values"> <%= type.name %> </a>
+          </div>
+          <div class = "accordion-body collapse" id = <%= type.id %>>
+            <div class = "accordion-inner">
+              <% ConditionName.all.each do |v| %>
+                <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
+                  
+                    <%= v.name %>
+                    
+                    <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
+                    <% if @values.any? %>
+                      
+                        <select style = "width: 100%" multiple="multiple" name="visit[condition_visits][<%= v.id %>][condition_value_id][]" id="visit_condition_visits_<%= v.id %>_condition_value_id" class = "form-control">
+
+                          <%  ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
+                            <option value= <%= value.id %> > <%= value.name %> </option>
+                          <% end %>  
+
+                        </select>
+                      
+                      Дополнительно: <input type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id" class = "form-control">
+                    <% else  %>
+                      <input style = "width: 100%" type="text" name="visit[condition_visits][<%= v.id %>][details]" id="visit_condition_visits_<%= v.id %>_condition_value_id" class = "form-control">
+                    <% end %> 
+
+                    <br>
+               
+                <% end %> 
+
+              <% end %>
+            </div>  
+          </div>  
+          <!-- <hr> -->
+        <% end %>  
+
+        <%=f.error_span(:general_state) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    
     <div class="col-lg-10">
       <%= f.fields_for :primary_diagnosis_visits do |s| %>
         <%= s.label :primary_diagnosis, :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:primary_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+        <%= s.collection_select(:primary_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
         <%= s.label :details, :class => 'control-label col-lg-2' %> 
-        <%= s.text_field :details %>
+        <%= s.text_field :details, :class => 'form-control' %>
       <% end %>  
     </div>
     <div class="col-lg-10">
       <%= f.fields_for :concomitant_diagnosis_visits do |s| %>
         <%= s.label :concomitant_diagnosis, :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:concomitant_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+        <%= s.collection_select(:concomitant_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
         <%= s.label :details, :class => 'control-label col-lg-2' %> 
-        <%= s.text_field :details %>
+        <%= s.text_field :details, :class => 'form-control' %>
       <% end %>  
     </div>
     <div class="col-lg-10">
       <%= f.fields_for :complication_diagnosis_visits do |s| %>
         <%= f.label :complication_diagnosis, :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:complication_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+        <%= s.collection_select(:complication_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
         <%= s.label :details, :class => 'control-label col-lg-2' %> 
-        <%= s.text_field :details %>
+        <%= s.text_field :details, :class => 'form-control' %>
       <% end %>  
     </div>
     <%=f.error_span(:diagnosis) %>
   </div>
-  <div class="form-group">
-    <%= f.label :treatment, :class => 'control-label col-lg-2' %>
+
+  <div class="form-group"> 
     <div class="col-lg-10">
       <%= f.fields_for :treatments do |treatment| %>
         <%= render 'treatment_fields', :f => treatment %>
         <%= link_to_add_association 'ДОБАВИТЬ ЛЕЧЕНИЕ', f, :treatments %>
       <% end %>  
     </div>
-    <%=f.error_span(:doctor_id) %>
+    <%= f.error_span(:constitution_option_id) %>
   </div>
-  <div class="form-group">
-    <%= f.label :treatment, :class => 'control-label col-lg-2' %>
+
+  <div class="form-group"> 
     <div class="col-lg-10">
       <%= f.fields_for :medications do |medication| %>
         <%= render 'medication_fields', :f => medication %>
         <%= link_to_add_association 'ДОБАВИТЬ МЕДИКАМЕНТОЗНОЕ ЛЕЧЕНИЕ', f, :medications %>
       <% end %>  
-    </div>
-    <%=f.error_span(:patient_id) %>
+      </div>
+    <%= f.error_span(:constitution_option_id) %>
   </div>
+      
   <div class="form-group">
     <%= f.label :consultation, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.fields_for :consultations do |s| %>
-        <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+        <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
         <%= s.label :result, :class => 'control-label col-lg-2' %> 
-        <%= s.text_field :result %>
+        <%= s.text_field :result, :class => 'form-control' %>
       <% end %>  
     </div>
     <%=f.error_span(:patient_id) %>
@@ -167,7 +208,7 @@
     <%= f.label :examination_result, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.fields_for :examination_result do |s| %>
-        <%= s.collection_select(:examination_ids, Examination.all, :id, :name, {:include_hidden => false}, :multiple => true) %>
+        <%= s.collection_select(:examination_ids, Examination.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
         <%= s.hidden_field :result, :value => ""  %>  
         <%= s.hidden_field :details, :value => ""  %> 
       <% end %>  
@@ -185,32 +226,11 @@
     <%=f.error_span(:general_state_option_id) %>
   </div>
   <div class="form-group">
-    <%= f.label :postural_pose_option_id, :class => 'control-label col-lg-2' %>
+    <%= f.label :next, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :postural_pose_option_id, :class => 'form-control' %>
+      <%= f.date_select :next, {order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, start_year: Date.today.year, end_year: Date.today.year + 10}, {required: true, :class => 'form-control'} %>
     </div>
-    <%=f.error_span(:postural_pose_option_id) %>
-  </div>
-  <div class="form-group">
-    <%= f.label :subcutanious_fat_option_id, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :subcutanious_fat_option_id, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:subcutanious_fat_option_id) %>
-  </div>
-  <div class="form-group">
-    <%= f.label :effleurage_option_id, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :effleurage_option_id, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:effleurage_option_id) %>
-  </div>
-  <div class="form-group">
-    <%= f.label :from_id, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :from_id, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:from_id) %>
+    <%=f.error_span(:next) %>
   </div>
 
   <div class="form-group">
@@ -233,5 +253,28 @@ $(document).ready(function() {
             tags: []
         })
         .end();
+});
+</script>
+<script>
+$(document).ready(function() {
+    $('#visit_primary_diagnosis_visits_primary_diagnosis_ids')
+      .select2( {
+          tags: true,
+          createTag: function(params) {
+              return undefined;
+         }
+      });
+    $('#visit_concomitant_diagnosis_visits_concomitant_diagnosis_ids')
+      .select2( {
+          tags: true,
+              createTag: function(params) {
+                  return undefined;}
+      });
+    $('#visit_complication_diagnosis_visits_complication_diagnosis_ids')
+      .select2( {
+          tags: true,
+              createTag: function(params) {
+                  return undefined;}
+      });
 });
 </script>

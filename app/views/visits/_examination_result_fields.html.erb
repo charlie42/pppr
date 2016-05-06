@@ -1,15 +1,13 @@
-<tr><div class = "nested-fields" >
-  <div class = "field"> 
-  	<%= f.hidden_field :_destroy, :class => 'removable' %>
-  </div>
-  
-  <div class = "field"> 
-	  <td>Результаты обследований</td> <td><%= f.collection_select(:examination_id, Examination.all, :id, :name, {:include_hidden => false}, :multiple => false) %></td>
-	  <td><div class = "field"> 
-		Результат <%= f.text_field :result %>
-	  </div></td>
-	  <td><%= link_to_remove_association " Удалить ", f %></td>
-  </div>
 
+<div class="form-group"> 
+  <div class="col-lg-10">
+    <%= f.hidden_field :_destroy, :class => 'removable' %>
+    <%= f.label :treatment, :class => 'control-label col-lg-2' %>
+    <%= f.collection_select(:examination_id, Examination.all, :id, :name, {:include_hidden => false}, {:multiple => false, :class => 'form-control'}) %>
+    <br>
+    <%= f.label :result, :class => 'control-label col-lg-2' %>
+    <%= f.text_field :result, :class => 'form-control' %>
+    <%= link_to_remove_association " Удалить ", f, :class => 'control-label col-lg-2' %>
+  </div>
 </div>
-</tr>
+

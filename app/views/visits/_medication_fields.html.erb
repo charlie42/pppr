@@ -1,20 +1,16 @@
-<tr>
-<div class = "nested-fields" >
-  <div class = "field"> 
-  	<%= f.hidden_field :_destroy, :class => 'removable' %>
+<div class="form-group"> 
+  <div class="col-lg-10">
+    <%= f.hidden_field :_destroy, :class => 'removable' %>
+    <%= f.label :medication, :class => 'control-label col-lg-2' %>
+    <%= f.collection_select(:medicine_id, Medicine.all, :id, :name, {}, {:multiple => false, :class => "form-control"}) %>
+    <br>
+    <%= f.label :details, :class => 'control-label col-lg-2' %>
+    <%= f.text_field :details, :class => 'form-control' %>
+    <%= f.label :dosage, :class => 'control-label col-lg-2' %>
+    <%= f.text_field :dosage, :class => 'form-control' %>
+    <%= f.label :duration, :class => 'control-label col-lg-2' %>
+    <%= f.text_field :duration, :class => 'form-control' %>
+    <%= link_to_remove_association " Удалить ", f, :class => 'control-label col-lg-2' %>
   </div>
-  <div class = "field"> 
-    <td>Медикаментозное лечение</td> <td><%= f.collection_select(:medicine_id, Medicine.all, :id, :name, :multiple => false) %></td>
-  </div>
-  <td><div class = "field"> 
-	Дозировка <%= f.text_field :dosage %>
-  </div>
-  <div class = "field"> 
-	Длительность <%= f.text_field :duration %>
-  </div>
-  <div class = "field"> 
-	Дополнительно <%= f.text_field :details %>
-  </div></td>
-  <td><%= link_to_remove_association " Удалить ", f %></td>
 </div>
-</tr>
+

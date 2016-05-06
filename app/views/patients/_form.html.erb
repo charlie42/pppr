@@ -25,14 +25,14 @@
   <div class="form-group">
     <%= f.label :gender, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :gender, Patient.gender.options, {:class => 'form form-group form-control'} %>
+      <%= f.select :gender, Patient.gender.options, {}, {:class => 'form-control'} %>
     </div>
     <%=f.error_span(:gender) %>
   </div>
   <div class="form-group">
     <%= f.label :birthday, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.date_select :birthday, {order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}, {required: true} %>
+      <%= f.date_select :birthday, {order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}, {required: true, :class => 'form-control'} %>
     </div>
     <%=f.error_span(:birthday) %>
   </div>
@@ -53,7 +53,7 @@
   <div class="form-group">
     <%= f.label :area, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :area, Patient.area.options, {:class => 'form-control'} %>
+      <%= f.select :area, Patient.area.options, {}, {:class => 'form-control'} %>
     </div>
     <%=f.error_span(:area) %>
   </div>
@@ -116,14 +116,14 @@
   <div class="form-group">
       <%= f.label :martial_status, :class => 'control-label col-lg-2' %>
       <div class="col-lg-10">
-        <%= f.select :martial_status, Patient.martial_status.options, {:class => 'form-control'} %>
+        <%= f.select :martial_status, Patient.martial_status.options, {}, {:class => 'form-control'} %>
       </div>
       <%=f.error_span(:martial_status) %>
     </div>
     <div class="form-group">
     <%= f.label :education, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :education, Patient.education.options, {:class => 'form-control'} %>
+      <%= f.select :education, Patient.education.options, {}, {:class => 'form-control'} %>
     </div>
     <%=f.error_span(:education) %>
   </div>
@@ -144,15 +144,15 @@
   <div class="form-group">
     <%= f.label :disability_time, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :disability_time, Patient.disability_time.options, 
-              {:class => 'form form-group form-control'} %>
+      <%= f.select :disability_time, Patient.disability_time.options, {}, 
+              {:class => 'form-control'} %>
     </div>
     <%=f.error_span(:disability_time) %>
   </div>
   <div class="form-group">
     <%= f.label :disability_date, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.date_select :disability_date, {order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}, {required: true} %>
+      <%= f.date_select :disability_date, {order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}, {required: true, :class => 'form-control'} %>
     </div>
     <%=f.error_span(:disability_date) %>
   </div>
@@ -180,7 +180,7 @@
   <div class="form-group">
     <%= f.label :Rh_factor, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :Rh_factor, Patient.Rh_factor.options, 
+      <%= f.select :Rh_factor, Patient.Rh_factor.options, {}, 
               {:class => 'form-control'} %>
     </div>
     <%=f.error_span(:Rh_factor) %>

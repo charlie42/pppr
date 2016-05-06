@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160504162850) do
+ActiveRecord::Schema.define(version: 20160506124346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -293,7 +293,7 @@ ActiveRecord::Schema.define(version: 20160504162850) do
   end
 
   create_table "tags", force: :cascade do |t|
-    t.string  "name",           :index=>{:name=>"index_tags_on_name", :unique=>true}
+    t.string  "name"
     t.integer "taggings_count", :default=>0
   end
 
@@ -339,6 +339,11 @@ ActiveRecord::Schema.define(version: 20160504162850) do
     t.integer  "subcutanious_fat_option_id", :index=>{:name=>"index_visits_on_subcutanious_fat_option_id"}
     t.integer  "effleurage_option_id",       :index=>{:name=>"index_visits_on_effleurage_option_id"}
     t.integer  "from_id",                    :index=>{:name=>"fk__visits_from_id"}, :foreign_key=>{:references=>"specialists", :name=>"fk_visits_from_id", :on_update=>:no_action, :on_delete=>:no_action}
+    t.string   "an_morbi"
+    t.string   "height"
+    t.string   "weight"
+    t.string   "temp"
+    t.datetime "next"
   end
 
 end

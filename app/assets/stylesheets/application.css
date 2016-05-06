@@ -1,5 +1,5 @@
-@import "bootstrap-sprockets";
-@import "bootstrap";
+@import "bootstrap-sprockets.css.scss";
+@import "bootstrap.css.scss";
 @import "visits.scss";
 @import "select2-bootstrap.css.scss";
 
