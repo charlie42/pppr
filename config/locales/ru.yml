@@ -1,6 +1,20 @@
 ru:
 
   complaints: Жалобы
+  name: Имя
+  gender: Пол
+  birthday: Дата рождения
+  phone: Телефон
+  insurance_certificate: СНИЛС
+  insurance_policy_series: "Полис: серия"
+  insurance_policy_number: номер
+  document_name: "Документ:"
+  document_series: серия
+  document_number: номер
+  created_at: Создан
+  patient: Пациент
+
+
   blank: "пустой"
   cont: "содержит"
   cont_all: "содержит всё"
@@ -128,7 +142,7 @@ ru:
     models:
       visit: Посещение
       doctor: Врач
-      parient: Пациент
+      patient: Пациент
       abdominal_condition: Живот
       constitution_option: Телосложение
       consultation: Консультация
@@ -145,6 +159,18 @@ ru:
       treatment_factor: Фактор лечения
       from: От
     attributes:
+      patient:
+        name: Имя
+        gender: Пол
+        birthday: Дата рождения
+        phone: Телефон
+        insurance_certificate: СНИЛС
+        insurance_policy_series: "Полис: серия"
+        insurance_policy_number: "Полис: номер"
+        document_name: "Документ"
+        document_series: Cерия
+        document_number: Номер
+        created_at: Создан
       visit:
         from: От
         complaints: Жалобы

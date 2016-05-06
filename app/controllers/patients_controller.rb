@@ -3,6 +3,12 @@ class PatientsController < ApplicationController
 
   # GET /patients
   # GET /patients.json
+
+  def index_for_doctor
+    @doctor = current_doctor
+    redirect_to "/doctors/#{@doctor.id}/patients"
+  end
+
   def index
     #@patients = Patient.all
     @doctor = current_doctor

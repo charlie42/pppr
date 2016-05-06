@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   resources :constitution_options
   devise_for :doctors
 
-  root to: 'patients#index'
+  root to: 'patients#index_for_doctor'
 
   get 'static_pages/help'
 

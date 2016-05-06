@@ -5,7 +5,10 @@ class Patient < ActiveRecord::Base
   UNRANSACKABLE_ATTRIBUTES = ["id"]
 
   def self.ransackable_attributes auth_object = nil
-    (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
+    #(column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
+    ["name", "gender", "birthday", "phone", "insurance_certificate",
+     "insurance_policy_series", "insurance_policy_number", "document_name",
+      "document_series", "document_number", "created_at"]
   end
 
   extend Enumerize
