@@ -28,7 +28,7 @@
   <div class="form-group">
     <%= f.label :complaints, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :complaints, :class => 'form-control' %>
+      <%= f.select :complaints, @complaints_list, {}, {:class => 'form-control', :id => "complaints", :style => "width: 300px;", multiple: true} %>
     </div>
     <%=f.error_span(:complaints) %>
   </div>
@@ -39,21 +39,54 @@
     </div>
     <%=f.error_span(:an_morbi) %>
   </div>
-  <div class="form-group">
-    <%= f.label :anamnesis, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_area :anamnesis, :class => 'form-control' %>
+
+  <div class = "accordion" id = "anamnesis-values">
+    <div class = "accordion-group">
+      <div class="form-group">
+        <%= f.label :anamnesis_value, :class => 'control-label col-lg-2' %>
+        <div class="col-lg-10">
+          <% AnamnesisType.all.each do |type| %>
+          <div class = "accordion-heading">
+            <a class = "accordion-toggle btn" data-toggle = "collapse" href = <%= '#anamnesis' + type.id.to_s %> data-parent = "#anamnesis-values"> <%= type.name %> </a>
+          </div>
+          <div class = "accordion-body collapse" id = <%= "anamnesis" + type.id.to_s %>>
+            <div class = "accordion-inner">
+              <% AnamnesisName.all.each do |v| %>
+                <% if AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id) %>
+                  
+                    <% if type.name != v.name %><%= v.name %><% end %>
+                    
+                    <% @values = AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values %>
+                    <% if @values.any? %>
+                      
+                        <select style = "width: 100%" multiple="multiple" name="visit[anamnesis_visits][<%= v.id %>][anamnesis_value_id][]" id="visit_anamnesis_visits_<%= v.id %>_anamnesis_value_id" class = "form-control">
+
+                          <%  AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values.each do |value| %>
+                            <option value= <%= value.id %> > <%= value.name %> </option>
+                          <% end %>  
+
+                        </select>
+                      
+                      Дополнительно: <input type="text" name="visit[anamnesis_visits][<%= v.id %>][details]" id="visit_anamnesis_visits_<%= v.id %>_anamnesis_value_id" class = "form-control">
+                    <% else  %>
+                      <input style = "width: 100%" type="text" name="visit[anamnesis_visits][<%= v.id %>][details]" id="visit_anamnesis_visits_<%= v.id %>_anamnesis_value_id" class = "form-control">
+                    <% end %> 
+
+                    <br>
+               
+                <% end %> 
+
+              <% end %>
+            </div>  
+          </div>  
+          <!-- <hr> -->
+        <% end %>  
+
+        <%=f.error_span(:general_state) %>
+      </div>
     </div>
-    <%=f.error_span(:anamnesis) %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :allerg, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :allerg, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:allerg) %>
-  </div>
   <div class="form-group">
     <%= f.label :constitution_option, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
@@ -104,9 +137,9 @@
         <div class="col-lg-10">
           <% ConditionType.all.each do |type| %>
           <div class = "accordion-heading">
-            <a class = "accordion-toggle btn" data-toggle = "collapse" href = <%= '#' + type.id.to_s %> data-parent = "#condition-values"> <%= type.name %> </a>
+            <a class = "accordion-toggle btn" data-toggle = "collapse" href = <%= '#condition' + type.id.to_s %> data-parent = "#condition-values"> <%= type.name %> </a>
           </div>
-          <div class = "accordion-body collapse" id = <%= type.id %>>
+          <div class = "accordion-body collapse" id = <%= "condition" + type.id.to_s %>>
             <div class = "accordion-inner">
               <% ConditionName.all.each do |v| %>
                 <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
@@ -276,5 +309,9 @@ $(document).ready(function() {
               createTag: function(params) {
                   return undefined;}
       });
+    $('#complaints')
+    .select2( {
+        tags: true, width: '100%'
+    });
 });
 </script>

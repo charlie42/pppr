@@ -1,9 +1,15 @@
 class Visit < ActiveRecord::Base
 
-  UNRANSACKABLE_ATTRIBUTES = ["id"]
+  UNRANSACKABLE_ATTRIBUTES = ["id", "updated_at", "anamnesis", "allerg", "patient_id",
+   "doctor_id", "constitution_option_id", "general_state_option_id", "postural_pose_option_id",
+   "subcutanious_fat_option_id", "from_id"]
 
   def self.ransackable_attributes auth_object = nil
-    (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
+    (column_names - UNRANSACKABLE_ATTRIBUTES) + (_ransackers.keys)
+  end
+
+  ransacker :bool_test do
+    Arel.sql("to_char(\"#{table_name}\".\"bool_test\", '99999')")
   end
 
   belongs_to :patient
@@ -28,6 +34,9 @@ class Visit < ActiveRecord::Base
   has_many :condition_values, through: :condition_visits
   has_many :condition_visits #, :dependent => :destroy
 
+  has_many :anamnesis_values, through: :anamnesis_visits
+  has_many :anamnesis_visits
+
   has_many :treatment_factors, through: :treatments
   has_many :treatments, :dependent => :destroy
 
@@ -43,6 +52,7 @@ class Visit < ActiveRecord::Base
   accepts_nested_attributes_for :complication_diagnoses
   # accepts_nested_attributes_for :condition_visits, :allow_destroy => true
   accepts_nested_attributes_for :condition_values
+  accepts_nested_attributes_for :anamnesis_values
   accepts_nested_attributes_for :treatments, :allow_destroy => true
   accepts_nested_attributes_for :medications, :allow_destroy => true
   accepts_nested_attributes_for :examination_results, :allow_destroy => true
@@ -52,6 +62,6 @@ class Visit < ActiveRecord::Base
   #validates :patient_id, presence:true
 
   acts_as_taggable # Alias for acts_as_taggable_on :tags
-  acts_as_taggable_on :complaints, :condition_values
+  acts_as_taggable_on :complaints
 
 end

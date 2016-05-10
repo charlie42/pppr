@@ -123,7 +123,7 @@
     <% @exs = ExaminationResult.where(:visit_id => @visit.id, :result => nil).limit(nil) %>
     <% if @exs.any? %>
       <% @exs.each do |e| %>
-        <%= e.name %> 
+        <%= e.examination.name %> 
         <%= e.details %>
       <% end %>
     <% end %>
@@ -137,7 +137,7 @@
     <% @exs -= @except %>
     <% if @exs.any? %>
       <% @exs.each do |e| %>
-        <%= e.name %> 
+        <%= e.examination.name %> 
         <%= e.details %>
         <%= e.result %>
       <% end %>

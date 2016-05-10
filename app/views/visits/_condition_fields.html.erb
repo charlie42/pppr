@@ -1,10 +1,15 @@
 <div class="field">
   <%= f.attribute_fields do |a| %>
-    <%= a.attribute_select associations: [:treatment_factors, :primary_diagnoses] %>
+    <%= a.attribute_select({ associations: 
+    	[:specialists, :treatment_factors, :primary_diagnoses, :froms, 
+    		:constitution_options, :general_state_options, :postural_pose_option,
+    		:concomitant_diagnoses, :complication_diagnoses, :primary_diagnoses,
+    		:examination_results, :medicines, :condition_names, :condition_values]
+    		},{:class => "form-control"}) %>
   <% end %>
-  <%= f.predicate_select %>
+  <%= f.predicate_select({},{:class => "form-control"}) %>
   <%= f.value_fields do |v| %>
-    <%= v.text_field :value %>
+    <%= v.text_field :value,{:class => "form-control"} %>
   <% end %>
-  <%= link_to "remove", '#', class: "remove_fields" %>
+  <%= link_to "Сбросить", '#', class: "remove_fields" %>
 </div>

@@ -13,11 +13,14 @@ class VisitsController < ApplicationController
   # GET /visits.json
   def index
     @doctor = Doctor.find(params[:doctor_id])
+    visits = @doctor.visits
+
     if (params[:patient_id])
       @patient = Patient.find(params[:patient_id])
+      visits = @patient.visits
     end
 
-    @q = Visit.search(params[:q]);
+    @q = visits.search(params[:q]);
     @visits = @q.result(distinct: true)#.includes(:treatments, :primary_diagnosis_visits).joins(:treatmentsrj)
                         #.includes(:primary_diagnosis_visits).joins(:primary_diagnosis_visits)
     @q.build_condition
@@ -45,6 +48,7 @@ class VisitsController < ApplicationController
     @ri = ReportItem.order("created_at").last
     
     @@ri = @ri
+
     #ri = @ri.children.create(name: "1", quantity: @all)
 
   end
@@ -304,11 +308,13 @@ class VisitsController < ApplicationController
   def new
     @doctor = Doctor.find(params[:doctor_id])
     @patient = Patient.find(params[:patient_id])
+    @complaints_list = Visit.complaint_counts
     @visit = Visit.new
 
     @visit.treatments.build
     @visit.medications.build
     @visit.examination_results.build
+
 
     #@visit.condition_visits.build
     
@@ -367,6 +373,10 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new(visit_params)
 
+    if @patient.visits.count > 1 
+      @visit.update_attribute(:secondary, true)
+    end
+
 
     # if params['visit']['treatments']
     #   @visit.treatments.build(:treatment_factor_id => params['visit']['treatments']['treatment_factor_id'])
@@ -413,6 +423,21 @@ class VisitsController < ApplicationController
         if @ids
           @ids.each do |v|
             @lc = @visit.condition_visits.build(:visit_id => params[:id], :condition_value_id => v, :details => @details)
+            @lc.save
+          end
+        end
+      end
+    #end
+
+    @names = params['visit']["anamnesis_visits"]
+    
+    #if @names
+      @names.each do |name|
+        @ids = name[1]["anamnesis_value_id"]
+        @details = name[1]["details"]
+        if @ids
+          @ids.each do |v|
+            @lc = @visit.anamnesis_visits.build(:visit_id => params[:id], :anamnesis_value_id => v, :details => @details)
             @lc.save
           end
         end
@@ -562,7 +587,9 @@ class VisitsController < ApplicationController
         complication_diagnosis_visits_attributes:
           [:complication_diagnoses],
         condition_visits_attributes: 
-          [:condition_name_id, :details, condition_value_id:[]]
+          [:condition_name_id, :details, condition_value_id:[]],
+        anamnesis_visits_attributes: 
+          [:anamnesis_name_id, :details, anamnesis_value_id:[]]
         #,
         # condition_names_attributes:
         #   [:names, :detailss]

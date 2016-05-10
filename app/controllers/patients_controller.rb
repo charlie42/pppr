@@ -12,8 +12,9 @@ class PatientsController < ApplicationController
   def index
     #@patients = Patient.all
     @doctor = current_doctor
+    patients = @doctor.patients
 
-    @q = Patient.search(params[:q]);
+    @q = patients.search(params[:q]);
     @patients = @q.result(distinct: true)#.includes(:treatments, :primary_diagnosis_visits).joins(:treatmentsrj)
                         #.includes(:primary_diagnosis_visits).joins(:primary_diagnosis_visits)
     @q.build_condition

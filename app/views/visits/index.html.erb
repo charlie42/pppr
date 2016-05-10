@@ -1,85 +1,188 @@
 <%- model_class = Visit -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+  <h1>Посещения</h1>
 </div>
 
-<table class="table table-striped">
+<div id = "testdiv">
 <%= print_report(ReportItem.roots.first, 0) %>
-</table>
+</div>
 
 <%= search_form_for @q, url: doctor_visits_path do |f| %>
   <%= f.condition_fields do |c| %>
     <%= render "condition_fields", f: c%>
   <% end %>
-  <p><%= link_to_add_fields "Add Conditions", f, :condition %>
-  <div class="actions"><%= f.submit "Search" %></div>
+  <p><%= link_to_add_fields "Добавить условие", f, :condition %>
+  <div class="actions"><%= f.submit "Поиск", {:class => "btn"} %></div>
 <% end %>
-
-<h2><%= @q.result.count %><% @all = @q.result.count %></h2>
+<br>
 <%= link_to 'Добавить к отчету', doctor_visits_add_to_report_path, :method => :post, remote: true %>
-<div id = "testdiv"><h3></h3></div>
+
 <%= link_to 'Очистить', doctor_visits_build_report_path, :method => :get, remote: true %>
 <div id = "report"><h3></h3></div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:complaints) %></th>
-      <th><%= model_class.human_attribute_name(:anamnesis) %></th>
-      <th><%= model_class.human_attribute_name(:allerg) %></th>
-      <th><%= model_class.human_attribute_name(:general_state) %></th>
-      <th><%= model_class.human_attribute_name(:diagnosis) %></th>
-      <th><%= model_class.human_attribute_name(:doctor_id) %></th>
-      <th><%= model_class.human_attribute_name(:patient_id) %></th>
-      <th><%= model_class.human_attribute_name(:constitution_option_id) %></th>
-      <th><%= model_class.human_attribute_name(:general_state_option_id) %></th>
-      <th><%= model_class.human_attribute_name(:postural_pose_option_id) %></th>
-      <th><%= model_class.human_attribute_name(:subcutanious_fat_option_id) %></th>
-      <th><%= model_class.human_attribute_name(:effleurage_option_id) %></th>
-      <th><%= model_class.human_attribute_name(:from_id) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%= model_class.human_attribute_name(:treatment_factor) %></th>
-      <th><%= model_class.human_attribute_name(:primary_diagnosis) %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @visits.each do |visit| %>
+<div id = "found" ><h4>Найдено: <%= @all %></h4></div>
+
+<div style = "overflow-x: auto; width: 100%">
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= link_to visit.id, doctor_patient_visit_path(@doctor,visit.patient,visit) %></td>
-        <td><ul>
-            <% visit.complaints.each do |complaint| %>
-              <li><%= complaint %></li>
-            <% end %>
-          </ul></td>
-        <td><%= visit.anamnesis %></td>
-        <td><%= visit.allerg %></td>
-        <td><%= visit.general_state %></td>
-        <td><%= visit.diagnosis %></td>
-        <td><%= visit.doctor_id %></td>
-        <td><%= visit.patient_id %></td>
-        <td><%= visit.constitution_option_id %></td>
-        <td><%= visit.general_state_option_id %></td>
-        <td><%= visit.postural_pose_option_id %></td>
-        <td><%= visit.subcutanious_fat_option_id %></td>
-        <td><%= visit.effleurage_option_id %></td>
-        <td><%= visit.from_id %></td>
-        <td><%=l visit.created_at %></td>
-        <td>
-          <ul>
-            <% visit.treatment_factors.each do |treatment_factor| %>
-              <li><%= treatment_factor.name %></li>
-            <% end %>
-          </ul>
-        </td>
-        <td>
-          <ul>
-            <% visit.primary_diagnoses.each do |primary_diagnosis| %>
-              <li><%= primary_diagnosis.name %></li>
-            <% end %>
-          </ul>
-        </td>
+        <th><%= t(:created_at) %></th>
+        <th><%= t(:from_id) %></th>
+        <th><%= t(:an_morbi) %></th>
+        <th><%= t(:primary_diagnosis) %></th>
+        <th><%= t(:concomitant_diagnosis) %></th>
+        <th><%= t(:complication_diagnosis) %></th>
+        <th><%= t(:examination) %></th>
+        <th><%= t(:examination_result) %></th>
+        <th><%= t(:consultation) %></th>
+        <th><%= t(:treatment) %></th>
+        <th><%= t(:medication) %></th>
+        <th><%= t(:secondary) %></th>
+
+        <th> id </th>
+
+        <th> Данные осмотра: </th>
+
+        <% @condition_headers = Array.new %>
+        <% ConditionName.all.each do |name| %>
+
+          <% @visit_has_value_of_this_name = false %>  
+
+          <% name.condition_values.each do |value| %>
+             
+            <% @visits.each do |visit| %>
+
+              <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id) %>
+
+                <% @visit_has_value_of_this_name = true %>  
+
+              <% end %>  
+            <% end %> 
+          <% end %> 
+             
+          <% if @visit_has_value_of_this_name %>
+            <% @condition_headers << name %>
+            
+            <% @visit_has_value_of_this_name = false %>  
+          <% end %> 
+
+              <!-- <br> -->
+          
+        <% end %>
+          <!-- <hr> -->
+
+        <% @condition_headers.each do |h| %>
+          <th><%= h.condition_type.name.to_s + ": " if h.condition_type.name != h.name %> 
+            
+            <%= h.name %></th> 
+        <% end %>
+
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @visits.each do |visit| %>
+        <tr>
+          <td><%= link_to visit.created_at.strftime("%d.%m.%Y"), doctor_patient_visit_path(@doctor,visit.patient,visit) %></td>
+          <td><%= visit.from.name if visit.from %></td>
+          <td><%= visit.an_morbi %></td>
+          <td>
+            <ul>
+              <% visit.primary_diagnoses.each do |primary_diagnosis| %>
+                <li><%= primary_diagnosis.name %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% visit.concomitant_diagnoses.each do |concomitant_diagnosis| %>
+                <li><%= concomitant_diagnosis.name %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% visit.complication_diagnoses.each do |complication_diagnosis| %>
+                <li><%= complication_diagnosis.name %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% @exs = Array.new %>
+              <% @exs = ExaminationResult.where(:visit_id => visit.id, :result => nil).limit(nil) %>
+              <% if @exs.any? %>
+                <% @exs.each do |e| %>
+                  <%= e.examination.name %> <br>
+                <% end %>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% @exs = Array.new %>
+              <% @except = Array.new %>
+              <% @exs =  ExaminationResult.where(:visit_id => visit.id).limit(nil) %>
+              <% @except = ExaminationResult.where(:visit_id => visit.id, :result => nil).limit(nil) %>
+              <% @exs -= @except %>
+              <% if @exs.any? %>
+                <% @exs.each do |e| %>
+                  <% if e.examination %>
+                    <%= e.examination.name%>: 
+                    <%= e.result %>
+                   <% end %>      
+                <% end %>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% visit.consultations.each do |consultation| %>
+                <li><%= consultation.specialist.name if consultation.specialist %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% visit.treatments.each do |treatment| %>
+                <li><%= treatment.treatment_factor.name if treatment.treatment_factor %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% visit.medications.each do |medication| %>
+                <li><%= medication.medicine.name if medication.medicine %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td>
+            <% if visit.secondary == true %> Вторичный <% else %> Первичный 
+            <% end %>
+          </td>
+
+          <td> <%= visit.id %> </td>
+            
+          <td> <%#=@condition_headers %> </td>
+
+          <% @condition_headers.each do |h| %>
+            <% #dfghjk %>
+            <td>
+              
+            <% h.condition_values.each do |v| %>
+            <% #dfghjk %>
+              <% visit.condition_values.each do |value| %>
+              <% #dfghjk %>
+                <% if value == v %>
+                  <%= value.name %> <br>
+                  <% #dfghjk %>
+                <% end %>
+              <% end %>
+            <% end %>
+            </td>
+          <% end %>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

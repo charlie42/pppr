@@ -16,7 +16,10 @@ Rails.application.routes.draw do
   resources :constitution_options
   devise_for :doctors
 
-  root to: 'patients#index_for_doctor'
+  authenticated :doctor do
+    root to: 'patients#index_for_doctor', as: :authenticated_root
+  end
+  root to: redirect('/doctors/sign_in')
 
   get 'static_pages/help'
 

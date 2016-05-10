@@ -20,4 +20,4 @@
  *= require jquery.suggestions
 
  */ 
-
+*= require devise_bootstrap_views

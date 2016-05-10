@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160506124346) do
+ActiveRecord::Schema.define(version: 20160507100538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,64 @@ ActiveRecord::Schema.define(version: 20160506124346) do
     t.datetime "locked_at"
     t.datetime "created_at",             :null=>false
     t.datetime "updated_at",             :null=>false
+  end
+
+  create_table "anamnesis_types", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "anamnesis_names", force: :cascade do |t|
+    t.string  "name"
+    t.integer "anamnesis_type_id", :index=>{:name=>"index_anamnesis_names_on_condition_type_id"}, :foreign_key=>{:references=>"anamnesis_types", :name=>"anamnesis_names_anamnesis_type_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
+    t.boolean "unique"
+  end
+
+  create_table "anamnesis_values", force: :cascade do |t|
+    t.string  "name"
+    t.integer "anamnesis_name_id", :index=>{:name=>"index_anamnesis_values_on_condition_name_id"}, :foreign_key=>{:references=>"anamnesis_names", :name=>"anamnesis_values_anamnesis_name_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
+  end
+
+  create_table "constitution_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
+  end
+
+  create_table "specialists", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
+  end
+
+  create_table "visits", force: :cascade do |t|
+    t.datetime "created_at",                 :null=>false
+    t.string   "complaints"
+    t.text     "anamnesis"
+    t.string   "allerg"
+    t.string   "general_state"
+    t.string   "diagnosis"
+    t.datetime "updated_at",                 :null=>false
+    t.integer  "doctor_id",                  :index=>{:name=>"index_visits_on_doctor_id"}
+    t.integer  "patient_id",                 :index=>{:name=>"index_visits_on_patient_id"}
+    t.integer  "constitution_option_id",     :index=>{:name=>"index_visits_on_constitution_option_id"}, :foreign_key=>{:references=>"constitution_options", :name=>"visits_constitution_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
+    t.integer  "general_state_option_id",    :index=>{:name=>"index_visits_on_general_state_option_id"}
+    t.integer  "postural_pose_option_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}
+    t.integer  "subcutanious_fat_option_id", :index=>{:name=>"index_visits_on_subcutanious_fat_option_id"}
+    t.integer  "effleurage_option_id",       :index=>{:name=>"index_visits_on_effleurage_option_id"}
+    t.integer  "from_id",                    :index=>{:name=>"fk__visits_from_id"}, :foreign_key=>{:references=>"specialists", :name=>"fk_visits_from_id", :on_update=>:no_action, :on_delete=>:no_action}
+    t.string   "an_morbi"
+    t.string   "height"
+    t.string   "weight"
+    t.string   "temp"
+    t.datetime "next"
+    t.boolean  "secondary",                  :default=>false
+    t.boolean  "bool_test"
+  end
+
+  create_table "anamnesis_visits", force: :cascade do |t|
+    t.integer "visit_id",           :index=>{:name=>"index_anamnesis_visits_on_visit_id"}, :foreign_key=>{:references=>"visits", :name=>"fk_anamnesis_visits_visit_id", :on_update=>:no_action, :on_delete=>:no_action}
+    t.integer "anamnesis_value_id", :index=>{:name=>"index_anamnesis_visits_on_condition_value_id"}, :foreign_key=>{:references=>"anamnesis_values", :name=>"anamnesis_visits_anamnesis_value_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
+    t.string  "details"
   end
 
   create_table "complication_diagnosis_visits", id: false, force: :cascade do |t|
@@ -90,12 +148,6 @@ ActiveRecord::Schema.define(version: 20160506124346) do
     t.string   "details"
     t.datetime "created_at",         :null=>false
     t.datetime "updated_at",         :null=>false
-  end
-
-  create_table "constitution_options", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
   end
 
   create_table "consultation", id: false, force: :cascade do |t|
@@ -196,6 +248,7 @@ ActiveRecord::Schema.define(version: 20160506124346) do
     t.text     "document_name"
     t.string   "insurance_certificate"
     t.string   "allergy"
+    t.boolean  "bool_test"
   end
 
   create_table "final_diagnosis_lists", force: :cascade do |t|
@@ -280,12 +333,6 @@ ActiveRecord::Schema.define(version: 20160506124346) do
     t.string   "full_name"
   end
 
-  create_table "specialists", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
-  end
-
   create_table "subcutanious_fat_options", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", :null=>false
@@ -321,29 +368,6 @@ ActiveRecord::Schema.define(version: 20160506124346) do
     t.integer  "visit_id"
     t.datetime "created_at",          :null=>false
     t.datetime "updated_at",          :null=>false
-  end
-
-  create_table "visits", force: :cascade do |t|
-    t.datetime "created_at",                 :null=>false
-    t.string   "complaints"
-    t.text     "anamnesis"
-    t.string   "allerg"
-    t.string   "general_state"
-    t.string   "diagnosis"
-    t.datetime "updated_at",                 :null=>false
-    t.integer  "doctor_id",                  :index=>{:name=>"index_visits_on_doctor_id"}
-    t.integer  "patient_id",                 :index=>{:name=>"index_visits_on_patient_id"}
-    t.integer  "constitution_option_id",     :index=>{:name=>"index_visits_on_constitution_option_id"}, :foreign_key=>{:references=>"constitution_options", :name=>"visits_constitution_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
-    t.integer  "general_state_option_id",    :index=>{:name=>"index_visits_on_general_state_option_id"}
-    t.integer  "postural_pose_option_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}
-    t.integer  "subcutanious_fat_option_id", :index=>{:name=>"index_visits_on_subcutanious_fat_option_id"}
-    t.integer  "effleurage_option_id",       :index=>{:name=>"index_visits_on_effleurage_option_id"}
-    t.integer  "from_id",                    :index=>{:name=>"fk__visits_from_id"}, :foreign_key=>{:references=>"specialists", :name=>"fk_visits_from_id", :on_update=>:no_action, :on_delete=>:no_action}
-    t.string   "an_morbi"
-    t.string   "height"
-    t.string   "weight"
-    t.string   "temp"
-    t.datetime "next"
   end
 
 end

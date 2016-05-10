@@ -65,6 +65,8 @@ gem 'cancancan', '~> 1.10'
 gem 'kaminari'
 gem 'enumerize'
 gem 'jquery-dadata-rails', :git => "https://github.com/gordienko/jquery-dadata-rails.git", :branch => 'master'
+gem 'devise-bootstrap-views'
+gem 'wicked_pdf'
 
 group :development, :test do
   gem 'rspec-rails'

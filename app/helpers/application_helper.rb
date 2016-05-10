@@ -32,17 +32,44 @@ module ApplicationHelper
     }.html_safe
   end
 
-  def print_report(r, margin) 
+  def print_report(r, margin)
+
+    ('<table class="table table-striped">' + print_report_inner(r, margin) + '</table>').html_safe 
+  end
+
+  def print_report_inner(r, margin) 
     final = Array.new
+    # final << 
     r.children.each do |i|
       final << content_tag(:tr, content_tag(:td, i.name + " " + i.quantity.to_s, {:style => "padding-left: #{margin}px"}))
       if i.has_children?
         # hfhewjfhe
 
-        final << print_report(i, margin + 30)
+        final << print_report_inner(i, margin + 30)
         
       end
     end
-    final.join(' ').html_safe 
+    # final << 
+    final.join(' ')
   end
+
+  def bootstrap_devise_error_messages!
+    return '' if resource.errors.empty?
+
+    messages = resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
+    sentence = I18n.t('errors.messages.not_saved',
+      count: resource.errors.count,
+      resource: resource.class.model_name.human.downcase)
+
+    html = <<-HTML
+    <div class="alert alert-danger alert-block devise-bs">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <h5>#{sentence}</h5>
+      <ul>#{messages}</ul>
+    </div>
+    HTML
+
+    html.html_safe
+  end
+  
 end
