@@ -32,7 +32,7 @@
   <div class="form-group">
     <%= f.label :birthday, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.date_select :birthday, {order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}, {required: true, :class => 'form-control'} %>
+      <%= f.date_select :birthday, {order: [:day, :month, :year], prompt: { day: 'День', month: 'Месяц', year: 'Год' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}, {required: true, :class => 'form-control'} %>
     </div>
     <%=f.error_span(:birthday) %>
   </div>
@@ -114,12 +114,12 @@
     <%=f.error_span(:document_number) %>
   </div>
   <div class="form-group">
-      <%= f.label :martial_status, :class => 'control-label col-lg-2' %>
-      <div class="col-lg-10">
-        <%= f.select :martial_status, Patient.martial_status.options, {}, {:class => 'form-control'} %>
-      </div>
-      <%=f.error_span(:martial_status) %>
+    <%= f.label :martial_status, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.select :martial_status, Patient.martial_status.options, {}, {:class => 'form-control'} %>
     </div>
+    <%=f.error_span(:martial_status) %>
+  </div>
     <div class="form-group">
     <%= f.label :education, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
@@ -130,7 +130,7 @@
   <div class="form-group">
     <%= f.label :employment, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :employment, :class => 'form-control' %>
+      <%= f.select :employment, Patient.employment.options, {}, {:class => 'form-control'} %>
     </div>
     <%=f.error_span(:employment) %>
   </div>
@@ -152,7 +152,7 @@
   <div class="form-group">
     <%= f.label :disability_date, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.date_select :disability_date, {order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}, {required: true, :class => 'form-control'} %>
+      <%= f.date_select :disability_date, {order: [:day, :month, :year], prompt: { day: 'День', month: 'Месяц', year: 'Год' }, start_year: Date.today.year - 18, end_year: Date.today.year - 100}, {required: true, :class => 'form-control'} %>
     </div>
     <%=f.error_span(:disability_date) %>
   </div>

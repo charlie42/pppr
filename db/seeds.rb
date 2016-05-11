@@ -410,3 +410,19 @@
 #   {from: "", complaints: "", anamnesis: "", allerg: "", general_state: nil, diagnosis: "", doctor_id: 1, patient_id: 14, constitution_option_id: 1, general_state_option_id: 1, postural_pose_option_id: 1, subcutanious_fat_option_id: nil, effleurage_option_id: 1},
 #   {from: "", complaints: "", anamnesis: "", allerg: "", general_state: nil, diagnosis: "", doctor_id: 1, patient_id: 14, constitution_option_id: 1, general_state_option_id: 1, postural_pose_option_id: 1, subcutanious_fat_option_id: nil, effleurage_option_id: 1}
 # ])
+
+# (1..5).each do |i|
+# 	Patient.create!([
+# 		{name: "Иванов Иван Иванович", gender: "male", birthday: "#{1980+i}-#{14+i}-#{1+i}", address: "г. Астрахань, ул. Ленина, д. #{i}", phone: "898756798#{i+10}", work_place: "Завод номер #{i}", work_position: "Уборщик", area: "urban", insurance_policy_series: "01#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "11#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "1", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "45678765#{i+10}"},
+# 		{name: "Петров Петр Петрович", gender: "male", birthday: "#{1970+i}-#{20+i}-#{2+i}", address: "г. Астрахань, ул. Зеленая, д. #{i}", phone: "898756798#{i+10}", work_place: "Школа номер #{i}", work_position: "Учитель", area: "rural", insurance_policy_series: "02#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "12#{10+i}", document_number: "64325#{10+i}", martial_status: "single", education: "higher", employment: "unemployed", blood_type: "2", :Rh_factor => "negative", insurance_company: "СОГАЗ", insurance_certificate: "55678765#{i+10}"},
+# 		{name: "Васильков Василий Васильевич", gender: "male", birthday: "#{1960+i}-#{1+i}-#{5+i}", address: "г. Астрахань, ул. Теплая, д. #{i}", phone: "898756798#{i+10}", work_place: "Больница номер #{i}", work_position: "Врач", area: "urban", insurance_policy_series: "03#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "13#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "3", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "65678765#{i+10}"},
+# 		{name: "Дарьева Дарья Дарьевна", gender: "female", birthday: "#{1950+i}-#{14+i}-#{6+i}", address: "г. Астрахань, ул. Тополиная, д. #{i}", phone: "898756798#{i+10}", work_place: "Фабрика номер #{i}", work_position: "Инженер", area: "rural", insurance_policy_series: "04#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "14#{10+i}", document_number: "64325#{10+i}", martial_status: "single", education: "higher", employment: "unemployed", blood_type: "4", :Rh_factor => "negative", insurance_company: "СОГАЗ", insurance_certificate: "75678765#{i+10}"},
+# 		{name: "Васильева Василила Василисовна", gender: "female", birthday: "#{1940+i}-#{10+i}-#{7+i}", address: "г. Астрахань, ул. Спортивная, д. #{i}", phone: "898756798#{i+10}", work_place: "Администрация", work_position: "Инженер", area: "urban", insurance_policy_series: "05#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "15#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "1", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "85678765#{i+10}"}
+# 	])
+# end
+
+(17..40).each do |i|
+ 	p = Patient.find(i)
+ 	p.education = :secondary
+ 	p.save
+ end

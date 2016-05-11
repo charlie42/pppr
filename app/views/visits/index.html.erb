@@ -5,11 +5,11 @@
 
 <div id = "testdiv">
 <%= print_report(ReportItem.roots.first, 0) %>
-</div>
+</div> 
 
 <%= search_form_for @q, url: doctor_visits_path do |f| %>
-  <%= f.condition_fields do |c| %>
-    <%= render "condition_fields", f: c%>
+  <%= f.condition_fields do |c| %> a
+    <%= render "condition_fields", f: c %>
   <% end %>
   <p><%= link_to_add_fields "Добавить условие", f, :condition %>
   <div class="actions"><%= f.submit "Поиск", {:class => "btn"} %></div>
@@ -37,7 +37,8 @@
         <th><%= t(:consultation) %></th>
         <th><%= t(:treatment) %></th>
         <th><%= t(:medication) %></th>
-        <th><%= t(:secondary) %></th>
+        <th><%= I18n.t :secondary, scope: 'visits.index' %></th>
+        <th><%= I18n.t :next, scope: 'visits.index' %></th>
 
         <th> id </th>
 
@@ -160,6 +161,8 @@
             <% end %>
           </td>
 
+          <td><%= visit.next.strftime("%d.%m.%Y") if visit.next %></td>
+
           <td> <%= visit.id %> </td>
             
           <td> <%#=@condition_headers %> </td>
@@ -186,3 +189,9 @@
     </tbody>
   </table>
 </div>
+
+<script>
+$(document).ready(function() {
+  NProgress.start();
+});
+</script>

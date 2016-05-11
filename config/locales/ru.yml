@@ -38,6 +38,9 @@ ru:
   created_at: Создан
   an_morbi: An. Morbi
   anamnesis: An. Vitae
+  weight: Вес
+  height: Рост
+  temp: Температура
   primary_diagnosis: Основной диагноз
   concomitant_diagnosis: Сопутствующий диагноз
   complication_diagnosis: Осложнение
@@ -48,14 +51,76 @@ ru:
   diagnosis: Диагноз
   examination_result: Результаты обследований
   examination: Обследование
-  general_state_option: Общее состояние
   liver_condition: Печень
   medication: Медикаментозное лечение
   medicines: Медикаментозное лечение
-  postural_pose_option: 
   specialist: Специалист
   treatment_factor: Фактор лечения
   from: От
+
+  gender_scope:
+    male: мужской
+    female: женский
+    unknown: неизвестно
+  male: мужской
+  female: женский
+  unknown: неизвестно
+
+  area_scope:
+    urban: городская
+    rural: сельская
+  urban: городская
+  rural: сельская
+
+  martial_status_scope:
+    married: состоит в зарегистрированном браке 
+    single: не состоит в брак
+    unknown: неизвестно
+
+  married: состоит в зарегистрированном браке 
+  single: не состоит в брак
+  unknown: неизвестно
+
+  education_scope:
+    higher: "профессиональное высшее"
+    secondary: "профессиональное среднее"
+    general_secondary: "общее среднеe" 
+    general_basic: "общее основное"
+    general_primary: "общее начальное"
+    unknown: "неизвестно"
+
+  higher: "профессиональное высшее"
+  secondary: "профессиональное среднее"
+  general_secondary: "общее среднеe" 
+  general_basic: "общее основное"
+  general_primary: "общее начальное"
+  unknown: "неизвестно"
+
+  employment_scope:
+    job: работает
+    military: "проходит военную службу и приравненную к ней службу"
+    retirement: "пенсионер(ка)"
+    student: "студент(ка)"
+    unemployed: "не работает"
+    other: прочее
+
+  job: работает
+  military: "проходит военную службу и приравненную к ней службу"
+  retirement: "пенсионер(ка)"
+  student: "студент(ка)"
+  unemployed: "не работает"
+  other: прочее
+
+  disability_scope:
+    primary: первичная
+    secondary: повторная
+
+  Rh_factor_scope:
+    positive: "+"
+    negative: "-"
+
+  positive: "+"
+  negative: "-"
 
   blank: "пустой"
   cont: "содержит"
@@ -111,6 +176,12 @@ ru:
   start_all: "начинается со всех"
   start_any: "начинается с любого"
   'true': "истина"
+
+  visits:
+    index:
+      secondary: Вторичный
+      next: Следующее посещение
+
 
   ransack:
     all: "Все"
@@ -220,6 +291,19 @@ ru:
         allerg: Аллергоанамнез
         general_state: Общее состояние
         diagnosis: Диагноз
+        postural_pose_option: Положение тела
+        subcutanious_fat_option: Подкожно-жировая клетчатка
+        created_at: Создан
+        an_morbi: An. Morbi
+        anamnesis: An. Vitae
+        weight: Вес
+        height: Рост
+        temp: Температура
+        next: Следующее посещение
+      from:
+        name: От
+      specialist:
+        name: От
   activerecord:
     errors:
       messages:
@@ -396,6 +480,72 @@ ru:
       create: Создать %{model}
       submit: Сохранить %{model}
       update: Сохранить %{model}
+    label:
+      patient:
+        name: Имя
+        gender: Пол
+        address: Адрес
+        birthday: Дата рождения
+        phone: Телефон
+        insurance_certificate: СНИЛС
+        insurance_policy_series: "Полис: серия"
+        insurance_policy_number: "Полис: номер"
+        document_name: "Документ"
+        document_series: Cерия
+        document_number: Номер
+        created_at: Создан
+        area: Местность 
+        insurance_company: Страховая компания
+        social_benefit_code: Код льготы
+        martial_status: Семейное положение
+        education: Образование
+        employment: Занятость
+        disability: Группа инвалидности
+        disability_time: Первичная/вторичная
+        disability_date: Дата получения
+        work_place: Место работы
+        work_position: Должность
+        blood_type: Группа крови
+        Rh_factor: Резус-фактор
+        allergy: Аллергии
+      visit:
+        complaints: Жалобы
+        allerg: Аллергии
+        general_state: Общее состояние
+        diagnosis:
+        constitution_option: Телосложение
+        general_state_option: Общее состояние
+        postural_pose_option: Положение тела
+        subcutanious_fat_option: Подкожно-жировая клетчатка
+        created_at: Создан
+        an_morbi: An. Morbi
+        anamnesis: An. Vitae
+        primary_diagnosis: Основной диагноз
+        concomitant_diagnosis: Сопутствующий диагноз
+        complication_diagnosis: Осложнение
+        consultation: Консультация
+        treatment: Лечение
+        secondary: Вторичный
+        consultation: Консультация
+        diagnosis: Диагноз
+        examination_result: Результаты обследований
+        examination: Обследование
+        general_state_option: Общее состояние
+        liver_condition: Печень
+        medication: Медикаментозное лечение
+        medicines: Медикаментозное лечение
+        specialist: Специалист
+        treatment_factor: Фактор лечения
+        from: От
+        postural_pose_option: Положение тела
+        subcutanious_fat_option: Подкожно-жировая клетчатка
+        created_at: Создан
+        an_morbi: An. Morbi
+        anamnesis: An. Vitae
+        weight: Вес
+        height: Рост
+        temp: Температура
+
   number:
     currency:
       format:

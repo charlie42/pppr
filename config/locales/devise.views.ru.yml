@@ -71,6 +71,8 @@ ru:
       already_signed_out: Вы уже вышли из аккаунта
       new:
         sign_in: "Войти"
+        login: ОГРН
+        passwords: Пароль
     shared:
       links:
         didn_t_receive_confirmation_instructions: "Не получили подтверждение?"

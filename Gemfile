@@ -68,6 +68,7 @@ gem 'jquery-dadata-rails', :git => "https://github.com/gordienko/jquery-dadata-r
 gem 'devise-bootstrap-views'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem 'nprogress-rails'
 
 group :development, :test do
   gem 'rspec-rails'

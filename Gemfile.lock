@@ -188,6 +188,7 @@ GEM
     notiffany (0.0.8)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    nprogress-rails (0.1.6.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -434,6 +435,7 @@ DEPENDENCIES
   json
   kaminari
   launchy
+  nprogress-rails
   omniauth
   omniauth-digitalocean
   pg

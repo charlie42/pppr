@@ -14,7 +14,7 @@
   <dt><strong><%= t :name %>:</strong></dt>
   <dd><%= @patient.name %></dd>
   <dt><strong><%= t(:gender) %>:</strong></dt>
-  <dd><%= @patient.gender %></dd>
+  <dd><%= t @patient.gender if @patient.gender %></dd>
   <dt><strong><%= t(:birthday) %>:</strong></dt>
   <dd><%= @patient.birthday %></dd>
   <dt><strong><%= t(:address) %>:</strong></dt>
@@ -22,7 +22,7 @@
   <dt><strong><%= t(:phone) %>:</strong></dt>
   <dd><%= @patient.phone %></dd>
   <dt><strong><%= t(:area) %>:</strong></dt>
-  <dd><%= @patient.area %></dd>
+  <dd><%= t @patient.area if @patient.area %></dd>
   <dt><strong><%= t(:insurance_policy_series) %>:</strong></dt>
   <dd><%= @patient.insurance_policy_series %></dd>
   <dt><strong><%= t(:insurance_policy_number) %>:</strong></dt>
@@ -30,9 +30,9 @@
   <dt><strong><%= t(:insurance_company) %>:</strong></dt>
   <dd><%= @patient.insurance_company %></dd>
   <dt><strong><%= t(:insurance_certificate) %>:</strong></dt>
-  <dd><%= @patient.insurance_company %></dd>
+  <dd><%= @patient.insurance_certificate %></dd>
   <dt><strong><%= t(:social_benefit_code) %>:</strong></dt>
-  <dd><%= @patient.social_benefit_code %></dd>
+  <dd><%= t @patient.social_benefit_code if @patient.social_benefit_code %></dd>
   <dt><strong><%= t(:document_name) %>:</strong></dt>
   <dd><%= @patient.document_name.each.first %></dd>
   <dt><strong><%= t(:document_series) %>:</strong></dt>
@@ -40,17 +40,26 @@
   <dt><strong><%= t(:document_number) %>:</strong></dt>
   <dd><%= @patient.document_number %></dd>
   <dt><strong><%= t(:martial_status) %>:</strong></dt>
-  <dd><%= @patient.martial_status %></dd>
+  <dd><%= t @patient.martial_status if @patient.martial_status %></dd>
   <dt><strong><%= t(:education) %>:</strong></dt>
-  <dd><%= @patient.education %></dd>
+  <dd><%= t(@patient.education) if @patient.education %></dd>
   <dt><strong><%= t(:employment) %>:</strong></dt>
-  <dd><%= @patient.employment %></dd>
-  <dt><strong><%= t(:disability) %>:</strong></dt>
-  <dd><%= @patient.disability %></dd>
-  <dt><strong><%= t(:disability_time) %>:</strong></dt>
-  <dd><%= @patient.disability_time %></dd>
-  <dt><strong><%= t(:disability_date) %>:</strong></dt>
-  <dd><%= @patient.disability_date %></dd>
+  <dd><%= t @patient.employment if @patient.employment %></dd>
+  <% if !@patient.disability %>
+    <dt><strong><%= t(:disability) %>:</strong></dt>
+    <dd> -</dd>
+    <dt><strong><%= t(:disability_time) %>:</strong></dt>
+    <dd> -</dd>
+    <dt><strong><%= t(:disability_date) %>:</strong></dt>
+    <dd> -</dd>
+  <% else %>
+    <dt><strong><%= t(:disability) %>:</strong></dt>
+    <dd><%= t @patient.disability %></dd>
+    <dt><strong><%= t(:disability_time) %>:</strong></dt>
+    <dd><%= t @patient.disability_time if @patient.disability_time %></dd>
+    <dt><strong><%= t(:disability_date) %>:</strong></dt>
+    <dd><%= @patient.disability_date %></dd>
+  <% end %>
   <dt><strong><%= t(:work_place) %>:</strong></dt>
   <dd><%= @patient.work_place %></dd>
   <dt><strong><%= t(:work_position) %>:</strong></dt>
@@ -58,9 +67,7 @@
   <dt><strong><%= t(:blood_type) %>:</strong></dt>
   <dd><%= @patient.blood_type %></dd>
   <dt><strong><%= t(:Rh_factor) %>:</strong></dt>
-  <dd><%= @patient.Rh_factor %></dd>
-  <dt><strong><%= t(:allergy) %>:</strong></dt>
-  <dd><% @patient.allergy.each do |a| %> <%= a %> <br> <% end %> </dd>
+  <dd><%= t @patient.Rh_factor if @patient.Rh_factor %></dd>
 
 </dl>
 

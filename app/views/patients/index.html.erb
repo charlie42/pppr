@@ -1,11 +1,11 @@
 <%- model_class = Patient -%>
 <div class="page-header">
-  <h1>Пациенты</h1>
+  <h1>Поиск по пациентам </h1>
 </div>
 
 <%= search_form_for @q, url: doctor_patients_path(@doctor) do |f| %>
   <%= f.condition_fields do |c| %>
-    <%= render "condition_fields", f: c%>
+    <%= render "condition_fields", f: c %>
   <% end %>
   <p><%= link_to_add_fields "Добавить условие", f, :condition %>
   <div class="actions"><%= f.submit "Поиск", {:class => "btn"} %></div>
@@ -32,13 +32,13 @@
       <% @patients.each do |patient| %>
         <tr>
           <td><%= link_to patient.name, doctor_patient_path(@doctor, patient)  %></td>
-          <td><%= patient.gender %></td>
+          <td><%= t patient.gender %></td>
           <td><%= patient.birthday.strftime("%d.%m.%Y") if patient.birthday %></td>
           <td><%= patient.phone %></td>
           <td><%= patient.insurance_certificate %></td>
           <td><%= patient.insurance_policy_series %></td>
           <td><%= patient.insurance_policy_number %></td>
-          <td><%= patient.document_name.first %></td>
+          <td><%= patient.document_name_list.first %></td>
           <td><%= patient.document_series %></td>
           <td><%= patient.document_number %></td>
           <td><%= patient.created_at.strftime("%d.%m.%Y") %></td>
@@ -48,6 +48,6 @@
   </table>
 </div>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
+<%= link_to t('.new', :default => "Новый"),
             new_doctor_patient_path(@doctor),
             :class => 'btn btn-primary' %>

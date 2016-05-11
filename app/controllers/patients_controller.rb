@@ -122,7 +122,7 @@ class PatientsController < ApplicationController
       params.require(:patient).permit(:doctor_id, :name, :age, :gender, :birthday, :surname, :second_name,
         :address, :registration_address, :phone, :work_phone, :disability, :work_place, :work_position, :dependant, :area, 
         :insurance_police_series, :insurance_police_number, :social_benefit_code, :document_series, :document_number,
-        :martial_status, :education, :employment, :disability_time, :disability_date, :blood_type, :rh_factor, :insurance_company,
-        :document_name, :allergy => [])
+        :martial_status, :education, :employment, :disability_time, :disability_date, :blood_type, :Rh_factor, :insurance_company,
+        :document_name, :insurance_policy_series, :insurance_policy_number, :insurance_certificate, :allergy => [])
     end
 end

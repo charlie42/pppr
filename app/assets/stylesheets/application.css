@@ -2,6 +2,8 @@
 @import "bootstrap.css.scss";
 @import "visits.scss";
 @import "select2-bootstrap.css.scss";
+@import "nprogress";
+@import "nprogress-bootstrap";
 
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
@@ -16,8 +18,11 @@
  * file per style scope.
  *
 
- *= require_tree .
+
  *= require jquery.suggestions
 
- */ 
+ */  
+*= require_tree .
 *= require devise_bootstrap_views
+*= require nprogress
+*= require nprogress-bootstrap

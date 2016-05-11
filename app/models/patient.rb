@@ -13,15 +13,15 @@ class Patient < ActiveRecord::Base
 
   extend Enumerize
 
-  enumerize :gender, in: [:male, :female, :unknown]
-  enumerize :area, in: [:urban, :rural]
-  enumerize :martial_status, in: [:married, :single, :unknown]
+  enumerize :gender, in: [:male, :female, :unknown], default: :female, i18n_scope: "gender_scope"
+  enumerize :area, in: [:urban, :rural], default: :urban, i18n_scope: "area_scope"
+  enumerize :martial_status, in: [:married, :single, :unknown], default: :single, i18n_scope: "martial_status_scope"
   enumerize :education, in: [:higher, :secondary, 
-    :general_secondary, :general_basic, :general_primary, :unknown]
+    :general_secondary, :general_basic, :general_primary, :unknown], default: :unknown, i18n_scope: "education_scope"
   enumerize :employment, in: [:job, :military, 
-    :retirement, :student, :unemployed, :other]
-  enumerize :disability_time, in: [:primary, :secondary]
-  enumerize :Rh_factor, in: [:positive, :negative]
+    :retirement, :student, :unemployed, :other], default: :job, i18n_scope: "employment_scope"
+  enumerize :disability_time, in: [:primary, :secondary], i18n_scope: "disability_scope"
+  enumerize :Rh_factor, in: [:positive, :negative], default: :positive, i18n_scope: "Rh_factor_scope"
 
   acts_as_taggable # Alias for acts_as_taggable_on :tags
   acts_as_taggable_on :allergy, :document_name

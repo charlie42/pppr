@@ -2,7 +2,7 @@ class Visit < ActiveRecord::Base
 
   UNRANSACKABLE_ATTRIBUTES = ["id", "updated_at", "anamnesis", "allerg", "patient_id",
    "doctor_id", "constitution_option_id", "general_state_option_id", "postural_pose_option_id",
-   "subcutanious_fat_option_id", "from_id"]
+   "subcutanious_fat_option_id", "from_id", "effleurage_option_id", "height", "weight", "temp", "next"]
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + (_ransackers.keys)
@@ -11,6 +11,19 @@ class Visit < ActiveRecord::Base
   ransacker :bool_test do
     Arel.sql("to_char(\"#{table_name}\".\"bool_test\", '99999')")
   end
+
+  ransacker :next do
+    Arel.sql("TO_CHAR(next, 'DD.MM.YYYY')")
+  end
+
+  ransacker :id do
+    Arel.sql("to_char(id, '9999999')")
+  end
+
+  # ransacker :from do
+  #   specialists  = Arel::Table.new(:specialists, ActiveRecord::Base)
+  #   Visit.joins(:specialist).where(specialists[:id].eq(from_id))
+  # end
 
   belongs_to :patient
   belongs_to :doctor

@@ -19,3 +19,11 @@
 //= require select2_locale_ru
 //= require jquery.suggestions.js
 //= require bootstrap
+//= require nprogress
+//= require nprogress-turbolinks
+
+NProgress.configure({
+  showSpinner: true,
+  ease: 'ease',
+  speed: 500
+});
