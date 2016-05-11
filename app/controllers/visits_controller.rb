@@ -177,6 +177,25 @@ class VisitsController < ApplicationController
     end
   end
 
+  def all_records
+    
+    @doctor = Doctor.find(params[:doctor_id])
+    visits = @doctor.visits
+
+    if (params[:patient_id])
+      @patient = Patient.find(params[:patient_id])
+      visits = @patient.visits
+    end
+
+    @q = visits.search(params[:q]);
+    @visits = @q.result(distinct: true)
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
   # GET /visits/1
   # GET /visits/1.json
   def show

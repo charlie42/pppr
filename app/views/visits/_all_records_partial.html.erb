@@ -1,0 +1,165 @@
+<table class="table table-striped">
+  <thead> 
+    <tr>
+      <th><%= t(:created_at) %></th>
+      <th><%= t(:from_id) %></th>
+      <th><%= t(:an_morbi) %></th>
+      <th><%= t(:primary_diagnosis) %></th>
+      <th><%= t(:concomitant_diagnosis) %></th>
+      <th><%= t(:complication_diagnosis) %></th>
+      <th><%= t(:examination) %></th>
+      <th><%= t(:examination_result) %></th>
+      <th><%= t(:consultation) %></th>
+      <th><%= t(:treatment) %></th>
+      <th><%= t(:medication) %></th>
+      <th><%= I18n.t :secondary, scope: "visits.index" %></th>
+      <th><%= I18n.t :next, scope: "visits.index" %></th>
+
+      <th> id </th>
+
+      <th> Данные осмотра: </th>
+
+      <% @condition_headers = Array.new %>
+      <% ConditionName.all.each do |name| %>
+
+        <% @visit_has_value_of_this_name = false %>  
+
+        <% name.condition_values.each do |value| %>
+           
+          <% @visits.each do |visit| %>
+
+            <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id) %>
+
+              <% @visit_has_value_of_this_name = true %>  
+
+            <% end %>  
+          <% end %> 
+        <% end %> 
+           
+        <% if @visit_has_value_of_this_name %>
+          <% @condition_headers << name %>
+          
+          <% @visit_has_value_of_this_name = false %>  
+        <% end %> 
+
+            <!-- <br> -->
+        
+      <% end %>
+        <!-- <hr> -->
+
+      <% @condition_headers.each do |h| %>
+        <th><%= h.condition_type.name.to_s + ": " if h.condition_type.name != h.name %> 
+          
+          <%= h.name %></th> 
+      <% end %>
+
+    </tr>
+  </thead>
+  <tbody>
+    <% @visits.each do |visit| %>
+      <tr>
+        <td><%= link_to visit.created_at.strftime("%d.%m.%Y"), doctor_patient_visit_path(@doctor,visit.patient,visit) %></td>
+        <td><%= visit.from.name if visit.from %></td>
+        <td><%= visit.an_morbi %></td>
+        <td>
+          <ul>
+            <% visit.primary_diagnoses.each do |primary_diagnosis| %>
+              <li><%= primary_diagnosis.name %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% visit.concomitant_diagnoses.each do |concomitant_diagnosis| %>
+              <li><%= concomitant_diagnosis.name %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% visit.complication_diagnoses.each do |complication_diagnosis| %>
+              <li><%= complication_diagnosis.name %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% @exs = Array.new %>
+            <% @exs = ExaminationResult.where(:visit_id => visit.id, :result => nil).limit(nil) %>
+            <% if @exs.any? %>
+              <% @exs.each do |e| %>
+                <%= e.examination.name %> <br>
+              <% end %>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% @exs = Array.new %>
+            <% @except = Array.new %>
+            <% @exs =  ExaminationResult.where(:visit_id => visit.id).limit(nil) %>
+            <% @except = ExaminationResult.where(:visit_id => visit.id, :result => nil).limit(nil) %>
+            <% @exs -= @except %>
+            <% if @exs.any? %>
+              <% @exs.each do |e| %>
+                <% if e.examination %>
+                  <%= e.examination.name%>: 
+                  <%= e.result %>
+                 <% end %>      
+              <% end %>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% visit.consultations.each do |consultation| %>
+              <li><%= consultation.specialist.name if consultation.specialist %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% visit.treatments.each do |treatment| %>
+              <li><%= treatment.treatment_factor.name if treatment.treatment_factor %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% visit.medications.each do |medication| %>
+              <li><%= medication.medicine.name if medication.medicine %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <% if visit.secondary == true %> Вторичный <% else %> Первичный 
+          <% end %>
+        </td>
+
+        <td><%= visit.next.strftime("%d.%m.%Y") if visit.next %></td>
+
+        <td> <%= visit.id %> </td>
+          
+        <td> <%#=@condition_headers %> </td>
+
+        <% @condition_headers.each do |h| %>
+          <% #dfghjk %>
+          <td>
+            
+          <% h.condition_values.each do |v| %>
+          <% #dfghjk %>
+            <% visit.condition_values.each do |value| %>
+            <% #dfghjk %>
+              <% if value == v %>
+                <%= value.name %> <br>
+                <% #dfghjk %>
+              <% end %>
+            <% end %>
+          <% end %>
+          </td>
+        <% end %>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

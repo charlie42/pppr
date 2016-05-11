@@ -8,7 +8,7 @@
 </div> 
 
 <%= search_form_for @q, url: doctor_visits_path do |f| %>
-  <%= f.condition_fields do |c| %> a
+  <%= f.condition_fields do |c| %> 
     <%= render "condition_fields", f: c %>
   <% end %>
   <p><%= link_to_add_fields "Добавить условие", f, :condition %>
@@ -22,7 +22,7 @@
 
 <div id = "found" ><h4>Найдено: <%= @all %></h4></div>
 
-<div style = "overflow-x: auto; width: 100%">
+<div style = "overflow-x: auto; width: 100%" id = "visits-index-table">
   <table class="table table-striped">
     <thead> 
       <tr>
@@ -81,7 +81,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @visits.each do |visit| %>
+      <% @visits.last(15).each do |visit| %>
         <tr>
           <td><%= link_to visit.created_at.strftime("%d.%m.%Y"), doctor_patient_visit_path(@doctor,visit.patient,visit) %></td>
           <td><%= visit.from.name if visit.from %></td>
@@ -189,6 +189,10 @@
     </tbody>
   </table>
 </div>
+
+
+Показаны 15 последних записей. Для просмотра всех нажмите <%= link_to "сюда", doctor_visits_all_records_path, :remote => true %> (может занять несколько минут).
+<hr>
 
 <script>
 $(document).ready(function() {

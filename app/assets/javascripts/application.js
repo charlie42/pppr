@@ -21,6 +21,7 @@
 //= require bootstrap
 //= require nprogress
 //= require nprogress-turbolinks
+//= require nprogress-ajax
 
 NProgress.configure({
   showSpinner: true,

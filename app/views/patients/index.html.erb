@@ -44,10 +44,14 @@
           <td><%= patient.created_at.strftime("%d.%m.%Y") %></td>
         </tr>
       <% end %>
+
     </tbody>
   </table>
 </div>
 
+<%= paginate @patients %>
+<br><br>
 <%= link_to t('.new', :default => "Новый"),
             new_doctor_patient_path(@doctor),
             :class => 'btn btn-primary' %>
+<hr>

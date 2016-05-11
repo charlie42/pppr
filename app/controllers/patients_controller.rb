@@ -15,8 +15,9 @@ class PatientsController < ApplicationController
     patients = @doctor.patients
 
     @q = patients.search(params[:q]);
-    @patients = @q.result(distinct: true)#.includes(:treatments, :primary_diagnosis_visits).joins(:treatmentsrj)
+    @patients = @q.result(distinct: true).page(params[:page]).per(6)#.includes(:treatments, :primary_diagnosis_visits).joins(:treatmentsrj)
                         #.includes(:primary_diagnosis_visits).joins(:primary_diagnosis_visits)
+
     @q.build_condition
   end
   

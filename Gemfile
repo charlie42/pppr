@@ -45,6 +45,9 @@ gem "cocoon"
 
 #gem 'gon'
 
+gem 'kaminari'
+gem 'kaminari-bootstrap', '~> 0.1.3'
+
 gem 'ransack'
 
 gem 'json'
@@ -62,7 +65,7 @@ gem "select2-rails"
 gem 'ancestry'
 gem 'rails_admin'
 gem 'cancancan', '~> 1.10'
-gem 'kaminari'
+
 gem 'enumerize'
 gem 'jquery-dadata-rails', :git => "https://github.com/gordienko/jquery-dadata-rails.git", :branch => 'master'
 gem 'devise-bootstrap-views'
