@@ -1,0 +1,312 @@
+<table id = "header-table">
+  <tr>
+    <td>
+    Министерство здравоохранения и<br>
+     социального развитии Российской<br>
+               Федерации
+
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <%= doctor.company_name %>
+    </td>
+    <td>
+    Медицинская документация<br>
+    Форма N 025/у-04 
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <%= doctor.company_address %>
+    </td>
+    <td>
+    утверждена приказом<br>
+    Минздравсоцразвития России
+    от 15.12.2014 N 834н
+    </td>
+  </tr>
+   <tr>
+    <td>
+    Код ОГРН: <%= doctor.company_code %>
+    </td>
+    <td>
+     
+    </td>
+  </tr>
+</table>
+
+<br>
+
+<h3> МЕДИЦИНСКАЯ КАРТА АМБУЛАТОРНОГО БОЛЬНОГО </h3>
+<h4> N <%= patient.id %> </h4>
+
+  1. Дата заполнения медицинской карты: <%= patient.created_at.to_date.strftime('%d.%m.%y') %> <br>
+  2. <%= t :name %>: 
+    <%= @patient.name %> <br>
+  3. <%= t(:gender) %>: 
+    <%= @patient.gender %> <br>
+  4. <%= t(:birthday) %>: 
+    <%= @patient.birthday %> <br>
+  5. <%= t(:address) %>: 
+    <%= @patient.address %> 
+    <%= t(:phone) %>: 
+    <%= @patient.phone %> <br>
+  6. <%= t(:area) %>: 
+    <%= @patient.area %> <br>
+  7. <%= t(:insurance_policy_series) %>: 
+    <%= @patient.insurance_policy_series %> 
+    <%= t(:insurance_policy_number) %>: 
+    <%= @patient.insurance_policy_number %> <br>
+  8. <%= t(:insurance_certificate) %>: 
+  <%= @patient.insurance_certificate %> <br>
+  9.  <%= t(:insurance_company) %>: 
+    <%= @patient.insurance_company %> <br>
+  10. <%= t(:social_benefit_code) %>: 
+    <%= @patient.social_benefit_code %> <br>
+  11. <%= t(:document_name) %>: 
+    <%= @patient.document_name.each.first %> 
+    <%= t(:document_series) %>: 
+    <%= @patient.document_series %> 
+    <%= t(:document_number) %>: 
+    <%= @patient.document_number %> <br>
+  12. Заболевания, по поводу которых осуществляется диспансерное наблюдение: <br>
+  <table class = "in-record-table">
+    <thead><th>Дата начала диспансерного наблюдения</th>
+      <th>Дата прекращения диспансерного наблюдения</th>
+      <th>Диагноз</th><th>Код по МКБ-10</th></thead>
+      <tbody><td>-</td><td>-</td><td>-</td><td>-</td></tbody>
+  </table>
+  13. <%= t(:martial_status) %>: 
+    <%= @patient.martial_status %> <br>
+  14. <%= t(:education) %>: 
+    <%= @patient.education %> <br>
+  15. <%= t(:employment) %>: 
+    <%= @patient.employment %> <br>
+  16. <%= t(:disability) %>: 
+    <%= @patient.disability %> 
+    <%= t(:disability_time) %>: 
+    <%= @patient.disability_time %> 
+    <%= t(:disability_date) %>: 
+    <%= @patient.disability_date %> <br>
+  17. <%= t(:work_place) %>: 
+    <%= @patient.work_place %> 
+    <%= t(:work_position) %>: 
+    <%= @patient.work_position %> <br>
+  20. Лист записи заключительных (уточненных) диагнозов
+  <table class = "in-record-table">
+    <thead><th>Дата</th>
+      <th>Заключительные (уточненные) диагнозы</th>
+      <th>Установленные впервые или повторно</th></thead>
+      <tbody><td>-</td><td>-</td><td>-</td></tbody>
+  </table>
+  21. <%= t(:blood_type) %>: 
+    <%= @patient.blood_type %> <br>
+  22. <%= t(:Rh_factor) %>: 
+    <%= @patient.Rh_factor %> <br>
+  23. <%= t(:allergy) %>: 
+    <% @patient.allergy.each do |a| %> <%= a %> <br> <% end %>  <br>
+
+<div class="page-break"></div>
+
+<% visits.each do |visit| %>
+    <%- model_class = Visit -%>
+  <div class="page-header">
+    <h1><%=t '.title', :default => visit.created_at.strftime("%d.%m.%Y") %></h1>
+  </div>
+
+  <dl class="dl-horizontal">
+  Дата: 
+   <%= visit.created_at.strftime("%d.%m.%Y")%> <br>
+   <b><%= t(:an_morbi) %>: </b>
+    <%= visit.an_morbi %> <br>
+   <b><%= t(:complaints) %>: </b>
+    <% visit.complaints.each do |c| %> <% c.name %>, <% end %> <br>
+   <b><%= t(:anamnesis) %>: </b>
+    
+    <br>
+
+   <% AnamnesisType.all.each do |type| %>
+    <%= type.name %>: 
+    <% AnamnesisName.all.each do |v| %>
+      <% if AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id) %>
+        <% if v.name != type.name %>  
+          <%= v.name %> 
+          
+          <% @values = AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values %>
+          <% if @values.any? %>
+            
+            <% AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values.each do |value| %>
+               <% if AnamnesisVisit.find_by(:anamnesis_value_id => value.id, :visit_id => visit.id) %>
+                <u><%= value.name %></u>  
+                <% @anamnesis_value_details = AnamnesisVisit.find_by(:anamnesis_value_id => value.id, :visit_id => visit.id).details %>
+               <% else %>
+                <%= value.name %>  
+                <% @anamnesis_value_details = nil %>
+               <% end %>  
+            <% end %>  
+           
+            <% if @anamnesis_value_details %>
+              (<%= @anamnesis_value_details %>) 
+            <% end %>  
+            
+            
+          <% end %> 
+
+            <!-- <br> -->
+        <% end %> 
+      <% end %> 
+    <% end %>
+    <br>
+    <!-- <hr> -->
+  <% end %> 
+
+  <b>Status Praesens</b><br>
+
+   <%= t(:general_state_option) %>: 
+    <%= visit.general_state_option.name if visit.general_state_option %> <br>
+   <%= t(:constitution_option) %>: 
+    <%= visit.constitution_option.name if visit.constitution_option %> <br>
+   <%= t(:general_state_option) %>: 
+    <%= visit.general_state_option.name if visit.general_state_option %> <br>
+   <%= t(:postural_pose_option) %>: 
+    <%= visit.postural_pose_option.name if visit.postural_pose_option %> <br>
+   
+   
+   <%= t(:from) %>: 
+    <%= visit.from.name if visit.from %> <br>
+
+  <% ConditionType.all.each do |type| %>
+    <%= type.name %>: 
+    <% ConditionName.all.each do |v| %>
+      <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
+        <% if v.name != type.name %>  
+          <%= v.name %>: 
+          
+          <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
+          <% if @values.any? %>
+            
+            <% ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
+              <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id) %>
+                <u><%= value.name %></u>  
+                <% @condition_value_details = ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id).details %>
+              <% else %>
+                <%= value.name %>  
+                <% @condition_value_details = nil %>
+              <% end %>  
+            <% end %>  
+           
+            <% if @condition_value_details %>
+              (<%= @condition_value_details %>) 
+            <% end %>  
+          <% end %> 
+          <br>
+            <!-- <br> -->
+        <% end %> 
+      <% end %> 
+    <% end %>
+    <br>
+    
+    <!-- <hr> -->
+  <% end %> 
+   <b><%= t(:primary_diagnosis) %>: </b>
+    
+    <% if visit.primary_diagnoses.any? %>
+      <% visit.concomitant_diagnoses.each do |pd| %>
+        <%= pd.name %>,
+      <% end %>
+      <% if visit.primary_diagnosis_visits.first.details %>
+        (<%= visit.primary_diagnosis_visits.first.details %>) 
+      <% end %>
+    <% end %>
+   <br>
+   <b><%= t(:concomitant_diagnosis) %>: </b>
+    
+    <% if visit.concomitant_diagnoses.any? %>
+      <% visit.concomitant_diagnoses.each do |pd| %>
+        <%= pd.name %>,
+      <% end %>
+      <% if visit.concomitant_diagnosis_visits.first.details %>
+        (<%= visit.concomitant_diagnosis_visits.first.details %>)
+      <% end %>  
+    <% end %>
+   <br>
+   <b><%= t(:complication_diagnosis) %>: </b>
+    
+    <% if visit.complication_diagnoses.any? %>
+      <% visit.complication_diagnoses.each do |pd| %>
+        <%= pd.name %>,
+      <% end %>
+      <% if visit.complication_diagnosis_visits.first.details %>
+        (<%= visit.complication_diagnosis_visits.first.details %>)
+      <% end %>  
+    <% end %>
+   <br>
+   <b><%= t(:treatment) %>: </b>
+    
+   <% if visit.treatments.any? %>
+    <% visit.treatments.each do |t| %>
+      <%= t.treatment_factor.name %> 
+      <%= t.amount %> 
+      <% if t.details %>
+        (<%= t.details %>)
+      <% end %>
+    <% end %>
+  <% end %>
+   <br>
+   <b><%= t(:medication) %>: </b>
+    
+     <% if visit.medications.any? %>
+      <% visit.medications.each do |m| %>
+        <%= m.medicine.name %>
+        <%= m.dosage %>
+        <% if m.details %>
+          <%= m.details %> 
+        <% end %>
+        <%= m.duration %>
+      <% end %>
+    <% end %>
+   <br>
+   <b><%= t(:consultation) %>: </b>
+    
+     <% if visit.consultations.any? %>
+      <% visit.consultations.each do |c| %>
+        <%= c.specialist.name %>
+      <% end %>
+    <% end %>
+   <br>
+   <b><%= t(:examination) %>: </b>
+    
+    <% @exs = Array.new %>
+    <% @exs = ExaminationResult.where(:visit_id => visit.id, :result => nil).limit(nil) %>
+    <% if @exs.any? %>
+      <% @exs.each do |e| %>
+        <%= e.examination.name %> 
+        <% if e.details %>
+          (<%= e.details %>)
+        <% end %>
+      <% end %>
+    <% end %>
+   <br>
+   <b><%= t(:examination_result) %>: </b>
+    
+    <% @exs = Array.new %>
+    <% @except = Array.new %>
+    <% @exs =  ExaminationResult.where(:visit_id => visit.id).limit(nil) %>
+    <% @except = ExaminationResult.where(:visit_id => visit.id, :result => nil).limit(nil) %>
+    <% @exs -= @except %>
+    <% if @exs.any? %>
+      <% @exs.each do |e| %>
+        <%= e.examination.name %> 
+        <%= e.result %>
+        <% if e.details %>
+          (<%= e.details %>)
+        <% end %>
+      <% end %>
+    <% end %>
+   <br>
+
+   <div class="page-break"></div>
+
+<% end %>
+

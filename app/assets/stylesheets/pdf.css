@@ -1,0 +1,29 @@
+h1 {
+	color: red;
+}
+
+h3, h4 {
+	text-align: center;
+}
+
+#header-table {
+	padding-right: 50px;
+	padding-left: 80px;
+}
+
+#header-table tr td {
+	width: 470px;
+}
+
+body {
+	font-family: monospace;
+	font-size: 10px;
+	padding-right: 40px;
+	padding-left: 40px;
+}
+
+.page-break { display:block; clear:both; page-break-after:always; }
+
+.in-record-table, .in-record-table tr, .in-record-table tr td {
+	border: 1px solid black;
+}

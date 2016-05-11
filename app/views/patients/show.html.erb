@@ -7,6 +7,7 @@
               doctor_patients_path(@doctor), :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => "Новое посещение"),
               new_doctor_patient_visit_path(@doctor, @patient), :class => 'btn btn-default' %>
+<%= link_to 'Получить карту в PDF', doctor_patient_generate_pdf_path(:patient_id=>@patient.id, format: :pdf, :method => :get)%>
 <hr>
 
 <dl class="dl-horizontal">

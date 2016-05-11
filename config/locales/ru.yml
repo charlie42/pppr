@@ -27,6 +27,35 @@ ru:
   blood_type: Группа крови
   Rh_factor: Резус-фактор
   allergy: Аллергии
+  complaints: Жалобы
+  allerg: Аллергии
+  general_state: Общее состояние
+  diagnosis:
+  constitution_option: Телосложение
+  general_state_option: Общее состояние
+  postural_pose_option: Положение тела
+  subcutanious_fat_option: Подкожно-жировая клетчатка
+  created_at: Создан
+  an_morbi: An. Morbi
+  anamnesis: An. Vitae
+  primary_diagnosis: Основной диагноз
+  concomitant_diagnosis: Сопутствующий диагноз
+  complication_diagnosis: Осложнение
+  consultation: Консультация
+  treatment: Лечение
+  secondary: Вторичный
+  consultation: Консультация
+  diagnosis: Диагноз
+  examination_result: Результаты обследований
+  examination: Обследование
+  general_state_option: Общее состояние
+  liver_condition: Печень
+  medication: Медикаментозное лечение
+  medicines: Медикаментозное лечение
+  postural_pose_option: 
+  specialist: Специалист
+  treatment_factor: Фактор лечения
+  from: От
 
   blank: "пустой"
   cont: "содержит"

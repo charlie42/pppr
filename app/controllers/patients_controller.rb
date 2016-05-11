@@ -19,7 +19,7 @@ class PatientsController < ApplicationController
                         #.includes(:primary_diagnosis_visits).joins(:primary_diagnosis_visits)
     @q.build_condition
   end
-
+  
   # GET /patients/1
   # GET /patients/1.json
   def show
@@ -35,11 +35,31 @@ class PatientsController < ApplicationController
      @visits = @patient.visits.all
   end
 
+  def generate_pdf
+
+      @doctor = current_doctor
+      @patient = Patient.find(params[:patient_id])
+      @visits = @patient.visits.all
+
+      respond_to do |format|
+      format.html
+      format.pdf do
+        render :pdf => "full_medical_record",   # Excluding ".pdf" extension.
+          :disposition => "inline",
+          :template => "patients/generate_pdf.pdf.erb",
+          :layout => "pdf_layout.html",
+          :locals => {:patient => @patient, :visits => @visits, :doctor => @doctor}
+      end
+    end
+  end
+
+
   # GET /patients/new
   def new
     @patient = Patient.new
     @doctor = Doctor.find(params[:doctor_id])
     @allergy_list = Patient.allergy_counts
+   
   end
 
   # GET /patients/1/edit

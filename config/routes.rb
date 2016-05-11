@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     get '/doctors/:doctor_id/visits', to: 'visits#index', as: 'doctor_visits'
     get '/doctors/:doctor_id/visits/build_report', to: 'visits#build_report', as: 'doctor_visits_build_report'
     post '/doctors/:doctor_id/visits/add_to_report' => 'visits#add_to_report', as: 'doctor_visits_add_to_report'
+    get '/doctors/:doctor_id/patients/:patient_id/generate_pdf' => 'patients#generate_pdf', as: 'doctor_patient_generate_pdf'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
