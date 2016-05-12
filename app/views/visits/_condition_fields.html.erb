@@ -1,10 +1,9 @@
 <div class="field">
   <%= f.attribute_fields do |a| %>
     <%= a.attribute_select({ associations: 
-    	[:specialists, :treatment_factors, :primary_diagnoses, :from, 
-    		:constitution_options, :general_state_options, :postural_pose_option,
+    	[:specialists, :treatment_factors, :from, 
     		:concomitant_diagnoses, :complication_diagnoses, :primary_diagnoses,
-    		:examination_results, :medicines, :condition_names, :condition_values]
+    		:examination_results, :medicines, :condition_values]
     		},{:class => "form-control"}) %>
   <% end %>
   <%= f.predicate_select({},{:class => "form-control"}) %>

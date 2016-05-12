@@ -1,1 +1,5 @@
 $("#testdiv").html('<%= render partial: "report" %> ');
+<% if @repeated_items_popup == true %>
+	//sweetAlert("Awesome!");
+	swal("Ой", "Такой пункт в отчете уже есть!", "error");
+<% end %>

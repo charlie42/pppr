@@ -72,6 +72,7 @@ gem 'devise-bootstrap-views'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem 'nprogress-rails'
+gem 'sweetalert-rails'
 
 group :development, :test do
   gem 'rspec-rails'

@@ -1,10 +1,10 @@
 <%- model_class = Visit -%>
 <div class="page-header">
-  <h1>Посещения</h1>
+  <h1>Анализ посещений</h1>
 </div>
 
 <div id = "testdiv">
-<%= print_report(ReportItem.roots.first, 0) %>
+  <%= print_report(ReportItem.roots.first, 0) %>
 </div> 
 
 <%= search_form_for @q, url: doctor_visits_path do |f| %>

@@ -2,7 +2,8 @@ class Visit < ActiveRecord::Base
 
   UNRANSACKABLE_ATTRIBUTES = ["id", "updated_at", "anamnesis", "allerg", "patient_id",
    "doctor_id", "constitution_option_id", "general_state_option_id", "postural_pose_option_id",
-   "subcutanious_fat_option_id", "from_id", "effleurage_option_id", "height", "weight", "temp", "next"]
+   "subcutanious_fat_option_id", "from_id", "effleurage_option_id", "height", "weight", "temp", "next",
+   "general_state", "diagnosis"]
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + (_ransackers.keys)

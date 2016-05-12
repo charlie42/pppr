@@ -2,13 +2,18 @@
 class VisitsController < ApplicationController
 
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
+  before_action :set_param
 
   @@report_hash = Hash.new 
-  @@param = Hash.new
+  
   @@all = 0
-  @@ri
+  @@ri = ReportItem.order("created_at").last
   @@vertical_counter = 0
 
+
+  def set_param
+    @@param ||= Hash.new 
+  end
   # GET /visits
   # GET /visits.json
   def index
@@ -34,19 +39,22 @@ class VisitsController < ApplicationController
     @second = 20
     @arr = [10, 20, 30]
 
-    @ri = ReportItem.find_or_create_by(name: "Отчет") do |x| 
-      x.quantity = -1 
-      x.horizontal_counter = 0
-      x.full_name = "Отчет"
-    end 
-    @ri = @ri.children.find_or_create_by(name: "Всего") do |x| 
-      x.quantity = @all
-      x.horizontal_counter = 0 
-      @@vertical_counter = 1
-      x.full_name = "Всего посещений"
-    end 
+    if !ReportItem.roots.first
+      @ri = ReportItem.find_or_create_by(name: "Отчет") do |x| 
+        x.quantity = -1 
+        x.horizontal_counter = 0
+        x.full_name = "Отчет"
+      end 
+      @ri = @ri.children.find_or_create_by(name: "Всего") do |x| 
+        x.quantity = @all
+        x.horizontal_counter = 0 
+        @@vertical_counter = 1
+        x.full_name = "Всего посещений"
+      end 
+      
+    end
+
     @ri = ReportItem.order("created_at").last
-    
     @@ri = @ri
 
     #ri = @ri.children.create(name: "1", quantity: @all)
@@ -61,7 +69,8 @@ class VisitsController < ApplicationController
     @@report_hash.merge!(@param => @all)
     @report_hash = @@report_hash
 
-    logger.debug " RI QUANTITY #{@ri.quantity} ALL #{@all}"
+    logger.debug " RI #{@@ri} "
+    logger.debug " RI #{@@ri} QUANTITY  #{@ri.quantity} ALL #{@all}"
 
     while @ri.quantity <= @all do 
       logger.debug " RI QUANTITY loop1 #{@ri.quantity}"
@@ -96,9 +105,20 @@ class VisitsController < ApplicationController
     #@name += '" '
 
     #@name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last
-    if @@param
+
+    logger.debug "before last_name #{@@param}"    
+    last_name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s if @@param != {}
+
+    logger.debug "before if param and empty #{@@param}"
+    logger.debug "before if param and empty #{last_name}"
+
+    if @@param && @@param != {} && (last_name != "" || (last_name == "" && param.to_a.last.last.to_a.count > 1) )
       @name = "Поле "
-      @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"]
+
+      logger.debug "inside if #{@@param}"
+
+      @name +=  I18n.t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s, scope: 'report' if\
+        @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s != ""
       @name += " "
       @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["p"]
       @name += ' "'
@@ -113,7 +133,8 @@ class VisitsController < ApplicationController
         #@full_name += x.last.to_a.last.to_a.last["p"].to_s
         #@full_name += x.last.to_a.last.to_a.last["v"].first.second.first.second.to_s
         @full_name += "Поле "
-        @full_name += t x.last.to_a.first.second.first.second["name"].to_s
+        @full_name += I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report' if\
+          @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s != ""
         @full_name += " "
         @full_name += t x.last.to_a.second.last.to_s
         @full_name += ' "'
@@ -125,6 +146,9 @@ class VisitsController < ApplicationController
     else 
       @name = "Всего"
       @full_name = "Всего посещений"
+
+      logger.debug "else"
+
     end
 
 
@@ -136,8 +160,10 @@ class VisitsController < ApplicationController
       @ri = @ri.children.create(name: @name, full_name: @full_name, quantity: @all)
     end
 
+    @repeated_items_popup = false
     ReportItem.where.not(id: ReportItem.group(:full_name, :quantity, :ancestry).pluck('max(report_items.id)')).each { |x|
       x.delete if x.is_childless? 
+      @repeated_items_popup = true
     }
     @ri = ReportItem.order("created_at").last
     #
@@ -152,6 +178,12 @@ class VisitsController < ApplicationController
       format.js
     end
     # redirect_to :back
+  end
+
+  def repeated_items_popup
+    respond_to do |format|
+      format.js
+    end
   end
 
   def build_report 
@@ -171,6 +203,35 @@ class VisitsController < ApplicationController
     # end
 
     r = ReportItem.all.destroy_all
+
+    @doctor = Doctor.find(params[:doctor_id])
+    @visits = @doctor.visits
+
+    if (params[:patient_id])
+      @patient = Patient.find(params[:patient_id])
+      @visits = @patient.visits
+    end
+
+    @all = @visits.count
+    @@all = @all
+
+    @ri = ReportItem.find_or_create_by(name: "Отчет") do |x| 
+      x.quantity = -1 
+      x.horizontal_counter = 0
+      x.full_name = "Отчет"
+    end 
+    @ri = @ri.children.find_or_create_by(name: "Всего") do |x| 
+      x.quantity = @all
+      #logger.debug "#{x.inspect}"
+      #logger.debug "ALL #{@all}"
+      #sdfghjk
+      x.horizontal_counter = 0 
+      @@vertical_counter = 1
+      x.full_name = "Всего посещений"
+    end 
+
+    @ri = ReportItem.order("created_at").last
+    @@ri = @ri
 
     respond_to do |format|
       format.js

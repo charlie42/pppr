@@ -29,6 +29,7 @@ ru:
   allergy: Аллергии
   complaints: Жалобы
   allerg: Аллергии
+
   general_state: Общее состояние
   diagnosis:
   constitution_option: Телосложение
@@ -57,6 +58,24 @@ ru:
   specialist: Специалист
   treatment_factor: Фактор лечения
   from: От
+  next: Следующее посещение
+
+  report:
+    specialists_name: Специалист
+    treatment_factors_name: Фактор лечения
+    #primary_diagnoses_name: 
+    primary_diagnoses_name: Основной диагноз
+    concomitant_diagnoses_name: Сопутствующий диагноз
+    complication_diagnoses_name: Осложнение
+    consultation_name: Консультация
+    medicines_name: Медикаментозное лечение
+    medicines_code: Медикаментозное лечение
+    examination_results_result: Результат обследования
+    examination_results_details: Результат обследования
+    condition_values_name: Данные осмотра
+    from_name: От
+    secondary: Вторичный
+    created_at: Создан
 
   gender_scope:
     male: мужской
@@ -252,25 +271,32 @@ ru:
     search: "Поиск"
     sort: "Сортировка"
     value: "Значение"
+    associations:
+      visit:
+        abdominal_condition: Живот
+        constitution_option: Телосложение
+        consultation: Консультация
+        diagnosis: Диагноз
+        examination_results: Обследование
+        examination: Обследование
+        general_state_option: Общее состояние
+        liver_condition: Печень
+        medication: Медикаментозное лечение
+        medicines: Медикаментозное лечение
+        postural_pose_option: Положение тела
+        specialists: Специалист
+        treatment_factors: Фактор лечения
+        from: От
+        primary_diagnoses: Основной диагноз
+        concomitant_diagnoses: Сопутствующий диагноз
+        complication_diagnoses: Осложнение
+        consultation: Консультация
+        treatment: Лечение
+        condition_values: Данные осмотра
     models:
       visit: Посещение
       doctor: Врач
       patient: Пациент
-      abdominal_condition: Живот
-      constitution_option: Телосложение
-      consultation: Консультация
-      diagnosis: Диагноз
-      effleurage_option:
-      examination_result: Обследование
-      examination: Обследование
-      general_state_option: Общее состояние
-      liver_condition: Печень
-      medication: Медикаментозное лечение
-      medicines: Медикаментозное лечение
-      postural_pose_option: 
-      specialist: Специалист
-      treatment_factor: Фактор лечения
-      from: От
     attributes:
       patient:
         name: Имя
@@ -301,9 +327,34 @@ ru:
         temp: Температура
         next: Следующее посещение
       from:
-        name: От
-      specialist:
-        name: От
+        name: Специалист
+      specialist: 
+        name: Специалист
+      condition_value:
+        name: Значениe
+      consultation: 
+        name: Специалист
+      examination_result: 
+        name: Вид обследования
+        result: Результат обследования
+      examination: 
+        name: Вид обследования
+      medication: 
+        name: Название препарата
+        code: Код препарата
+      medicine: 
+        name: Название
+      treatment_factor: 
+        name: Название
+      primary_diagnose: 
+        name: Название
+      concomitant_diagnosis: 
+        name: Название
+      complication_diagnosis: 
+        name: Название
+      treatment: 
+        name: Название
+
   activerecord:
     errors:
       messages:

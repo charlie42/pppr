@@ -4,6 +4,8 @@
 @import "select2-bootstrap.css.scss";
 @import "nprogress";
 @import "nprogress-bootstrap";
+@import "sweetalert";
+@import "sweetalert/themes/twitter";
 
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
