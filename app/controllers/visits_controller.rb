@@ -2,7 +2,7 @@
 class VisitsController < ApplicationController
 
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
-  before_action :set_param
+  before_action :set_params
 
   @@report_hash = Hash.new 
   
@@ -11,7 +11,7 @@ class VisitsController < ApplicationController
   @@vertical_counter = 0
 
 
-  def set_param
+  def set_params
     @@param ||= Hash.new 
   end
   # GET /visits
@@ -112,7 +112,7 @@ class VisitsController < ApplicationController
     logger.debug "before if param and empty #{@@param}"
     logger.debug "before if param and empty #{last_name}"
 
-    if @@param && @@param != {} && (last_name != "" || (last_name == "" && param.to_a.last.last.to_a.count > 1) )
+    if @@param && @@param != {} && (last_name != "" || (last_name == "" && @@param.to_a.last.last.to_a.count > 1) )
       @name = "Поле "
 
       logger.debug "inside if #{@@param}"
@@ -160,10 +160,10 @@ class VisitsController < ApplicationController
       @ri = @ri.children.create(name: @name, full_name: @full_name, quantity: @all)
     end
 
-    @repeated_items_popup = false
+    @repeated_items_popup = 0
     ReportItem.where.not(id: ReportItem.group(:full_name, :quantity, :ancestry).pluck('max(report_items.id)')).each { |x|
       x.delete if x.is_childless? 
-      @repeated_items_popup = true
+      @repeated_items_popup += 1
     }
     @ri = ReportItem.order("created_at").last
     #
