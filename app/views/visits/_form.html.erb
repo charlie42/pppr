@@ -231,14 +231,14 @@
     <div class="col-lg-10">
       <%= f.fields_for :consultations do |s| %>
         <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
-        <%= s.label "Результат", :class => 'control-label col-lg-2' %> 
+        <%= s.label "Результаты прошлых назначений", :class => 'control-label col-lg-2' %> 
         <%= s.text_field :result, :class => 'form-control' %>
       <% end %>  
     </div>
     <%=f.error_span(:patient_id) %>
   </div>
   <div class="form-group">
-    <%= f.label :examination_result, :class => 'control-label col-lg-2' %>
+    <%= f.label :examination, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.fields_for :examination_result do |s| %>
         <%= s.collection_select(:examination_ids, Examination.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>

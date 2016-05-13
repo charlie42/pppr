@@ -42,7 +42,8 @@ module ApplicationHelper
     # final << 
     if r
       r.children.each do |i|
-        final << content_tag(:tr, content_tag(:td, i.name + " " + i.quantity.to_s, {:style => "padding-left: #{margin}px"}))
+        logger.debug "i #{i}"
+        final << content_tag(:tr, content_tag(:td, i.full_name + " " + i.quantity.to_s, {:style => "padding-left: #{margin}px"}))
         if i.has_children?
           # hfhewjfhe
 

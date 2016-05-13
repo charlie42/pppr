@@ -6,13 +6,16 @@ class VisitsController < ApplicationController
 
   @@report_hash = Hash.new 
   
-  @@all = 0
+ 
   @@ri = ReportItem.order("created_at").last
   @@vertical_counter = 0
 
 
   def set_params
+    #logger.debug "before set params param #{@@param.inspect} all #{@@all}"
     @@param ||= Hash.new 
+    @@all ||= 0
+    logger.debug "after set params param #{@@param.inspect} all #{@@all}"
   end
   # GET /visits
   # GET /visits.json
@@ -34,6 +37,7 @@ class VisitsController < ApplicationController
     @param = params[:q]
     @all = @visits.count
     @@all = @all
+    logger.debug "index all #{@@all}"
     @@param = @param
     @first = 10
     @second = 20
@@ -49,7 +53,7 @@ class VisitsController < ApplicationController
         x.quantity = @all
         x.horizontal_counter = 0 
         @@vertical_counter = 1
-        x.full_name = "Всего посещений"
+        x.full_name = "Всего"
       end 
       
     end
@@ -61,40 +65,97 @@ class VisitsController < ApplicationController
 
   end
 
+  def name(a)
+
+    logger.debug "a in name #{a}"
+
+    @name = "поле "
+    @name +=  I18n.t a.last.to_a.last.first.second.first.second["name"].to_s, scope: 'report' 
+    @name += " "
+    @name +=  t a.last.to_a.last["p"]
+    @name += ' "'
+    @name +=  a.last.to_a.last["v"].first.second.first.second
+    @name += '" '
+  end
+
+  def fullname(a)
+    @full_name = ""
+
+    logger.debug "A #{a}"
+
+    a.each { |x| 
+      @full_name += "поле "
+      @full_name += I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report' 
+      @full_name += " "
+      @full_name += t x.last.to_a.second.last.to_s
+      @full_name += ' "'
+      @full_name += x.last.to_a.last.last.first.second.first.second.to_s
+      @full_name += '" '
+      @full_name += " и "
+    }
+    @full_name.chomp!(" и ")
+    logger.debug "full_name #{@full_name}"
+    return @full_name
+  end
+
   def add_to_report 
+    @doctor = Doctor.find(params[:doctor_id])
+    visits = @doctor.visits
+
+    if (params[:patient_id])
+      @patient = Patient.find(params[:patient_id])
+      visits = @patient.visits
+    end
+
+    @q = visits.search(params[:q]);
+    @visits = @q.result(distinct: true)#.includes(:treatments, :primary_diagnosis_visits).joins(:treatmentsrj)
+                        #.includes(:primary_diagnosis_visits).joins(:primary_diagnosis_visits)
+    @q.build_condition
+
+    logger.debug "Q #{@q.inspect}"
+    # @visits = @q.result.includes(:department, :employees)
+
+    @param = params[:q]
+    @all = @visits.count
+    logger.debug "add to report @all #{@all} @@all #{@@all}"
+    @@all = @all if !defined? @@all && @all != 0
+    logger.debug "add to report @@all #{@@all}"
     @param = @@param.to_s#.tr('"', "'") 
-    @all = @@all    
     @ri = @@ri
     
-    @@report_hash.merge!(@param => @all)
+    @@report_hash.merge!(@param => @@all)
     @report_hash = @@report_hash
 
     logger.debug " RI #{@@ri} "
-    logger.debug " RI #{@@ri} QUANTITY  #{@ri.quantity} ALL #{@all}"
+    logger.debug " RI #{@@ri} QUANTITY  #{@ri.quantity} ALL #{@@all}"
 
-    while @ri.quantity <= @all do 
-      logger.debug " RI QUANTITY loop1 #{@ri.quantity}"
-      @ri = @ri.parent 
-      @@vertical_counter -= 1
-      if not (@ri && @ri.parent)
-         break
-      end   
-    end
+    # firs_loop_visited = false
+    # while @ri.quantity <= @@all do 
+    #   logger.debug " RI QUANTITY loop1 #{@ri.quantity}"
+    #   @ri = @ri.parent 
+    #   @@vertical_counter -= 1
+    #   firs_loop_visited = true
+    #   if not (@ri && @ri.parent)
+    #      break
+    #   end   
+    # end
 
-    while @ri.quantity >= @all do 
-      logger.debug " RI QUANTITY loop2 #{@ri.quantity}"
-      
-      if @ri.children.first
-        @ri = @ri.children.first 
-        @@vertical_counter += 1
-      end
-      if not (@ri && @ri.children.first)
-         break
-      end 
-      
-    end
+    # if !firs_loop_visited
+    #   while @ri.quantity > @@all do 
+    #     logger.debug " RI QUANTITY loop2 #{@ri.quantity}"
+        
+    #     if @ri.children.first
+    #       @ri = @ri.children.first 
+    #       @@vertical_counter += 1
+    #     end
+    #     if not (@ri && @ri.children.first)
+    #        break
+    #     end 
+        
+    #   end
+    # end
 
-    logger.debug " RI QUANTITY AFTER LOOP #{@ri.quantity}"
+    # logger.debug " RI QUANTITY AFTER LOOP #{@ri.quantity}"
 
     #@name = "Поле "
     #@name += t @@param.first.second.first.second.first.second.first.second.first.second.to_s
@@ -106,72 +167,153 @@ class VisitsController < ApplicationController
 
     #@name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last
 
-    logger.debug "before last_name #{@@param}"    
-    last_name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s if @@param != {}
+    # logger.debug "before last_name #{@@param}"    
+    # last_name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s if @@param != {}
 
-    logger.debug "before if param and empty #{@@param}"
-    logger.debug "before if param and empty #{last_name}"
+    # logger.debug "before if param and empty #{@@param}"
+    # logger.debug "before if param and empty #{last_name}"
 
-    if @@param && @@param != {} && (last_name != "" || (last_name == "" && @@param.to_a.last.last.to_a.count > 1) )
-      @name = "Поле "
+    # if @@param && @@param != {} && (last_name != "" || (last_name == "" && @@param.to_a.last.last.to_a.count > 1) )
+      
+    #   @name = "Поле "
 
-      logger.debug "inside if #{@@param}"
+    #   logger.debug "inside if #{@@param}"
 
-      @name +=  I18n.t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s, scope: 'report' if\
-        @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s != ""
-      @name += " "
-      @name +=  t @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["p"]
-      @name += ' "'
-      @name +=  @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last["v"].first.second.first.second
-      @name += '" '
+    #   if last_name == ""
+    #     a = @@param.to_a.last.last.to_a.first @@param.to_a.last.last.to_a.count - 1 
+    #   else 
+    #     a = @@param.to_a.last.last.to_a
+    #   end
 
-      @full_name = ""
-    #@full_name += @@param.to_unsafe_h.to_a.first.to_a.last.to_a.to_s + " = "
+    #   logger.debug "inside if after pop #{a}"
+
+    #   @name +=  I18n.t a.last.to_a.last.first.second.first.second["name"].to_s, scope: 'report' if\
+    #     a.last.to_a.last.first.second.first.second["name"].to_s != ""
+    #   @name += " "
+    #   @name +=  t a.last.to_a.last["p"]
+    #   @name += ' "'
+    #   @name +=  a.last.to_a.last["v"].first.second.first.second
+    #   @name += '" '
+
+    #   @full_name = ""
+    # #@full_name += @@param.to_unsafe_h.to_a.first.to_a.last.to_a.to_s + " = "
+
+    #   logger.debug "A #{a}"
     
-      @@param.to_unsafe_h.to_a.first.to_a.last.to_a.each { |x| 
-        #@full_name += x.last.to_a.last.to_a.last.first.second.first.second["name"].to_s
-        #@full_name += x.last.to_a.last.to_a.last["p"].to_s
-        #@full_name += x.last.to_a.last.to_a.last["v"].first.second.first.second.to_s
-        @full_name += "Поле "
-        @full_name += I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report' if\
-          @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s != ""
-        @full_name += " "
-        @full_name += t x.last.to_a.second.last.to_s
-        @full_name += ' "'
-        @full_name += x.last.to_a.last.last.first.second.first.second.to_s
-        @full_name += '" '
-        @full_name += " && "
-      }
-      @full_name.chomp!(" && ")
-    else 
-      @name = "Всего"
-      @full_name = "Всего посещений"
+    #   a.to_a.each { |x| 
+    #     #@full_name += x.last.to_a.last.to_a.last.first.second.first.second["name"].to_s
+    #     #@full_name += x.last.to_a.last.to_a.last["p"].to_s
+    #     #@full_name += x.last.to_a.last.to_a.last["v"].first.second.first.second.to_s
+    #     current_name = ""
+    #     @full_name += "Поле "
+    #     current_name += "Поле "
+    #     @full_name += I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report' if\
+    #       a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s != ""
+    #     current_name += I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report' if\
+    #       a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s != ""
+    #     @full_name += " "
+    #     current_name += " "
+    #     @full_name += t x.last.to_a.second.last.to_s
+    #     current_name += t x.last.to_a.second.last.to_s
+    #     @full_name += ' "'
+    #     @full_name += x.last.to_a.last.last.first.second.first.second.to_s
+    #     current_name += x.last.to_a.last.last.first.second.first.second.to_s
+    #     @full_name += '" '
+    #     current_name += '" '
 
-      logger.debug "else"
+    #     if a.count > 1
+    #       temp_ri = ReportItem.where(name: "Всего", quantity: 52).order(:created_at).last
+    #       if temp_ri
+    #         @ri = temp_ri
+    #       end
+    #     end
 
-    end
+    #     @full_name += " && "
+    #   }
+    #   @full_name.chomp!(" && ")
+
+    #   if a.count > 1
+
+    #   else
+    #     @ri = ReportItem.roots.first.children.last.children.create(name: @name, 
+    #       full_name: @full_name, quantity: @@all)
+    #   end
+    #   @ri = @ri.patient
+
+    # else 
+    #   @name = "Всего"
+    #   @full_name = "Всего посещений"
+
+    #   logger.debug "else"
+
+    # end
 
 
-    if ReportItem.first.descendants.exists?(name: @name, full_name: @full_name)
-      logger.debug " IF "
-      @ri = ReportItem.find_by(name: @name, full_name: @full_name).siblings.create(name: @name, 
-            quantity: @all, full_name: @full_name)
-    else
-      @ri = @ri.children.create(name: @name, full_name: @full_name, quantity: @all)
-    end
+    # if ReportItem.first.descendants.exists?(name: @name, full_name: @full_name)
+    #   logger.debug " IF "
+    #   @ri = ReportItem.find_by(name: @name, full_name: @full_name).siblings.create(name: @name, 
+    #         quantity: @@all, full_name: @full_name)
+    # else
+    #   @ri = @ri.children.create(name: @name, full_name: @full_name, quantity: @@all)
+    # end
 
-    @repeated_items_popup = 0
-    ReportItem.where.not(id: ReportItem.group(:full_name, :quantity, :ancestry).pluck('max(report_items.id)')).each { |x|
-      x.delete if x.is_childless? 
-      @repeated_items_popup += 1
-    }
-    @ri = ReportItem.order("created_at").last
-    #
+    # @repeated_items_popup = 0
+    # ReportItem.where.not(id: ReportItem.group(:full_name, :quantity, :ancestry).pluck('max(report_items.id)')).each { |x|
+    #   x.delete if x.is_childless? 
+    #   @repeated_items_popup += 1
+    # }
+    # @ri = ReportItem.order("created_at").last
+    # #
     # counter = 0
     # ri.siblings.each do |s|
     #   s.horizontal_counter = counter
     #   counter += 1
     # end
+
+
+    @repeated_items_popup = 0
+
+    logger.debug "param #{@@param}"
+
+    a = @@param.to_a.last.last.to_a
+    last_name = a.last.last["a"]["0"]["name"]
+    while last_name == ""
+      if a.count > 1
+        a = a.first a.count - 1 
+
+        logger.debug "a #{a}"
+
+        last_name = a.last.last["a"]["0"]["name"] if a.last.last["a"]["0"]
+      else 
+        break
+      end
+    end
+
+    name = name(a)
+    fullname = fullname(a)
+
+    logger.debug "fullname #{fullname}"
+
+    if a.count > 1
+      a_popped = a.first a.count - 1 
+      a_popped_name = fullname(a.first a.count - 1)
+      temp_ri = ReportItem.where(full_name: a_popped_name).last
+      if temp_ri
+        @ri = temp_ri
+      else
+        @ri = ReportItem.roots.first.children.last
+      end
+      @ri.children.create!(name: name, full_name: fullname, quantity: @@all)
+    else
+      if last_name != ""
+        @ri = ReportItem.roots.first.children.last.children.create(name: name, full_name: fullname,
+          quantity: @@all)
+      else
+        name = "Всего"
+        @ri = ReportItem.roots.first.children.create(name: name, full_name: name, quantity: @@all)
+      end
+    end
+
     @@ri = @ri
 
     respond_to do |format|
@@ -227,7 +369,7 @@ class VisitsController < ApplicationController
       #sdfghjk
       x.horizontal_counter = 0 
       @@vertical_counter = 1
-      x.full_name = "Всего посещений"
+      x.full_name = "Всего"
     end 
 
     @ri = ReportItem.order("created_at").last
