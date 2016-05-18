@@ -75,7 +75,8 @@ ru:
     condition_values_name: Данные осмотра
     from_name: От
     secondary: Вторичный
-    created_at: Создан
+    created_at: Дата создания
+    next: Дата следующего посещения
 
   gender_scope:
     male: мужской
@@ -194,7 +195,7 @@ ru:
   start: "начинается с"
   start_all: "начинается со всех"
   start_any: "начинается с любого"
-  'true': "истина"
+  'true': "является истинным"
 
   visits:
     index:

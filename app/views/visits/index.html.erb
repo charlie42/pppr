@@ -1,6 +1,7 @@
 <%- model_class = Visit -%>
 <div class="page-header">
   <h1>Анализ посещений</h1>
+  <%= link_to 'Получить PDF', doctor_visits_generate_pdf_path(format: :pdf, :method => :get)%>
 </div>
 
 <div id = "testdiv">
@@ -12,6 +13,13 @@
     <%= render "condition_fields", f: c %>
   <% end %>
   <p><%= link_to_add_fields "Добавить условие", f, :condition %>
+  <!-- <div class='radio'> -->
+    <br>
+    <%= f.label :secondary_true, 'Вторичный' %>
+    <%= f.radio_button :secondary_true, 1, checked: false %><br>
+    <%= f.label :secondary_false, 'Первичный' %>
+    <%= f.radio_button :secondary_false, 1 %>
+  <!-- </div> -->
   <div class="actions"><%= f.submit "Поиск", {:class => "btn"} %></div>
 <% end %>
 <br>

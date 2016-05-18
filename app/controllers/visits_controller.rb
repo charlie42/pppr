@@ -65,6 +65,24 @@ class VisitsController < ApplicationController
 
   end
 
+  def generate_pdf
+
+      #@doctor = current_doctor
+      #@patient = Patient.find(params[:patient_id])
+      #@visits = @patient.visits.all
+
+      respond_to do |format|
+      format.html
+      format.pdf do
+        render :pdf => "report",   # Excluding ".pdf" extension.
+          :disposition => "inline",
+          :template => "visits/generate_pdf.pdf.erb",
+          :layout => "pdf_layout.html",
+          :locals => {}
+      end
+    end
+  end
+
   def name(a)
 
     logger.debug "a in name #{a}"
@@ -96,6 +114,31 @@ class VisitsController < ApplicationController
     @full_name.chomp!(" и ")
     logger.debug "full_name #{@full_name}"
     return @full_name
+  end
+
+  def array_from_params(p)
+    name = ""
+    if p.to_a.last.first != "c"
+      name, predicate = p.to_a.last.first.split "_"
+    end
+    a = p["c"].to_a
+    @last_name = a.last.last["a"]["0"]["name"]
+    while @last_name == ""
+      if a.count > 1
+        a = a.first a.count - 1 
+
+        logger.debug "a #{a}"
+
+        @last_name = a.last.last["a"]["0"]["name"] if a.last.last["a"]["0"]
+      else 
+        if name != ""
+          a = []
+        end
+        break
+      end
+    end
+    a
+    #a.push ["99", {"a"=>{"0"=>{"name"=>name}}, "p"=> predicate, "v"=>{"0"=>{"value"=>""}}}]
   end
 
   def add_to_report 
@@ -275,20 +318,21 @@ class VisitsController < ApplicationController
 
     logger.debug "param #{@@param}"
 
-    a = @@param.to_a.last.last.to_a
-    last_name = a.last.last["a"]["0"]["name"]
-    while last_name == ""
-      if a.count > 1
-        a = a.first a.count - 1 
+    # a = @@param.to_a.last.last.to_a
+    # last_name = a.last.last["a"]["0"]["name"]
+    # while last_name == ""
+    #   if a.count > 1
+    #     a = a.first a.count - 1 
 
-        logger.debug "a #{a}"
+    #     logger.debug "a #{a}"
 
-        last_name = a.last.last["a"]["0"]["name"] if a.last.last["a"]["0"]
-      else 
-        break
-      end
-    end
+    #     last_name = a.last.last["a"]["0"]["name"] if a.last.last["a"]["0"]
+    #   else 
+    #     break
+    #   end
+    # end
 
+    a = array_from_params(@@param)
     name = name(a)
     fullname = fullname(a)
 
@@ -305,7 +349,7 @@ class VisitsController < ApplicationController
       end
       @ri.children.create!(name: name, full_name: fullname, quantity: @@all)
     else
-      if last_name != ""
+      if @last_name != ""
         @ri = ReportItem.roots.first.children.last.children.create(name: name, full_name: fullname,
           quantity: @@all)
       else

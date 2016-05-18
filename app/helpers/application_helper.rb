@@ -43,7 +43,11 @@ module ApplicationHelper
     if r
       r.children.each do |i|
         logger.debug "i #{i}"
-        final << content_tag(:tr, content_tag(:td, i.full_name + " " + i.quantity.to_s, {:style => "padding-left: #{margin}px"}))
+        percentage = "100%"
+        if i.parent.quantity > 0
+          percentage = ((100*i.quantity)/i.parent.quantity).to_s + "%"
+        end
+        final << content_tag(:tr, content_tag(:td, i.full_name + " (" + i.quantity.to_s + " записей, " + percentage + ")", {:style => "padding-left: #{margin}px"}))
         if i.has_children?
           # hfhewjfhe
 
