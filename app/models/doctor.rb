@@ -5,6 +5,8 @@ class Doctor < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_many :patients, through: :visits
   has_many :visits
+  has_many :assignments
+  has_many :roles, :through => :assignments
 
   #validates :email, presence:true, length: {maximum:50}, uniqueness: {case_sensitive: false}
   validates :password, length: {minimum: 6}, presence:true
@@ -22,6 +24,41 @@ class Doctor < ActiveRecord::Base
 	end
 
 	def email_required?
-    	false
-  	end
+  	false
+	end
+
+  # ROLES = %w[admin moderator user].freeze
+
+  # def roles=(roles)
+  #   self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.inject(0, :+)
+  # end
+
+  # def roles
+  #   ROLES.reject do |r|
+  #     ((roles_mask.to_i || 0) & 2**ROLES.index(r)).zero?
+  #   end
+  # end
+
+  def is?(role)
+    roles.any? { |r| r.name.underscore.to_sym == role }
+  end
+
+  rails_admin do
+    configure :set_password
+
+    edit do
+      exclude_fields :password, :password_confirmation
+      include_fields :set_password
+    end
+  end
+
+  # Provided for Rails Admin to allow the password to be reset
+  def set_password; nil; end
+
+  def set_password=(value)
+    return nil if value.blank?
+    self.password = value
+    self.password_confirmation = value
+  end
+
 end

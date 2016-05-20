@@ -1,5 +1,14 @@
 ru:
 
+  unauthorized:
+    default: "У вас нет доступа к этой странице"
+    manage:
+      #all: "Нет доступа к %{action} %{subject}."
+      all: "Нет доступа к этой странице"
+      user: "Вы не можете управлять учетными записями"
+    update:
+      project: "Вы не можете обновлять проект"
+
   complaints: Жалобы
   name: Имя
   gender: Пол

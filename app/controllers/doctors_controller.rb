@@ -78,6 +78,6 @@ class DoctorsController < ApplicationController
     def doctor_params
       params.require(:doctor).permit(:password, :password_conformation, 
         :specialization, :name, :company_name, :company_address, 
-        :company_code, :documentation_code)
+        :company_code, :documentation_code, roles: [])
     end
 end

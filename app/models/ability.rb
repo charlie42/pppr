@@ -30,12 +30,22 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
     user ||= Doctor.new # guest user (not logged in)
-    if user && user.admin?
-      can :access, :rails_admin       # only allow admin users to access Rails Admin
-      can :dashboard           
-      can :manage, :all
-    else
-      can :read, :all                   # allow everyone to read everything
+    if user 
+      if user.is?(:admin)
+        can :access, :rails_admin       # only allow admin users to access Rails Admin
+        can :dashboard   
+        can :manage, :all
+      elsif user.is?(:moderator)
+        can :access, :rails_admin       # only allow admin users to access Rails Admin
+        can :dashboard   
+        can :manage, ConditionName
+        can :manage, ConditionValue
+        can :manage, ConditionType
+        can :manage, AnamnesisName
+        can :manage, AnamnesisValue
+        can :manage, AnamnesisType
+      end
     end
+      
   end
 end

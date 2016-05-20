@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
-  devise_for :admins
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  #devise_for :admins
+  
+  
   resources :medicines
   resources :examinations
   resources :treatment_factors
@@ -14,12 +15,16 @@ Rails.application.routes.draw do
   resources :postural_pose_options
   resources :general_state_options
   resources :constitution_options
-  devise_for :doctors
+  
 
   authenticated :doctor do
     root to: 'patients#index_for_doctor', as: :authenticated_root
   end
   root to: redirect('/doctors/sign_in')
+
+  devise_for :doctors
+
+  mount RailsAdmin::Engine => '/manage', as: 'rails_admin'
 
   get 'static_pages/help'
 

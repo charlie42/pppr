@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507100538) do
+ActiveRecord::Schema.define(version: 20160520083628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,44 @@ ActiveRecord::Schema.define(version: 20160507100538) do
     t.string  "details"
   end
 
+  create_table "doctors", force: :cascade do |t|
+    t.string   "name"
+    t.string   "username"
+    t.string   "password"
+    t.string   "password_conformation"
+    t.string   "specialization"
+    t.datetime "created_at",             :null=>false
+    t.datetime "updated_at",             :null=>false
+    t.string   "email",                  :default=>"", :null=>false, :index=>{:name=>"index_doctors_on_email", :unique=>true}
+    t.string   "encrypted_password",     :default=>"", :null=>false
+    t.string   "reset_password_token",   :index=>{:name=>"index_doctors_on_reset_password_token", :unique=>true}
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default=>0, :null=>false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.text     "company_name"
+    t.text     "company_address"
+    t.text     "company_code"
+    t.text     "documentation_code"
+    t.integer  "roles_mask"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
+  end
+
+  create_table "assignments", force: :cascade do |t|
+    t.integer  "role_id",    :index=>{:name=>"fk__assignments_role_id"}, :foreign_key=>{:references=>"roles", :name=>"fk_assignments_role_id", :on_update=>:no_action, :on_delete=>:no_action}
+    t.integer  "doctor_id",  :index=>{:name=>"index_assignments_on_doctor_id"}, :foreign_key=>{:references=>"doctors", :name=>"fk_assignments_doctor_id", :on_update=>:no_action, :on_delete=>:no_action}
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
+  end
+
   create_table "complication_diagnosis_visits", id: false, force: :cascade do |t|
     t.integer "complication_diagnosis_id"
     t.integer "visit_id"
@@ -168,31 +206,6 @@ ActiveRecord::Schema.define(version: 20160507100538) do
     t.string   "name"
   end
 
-  create_table "doctors", force: :cascade do |t|
-    t.string   "name"
-    t.string   "username"
-    t.string   "password"
-    t.string   "password_conformation"
-    t.string   "specialization"
-    t.datetime "created_at",             :null=>false
-    t.datetime "updated_at",             :null=>false
-    t.string   "email",                  :default=>"", :null=>false, :index=>{:name=>"index_doctors_on_email", :unique=>true}
-    t.string   "encrypted_password",     :default=>"", :null=>false
-    t.string   "reset_password_token",   :index=>{:name=>"index_doctors_on_reset_password_token", :unique=>true}
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default=>0, :null=>false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.text     "company_name"
-    t.text     "company_address"
-    t.text     "company_code"
-    t.text     "documentation_code"
-    t.boolean  "admin"
-  end
-
   create_table "effleurage_options", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", :null=>false
@@ -231,16 +244,16 @@ ActiveRecord::Schema.define(version: 20160507100538) do
     t.text     "work_place"
     t.text     "work_position"
     t.boolean  "dependant"
-    t.boolean  "area"
+    t.text     "area"
     t.text     "insurance_policy_series"
     t.text     "insurance_policy_number"
-    t.integer  "social_benefit_code"
+    t.text     "social_benefit_code"
     t.text     "document_series"
     t.text     "document_number"
-    t.integer  "martial_status"
-    t.integer  "education"
-    t.integer  "employment"
-    t.boolean  "disability_time"
+    t.text     "martial_status"
+    t.text     "education"
+    t.text     "employment"
+    t.text     "disability_time"
     t.date     "disability_date"
     t.text     "blood_type"
     t.text     "Rh_factor"

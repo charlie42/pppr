@@ -74,6 +74,8 @@ gem 'wkhtmltopdf-binary'
 gem 'nprogress-rails'
 gem 'sweetalert-rails'
 
+gem 'rails_12factor', group: :production
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'

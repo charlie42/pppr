@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
+
   
   before_filter :set_locale
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
@@ -10,17 +11,23 @@ class ApplicationController < ActionController::Base
   end
 
   protect_from_forgery with: :exception
-  before_action :authenticate_doctor!
-
-  protect_from_forgery
-
-  def after_sign_in_path_for(resource)
-    doctor_patients_path(current_doctor.id) #your path
-  end
-
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to main_app.rails_admin_path, :alert => exception.message
+      #flash[:error] = exception.message
+      redirect_to '/', :alert => exception.message
   end
+
+  #before_action :authenticate_doctor!
+  
+  def after_sign_in_path_for(resource)
+    #doctor_patients_path(current_doctor.id) #your path
+    if current_doctor.is? :admin
+      rails_admin.dashboard_path
+    else
+      doctor_patients_path(current_doctor.id)
+    end
+  end
+
+  
 
   protected
 

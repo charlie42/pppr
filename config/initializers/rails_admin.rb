@@ -1,13 +1,19 @@
+require 'i18n'
+I18n.default_locale = :ru
+
 RailsAdmin.config do |config|
+
+  
+  
 
   ### Popular gems integration
 
   ## == Devise ==
 
-  # config.authenticate_with do
-  #   warden.authenticate! scope: :doctor
-  # end
-  # config.current_user_method(&:current_doctor)
+  config.authenticate_with do
+    warden.authenticate! scope: :doctor
+  end
+  config.current_user_method(&:current_doctor)
 
   ## == Cancan ==
 
@@ -20,6 +26,15 @@ RailsAdmin.config do |config|
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
 
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
+  RailsAdmin.config do |config|
+    config.authorize_with :cancan #TODO add cancancan to rails_admin config
+  end
+
+  RailsAdmin.config do |config|
+  config.main_app_name = [""]
+  # or something more dynamic
+  #config.main_app_name = Proc.new { |controller| [ "Cool app", "BackOffice - #{controller.params[:action].try(:titleize)}" ] }
+end
 
   config.actions do
     dashboard                     # mandatory
