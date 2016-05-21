@@ -78,6 +78,12 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.datetime "updated_at", :null=>false
   end
 
+  create_table "postural_pose_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
+  end
+
   create_table "visits", force: :cascade do |t|
     t.datetime "created_at",                 :null=>false
     t.string   "complaints"
@@ -90,7 +96,7 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.integer  "patient_id",                 :index=>{:name=>"index_visits_on_patient_id"}
     t.integer  "constitution_option_id",     :index=>{:name=>"index_visits_on_constitution_option_id"}, :foreign_key=>{:references=>"constitution_options", :name=>"visits_constitution_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
     t.integer  "general_state_option_id",    :index=>{:name=>"index_visits_on_general_state_option_id"}
-    t.integer  "postural_pose_option_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}
+    t.integer  "postural_pose_options_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}
     t.integer  "subcutanious_fat_option_id", :index=>{:name=>"index_visits_on_subcutanious_fat_option_id"}
     t.integer  "effleurage_option_id",       :index=>{:name=>"index_visits_on_effleurage_option_id"}
     t.integer  "from_id",                    :index=>{:name=>"fk__visits_from_id"}, :foreign_key=>{:references=>"specialists", :name=>"fk_visits_from_id", :on_update=>:no_action, :on_delete=>:no_action}
@@ -318,12 +324,6 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.integer  "visit_id",    :index=>{:name=>"index_medications_on_visit_id"}
     t.datetime "created_at",  :null=>false
     t.datetime "updated_at",  :null=>false
-  end
-
-  create_table "postural_pose_options", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
   end
 
   create_table "primary_diagnosis_visits", id: false, force: :cascade do |t|
