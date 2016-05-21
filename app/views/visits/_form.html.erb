@@ -106,7 +106,7 @@
     <div class="col-lg-10">
       <%= f.collection_select :postural_pose_option_id, PosturalPoseOption.all, :id, :name, {}, {:class => "form-control"}  %>
     </div>
-    <%=f.error_span(:general_state) %>
+    <%=f.error_span(:postural_pose) %>
   </div>
   <div class="form-group">
     <%= f.label :weight, :class => 'control-label col-lg-2' %>

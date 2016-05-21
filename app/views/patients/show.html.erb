@@ -31,8 +31,10 @@
   <dd><%= @patient.insurance_company %></dd>
   <dt><strong><%= t(:insurance_certificate) %>:</strong></dt>
   <dd><%= @patient.insurance_certificate %></dd>
+  <% if @patient.social_benefit_code && @patient.social_benefit_code != "" %>
   <dt><strong><%= t(:social_benefit_code) %>:</strong></dt>
-  <dd><%= t(@patient.social_benefit_code) if @patient.social_benefit_code && @patient.social_benefit_code != "" %></dd>
+    <dd><%= t(@patient.social_benefit_code)%> (<%= SocialBenefit.find_by(code: @patient.social_benefit_code.to_i).name %>)</dd>
+  <% end %>
   <dt><strong><%= t(:document_name) %>:</strong></dt>
   <dd><%= @patient.document_name.each.first %></dd>
   <dt><strong><%= t(:document_series) %>:</strong></dt>

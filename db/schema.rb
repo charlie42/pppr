@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521102127) do
+ActiveRecord::Schema.define(version: 20160521130418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,12 @@ ActiveRecord::Schema.define(version: 20160521102127) do
     t.datetime "updated_at", :null=>false
   end
 
+  create_table "postural_pose_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
+  end
+
   create_table "specialists", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", :null=>false
@@ -79,7 +85,7 @@ ActiveRecord::Schema.define(version: 20160521102127) do
     t.integer  "patient_id",                 :index=>{:name=>"index_visits_on_patient_id"}
     t.integer  "constitution_option_id",     :index=>{:name=>"index_visits_on_constitution_option_id"}, :foreign_key=>{:references=>"constitution_options", :name=>"visits_constitution_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
     t.integer  "general_state_option_id",    :index=>{:name=>"index_visits_on_general_state_option_id"}, :foreign_key=>{:references=>"general_state_options", :name=>"visits_general_state_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
-    t.integer  "postural_pose_option_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}
+    t.integer  "postural_pose_option_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}, :foreign_key=>{:references=>"postural_pose_options", :name=>"visits_postural_pose_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
     t.integer  "subcutanious_fat_option_id", :index=>{:name=>"index_visits_on_subcutanious_fat_option_id"}
     t.integer  "effleurage_option_id",       :index=>{:name=>"index_visits_on_effleurage_option_id"}
     t.integer  "from_id",                    :index=>{:name=>"fk__visits_from_id"}, :foreign_key=>{:references=>"specialists", :name=>"fk_visits_from_id", :on_update=>:no_action, :on_delete=>:no_action}
@@ -186,7 +192,10 @@ ActiveRecord::Schema.define(version: 20160521102127) do
   create_table "diagnoses", force: :cascade do |t|
     t.datetime "created_at", :null=>false
     t.datetime "updated_at", :null=>false
-    t.string   "name"
+    t.string   "name",       :index=>{:name=>"index_diagnoses_on_name"}
+    t.string   "group"
+    t.string   "block"
+    t.string   "code"
   end
 
   create_table "examinations", force: :cascade do |t|
@@ -258,10 +267,20 @@ ActiveRecord::Schema.define(version: 20160521102127) do
   end
 
   create_table "medicines", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                 :index=>{:name=>"index_medicines_on_name"}
     t.string   "code"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
+    t.datetime "created_at",           :null=>false
+    t.datetime "updated_at",           :null=>false
+    t.string   "registry_number"
+    t.datetime "registry_start_date"
+    t.datetime "registry_end_date"
+    t.datetime "registry_remove_date"
+    t.string   "company"
+    t.string   "international_name"
+    t.string   "form"
+    t.string   "stages"
+    t.string   "documents"
+    t.string   "group"
   end
 
   create_table "medications", force: :cascade do |t|
@@ -272,12 +291,6 @@ ActiveRecord::Schema.define(version: 20160521102127) do
     t.integer  "visit_id",    :index=>{:name=>"index_medications_on_visit_id"}
     t.datetime "created_at",  :null=>false
     t.datetime "updated_at",  :null=>false
-  end
-
-  create_table "postural_pose_options", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
   end
 
   create_table "primary_diagnosis_visits", id: false, force: :cascade do |t|
@@ -298,6 +311,13 @@ ActiveRecord::Schema.define(version: 20160521102127) do
     t.integer  "horizontal_counter"
     t.string   "ancestry",           :index=>{:name=>"index_report_items_on_ancestry"}
     t.string   "full_name"
+  end
+
+  create_table "social_benefits", force: :cascade do |t|
+    t.integer  "code"
+    t.string   "name"
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
   end
 
   create_table "subcutanious_fat_options", force: :cascade do |t|
