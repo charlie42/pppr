@@ -134,7 +134,7 @@
     
    <% if @visit.treatments.any? %>
     <%@visit.treatments.each do |t| %>
-      <%= t.treatment_factor.name %> 
+      <%= t.treatment_factor.name if t.treatment_factor %> 
       <%= t.amount %> 
       <% if t.details %>
         (<%= t.details %>)
@@ -146,7 +146,7 @@
     
      <% if@visit.medications.any? %>
       <%@visit.medications.each do |m| %>
-        <%= m.medicine.name %>
+        <%= m.medicine.name if m.medicine %>
         <%= m.dosage %>
         <% if m.details %>
           <%= m.details %> 
@@ -159,7 +159,7 @@
     
      <% if @visit.consultations.any? %>
       <%@visit.consultations.each do |c| %>
-        <%= c.specialist.name %>
+        <%= c.specialist.name if c.specialist %>
       <% end %>
     <% end %>
    <br>
@@ -169,7 +169,7 @@
     <% @exs = ExaminationResult.where(:visit_id =>@visit.id, :result => nil).limit(nil) %>
     <% if @exs.any? %>
       <% @exs.each do |e| %>
-        <%= e.examination.name %> 
+        <%= e.examination.name if e.examination %> 
         <% if e.details %>
           (<%= e.details %>)
         <% end %>
@@ -185,7 +185,7 @@
     <% @exs -= @except %>
     <% if @exs.any? %>
       <% @exs.each do |e| %>
-        <%= e.examination.name %> 
+        <%= e.examination.name if e.examination %> 
         <%= e.result %>
         <% if e.details %>
           (<%= e.details %>)

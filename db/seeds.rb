@@ -8,6 +8,26 @@
 #   {name: "Отчет", quantity: -1, percentage: nil, parent_id: nil, horizontal_counter: 0, ancestry: nil, full_name: "Отчет"},
 #   {name: "Всего", quantity: 54, percentage: nil, parent_id: nil, horizontal_counter: 0, ancestry: "1", full_name: "Всего"}
 # ])
+
+# AnamnesisType.create!([
+#   {name: "Перенесенные заболевания"},
+#   {name: "Наследственность"},
+#   {name: "Гинекологический анамнез"},
+#   {name: "Аллергоанамнез"},
+#   {name: "Операции, травмы"},
+#   {name: "Вредные привычки"},
+#   {name: "Жил-был. условия"},
+#   {name: "Питание"},
+#   {name: "Перенесенные заболевания"},
+#   {name: "Наследственность"},
+#   {name: "Гинекологический анамнез"},
+#   {name: "Аллергоанамнез"},
+#   {name: "Операции, травмы"},
+#   {name: "Вредные привычки"},
+#   {name: "Жил-был. условия"},
+#   {name: "Питание"}
+# ])
+
 # AnamnesisName.create!([
 #   {name: "Туберкулез", anamnesis_type_id: 1, unique: false},
 #   {name: "Вен. заболевания", anamnesis_type_id: 1, unique: true},
@@ -34,24 +54,7 @@
 #   {name: "Жил-был. условия", anamnesis_type_id: 7, unique: false},
 #   {name: "Питание", anamnesis_type_id: 8, unique: false}
 # ])
-# AnamnesisType.create!([
-#   {name: "Перенесенные заболевания"},
-#   {name: "Наследственность"},
-#   {name: "Гинекологический анамнез"},
-#   {name: "Аллергоанамнез"},
-#   {name: "Операции, травмы"},
-#   {name: "Вредные привычки"},
-#   {name: "Жил-был. условия"},
-#   {name: "Питание"},
-#   {name: "Перенесенные заболевания"},
-#   {name: "Наследственность"},
-#   {name: "Гинекологический анамнез"},
-#   {name: "Аллергоанамнез"},
-#   {name: "Операции, травмы"},
-#   {name: "Вредные привычки"},
-#   {name: "Жил-был. условия"},
-#   {name: "Питание"}
-# ])
+
 # AnamnesisValue.create!([
 #   {name: "нет", anamnesis_name_id: 1},
 #   {name: "да", anamnesis_name_id: 1},
@@ -212,6 +215,19 @@
 #   {concomitant_diagnosis_id: nil, visit_id: 101, details: nil},
 #   {concomitant_diagnosis_id: nil, visit_id: 102, details: nil}
 # ])
+
+# ConditionType.create!([
+#   {name: "Кожные покровы"},
+#   {name: "Слизистая ротовой полости"},
+#   {name: "Конъюнктива"},
+#   {name: "Подкожно-жировая клетчатка"},
+#   {name: "Подкожные лимфатические узлы"},
+#   {name: "Сердечно-сосудистая система"},
+#   {name: "Дыхательная система"},
+#   {name: "Пищеварительная система"},
+#   {name: "Мочевыделительная система"}
+# ])
+
 # ConditionName.create!([
 #   {name: "Окраска", condition_type_id: 1, unique: false},
 #   {name: "Кожа", condition_type_id: 1, unique: true},
@@ -244,17 +260,7 @@
 #   {name: "Симптом поколачивания по пояснице", condition_type_id: 9, unique: true},
 #   {name: "Мочеиспускание", condition_type_id: 9, unique: false}
 # ])
-# ConditionType.create!([
-#   {name: "Кожные покровы"},
-#   {name: "Слизистая ротовой полости"},
-#   {name: "Конъюнктива"},
-#   {name: "Подкожно-жировая клетчатка"},
-#   {name: "Подкожные лимфатические узлы"},
-#   {name: "Сердечно-сосудистая система"},
-#   {name: "Дыхательная система"},
-#   {name: "Пищеварительная система"},
-#   {name: "Мочевыделительная система"}
-# ])
+
 # ConditionValue.create!([
 #   {name: "бледна", condition_name_id: 1},
 #   {name: "бледно-розовая", condition_name_id: 1},
@@ -540,12 +546,26 @@
 #   {visit_id: 88, condition_value_id: 46, details: ""},
 #   {visit_id: 88, condition_value_id: 47, details: ""}
 # ])
-# ConstitutionOption.create!([
-#   {name: "Телосложение1"},
-#   {name: "Телосложение2"},
-#   {name: "Телосложение1"},
-#   {name: "Телосложение2"}
-# ])
+ConstitutionOption.create!([
+  {name: "Нормостеническое"},
+  {name: "Астеническое"},
+  {name: "Гиперстеническое"}
+])
+GeneralStateOption.create!([
+  {name: "Удовлетворительное"},
+  {name: "Средней степени тяжести"},
+  {name: "Тяжелое"}
+])
+Examination.create!([
+  {name: "ЭКГ"},
+  {name: "Общий анализ крови"},
+  {name: "УЗИ щитовидной железы"}
+])
+PosturalPoseOption.create!([
+  {name: "Активное"},
+  {name: "Пассивное"},
+  {name: "Вынужденное"}
+])
 # Consultation.create!([
 #   {visit_id: 81, specialist_id: 1, result: nil}
 # ])
@@ -733,15 +753,17 @@
 #   {name: "Терапевт"},
 #   {name: "Физиотерапевт"}
 # ])
-(1..5).each do |i|
-	Patient.create!([
-		{name: "Иванов Иван Иванович", :gender => :male, birthday: "#{1980+i}-#{14+i}-#{1+i}", address: "г. Астрахань, ул. Ленина, д. #{i}", phone: "898756798#{i+10}", work_place: "Завод номер #{i}", work_position: "Уборщик", area: "urban", insurance_policy_series: "01#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "11#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "1", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "45678765#{i+10}"},
-		{name: "Петров Петр Петрович", :gender => :male, birthday: "#{1970+i}-#{20+i}-#{2+i}", address: "г. Астрахань, ул. Зеленая, д. #{i}", phone: "898756798#{i+10}", work_place: "Школа номер #{i}", work_position: "Учитель", area: "rural", insurance_policy_series: "02#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "12#{10+i}", document_number: "64325#{10+i}", martial_status: "single", education: "higher", employment: "unemployed", blood_type: "2", :Rh_factor => "negative", insurance_company: "СОГАЗ", insurance_certificate: "55678765#{i+10}"},
-		{name: "Васильков Василий Васильевич", :gender => :male, birthday: "#{1960+i}-#{1+i}-#{5+i}", address: "г. Астрахань, ул. Теплая, д. #{i}", phone: "898756798#{i+10}", work_place: "Больница номер #{i}", work_position: "Врач", area: "urban", insurance_policy_series: "03#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "13#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "3", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "65678765#{i+10}"},
-		{name: "Дарьева Дарья Дарьевна", :gender => :female, birthday: "#{1950+i}-#{14+i}-#{6+i}", address: "г. Астрахань, ул. Тополиная, д. #{i}", phone: "898756798#{i+10}", work_place: "Фабрика номер #{i}", work_position: "Инженер", area: "rural", insurance_policy_series: "04#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "14#{10+i}", document_number: "64325#{10+i}", martial_status: "single", education: "higher", employment: "unemployed", blood_type: "4", :Rh_factor => "negative", insurance_company: "СОГАЗ", insurance_certificate: "75678765#{i+10}"},
-		{name: "Васильева Василила Василисовна", :gender => :female, birthday: "#{1940+i}-#{10+i}-#{7+i}", address: "г. Астрахань, ул. Спортивная, д. #{i}", phone: "898756798#{i+10}", work_place: "Администрация", work_position: "Инженер", area: "urban", insurance_policy_series: "05#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "15#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "1", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "85678765#{i+10}"}
-	])
-end
+
+# (1..5).each do |i|
+# 	Patient.create!([
+# 		{name: "Иванов Иван Иванович", :gender => :male, birthday: "#{1980+i}-#{14+i}-#{1+i}", address: "г. Астрахань, ул. Ленина, д. #{i}", phone: "898756798#{i+10}", work_place: "Завод номер #{i}", work_position: "Уборщик", area: "urban", insurance_policy_series: "01#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "11#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "1", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "45678765#{i+10}"},
+# 		{name: "Петров Петр Петрович", :gender => :male, birthday: "#{1970+i}-#{20+i}-#{2+i}", address: "г. Астрахань, ул. Зеленая, д. #{i}", phone: "898756798#{i+10}", work_place: "Школа номер #{i}", work_position: "Учитель", area: "rural", insurance_policy_series: "02#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "12#{10+i}", document_number: "64325#{10+i}", martial_status: "single", education: "higher", employment: "unemployed", blood_type: "2", :Rh_factor => "negative", insurance_company: "СОГАЗ", insurance_certificate: "55678765#{i+10}"},
+# 		{name: "Васильков Василий Васильевич", :gender => :male, birthday: "#{1960+i}-#{1+i}-#{5+i}", address: "г. Астрахань, ул. Теплая, д. #{i}", phone: "898756798#{i+10}", work_place: "Больница номер #{i}", work_position: "Врач", area: "urban", insurance_policy_series: "03#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "13#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "3", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "65678765#{i+10}"},
+# 		{name: "Дарьева Дарья Дарьевна", :gender => :female, birthday: "#{1950+i}-#{14+i}-#{6+i}", address: "г. Астрахань, ул. Тополиная, д. #{i}", phone: "898756798#{i+10}", work_place: "Фабрика номер #{i}", work_position: "Инженер", area: "rural", insurance_policy_series: "04#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "14#{10+i}", document_number: "64325#{10+i}", martial_status: "single", education: "higher", employment: "unemployed", blood_type: "4", :Rh_factor => "negative", insurance_company: "СОГАЗ", insurance_certificate: "75678765#{i+10}"},
+# 		{name: "Васильева Василила Василисовна", :gender => :female, birthday: "#{1940+i}-#{10+i}-#{7+i}", address: "г. Астрахань, ул. Спортивная, д. #{i}", phone: "898756798#{i+10}", work_place: "Администрация", work_position: "Инженер", area: "urban", insurance_policy_series: "05#{10+i}", insurance_policy_number: "0001964#{10+i}", social_benefit_code: "#{i}", document_series: "15#{10+i}", document_number: "64325#{10+i}", martial_status: "married", education: "higher", employment: "job", blood_type: "1", :Rh_factor => "positive", insurance_company: "СОГАЗ", insurance_certificate: "85678765#{i+10}"}
+# 	])
+# end
+
 # Treatment.create!([
 #   {treatment_factor_id: 2, amount: 2, details: "1", visit_id: 29},
 #   {treatment_factor_id: 1, amount: 2, details: "1", visit_id: 29},
@@ -751,10 +773,15 @@ end
 #   {treatment_factor_id: 1, amount: 2, details: "1", visit_id: 31},
 #   {treatment_factor_id: 2, amount: 2, details: "1", visit_id: 32}
 # ])
-# TreatmentFactor.create!([
-#   {name: "Массаж"},
-#   {name: "Электрофорез"}
-# ])
+TreatmentFactor.create!([
+  {name: "Массаж"},
+  {name: "Электрофорез"}
+])
+Specialist.create!([
+  {name: "Терапевт"},
+  {name: "Физиотерапевт"},
+  {name: "Эндокринолог"}
+])
 
 
 

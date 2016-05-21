@@ -11,27 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160520083628) do
+ActiveRecord::Schema.define(version: 20160521102127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "abdominal_condition_visits", force: :cascade do |t|
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
-  end
-
-  create_table "abdominal_conditions", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
-  end
-
-  create_table "abdominal_conditions_visits", id: false, force: :cascade do |t|
-    t.integer "visit_id",               :null=>false
-    t.integer "abdominal_condition_id", :null=>false
-    t.string  "details"
-  end
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  :default=>"", :null=>false, :index=>{:name=>"index_admins_on_email", :unique=>true}
@@ -72,13 +55,13 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.datetime "updated_at", :null=>false
   end
 
-  create_table "specialists", force: :cascade do |t|
+  create_table "general_state_options", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", :null=>false
     t.datetime "updated_at", :null=>false
   end
 
-  create_table "postural_pose_options", force: :cascade do |t|
+  create_table "specialists", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", :null=>false
     t.datetime "updated_at", :null=>false
@@ -95,8 +78,8 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.integer  "doctor_id",                  :index=>{:name=>"index_visits_on_doctor_id"}
     t.integer  "patient_id",                 :index=>{:name=>"index_visits_on_patient_id"}
     t.integer  "constitution_option_id",     :index=>{:name=>"index_visits_on_constitution_option_id"}, :foreign_key=>{:references=>"constitution_options", :name=>"visits_constitution_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
-    t.integer  "general_state_option_id",    :index=>{:name=>"index_visits_on_general_state_option_id"}
-    t.integer  "postural_pose_options_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}
+    t.integer  "general_state_option_id",    :index=>{:name=>"index_visits_on_general_state_option_id"}, :foreign_key=>{:references=>"general_state_options", :name=>"visits_general_state_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
+    t.integer  "postural_pose_option_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}
     t.integer  "subcutanious_fat_option_id", :index=>{:name=>"index_visits_on_subcutanious_fat_option_id"}
     t.integer  "effleurage_option_id",       :index=>{:name=>"index_visits_on_effleurage_option_id"}
     t.integer  "from_id",                    :index=>{:name=>"fk__visits_from_id"}, :foreign_key=>{:references=>"specialists", :name=>"fk_visits_from_id", :on_update=>:no_action, :on_delete=>:no_action}
@@ -194,12 +177,6 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.datetime "updated_at",         :null=>false
   end
 
-  create_table "consultation", id: false, force: :cascade do |t|
-    t.integer "visit_id",      :null=>false
-    t.integer "specialist_id", :null=>false
-    t.string  "result"
-  end
-
   create_table "consultations", id: false, force: :cascade do |t|
     t.integer "visit_id",      :null=>false
     t.integer "specialist_id", :null=>false
@@ -210,12 +187,6 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.datetime "created_at", :null=>false
     t.datetime "updated_at", :null=>false
     t.string   "name"
-  end
-
-  create_table "effleurage_options", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
   end
 
   create_table "examinations", force: :cascade do |t|
@@ -286,29 +257,6 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.datetime "updated_at",    :null=>false
   end
 
-  create_table "general_state_options", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
-  end
-
-  create_table "liver_condition_visits", force: :cascade do |t|
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
-  end
-
-  create_table "liver_conditions", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
-  end
-
-  create_table "liver_conditions_visits", id: false, force: :cascade do |t|
-    t.integer "visit_id",           :null=>false
-    t.integer "liver_condition_id", :null=>false
-    t.string  "details"
-  end
-
   create_table "medicines", force: :cascade do |t|
     t.string   "name"
     t.string   "code"
@@ -324,6 +272,12 @@ ActiveRecord::Schema.define(version: 20160520083628) do
     t.integer  "visit_id",    :index=>{:name=>"index_medications_on_visit_id"}
     t.datetime "created_at",  :null=>false
     t.datetime "updated_at",  :null=>false
+  end
+
+  create_table "postural_pose_options", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
   end
 
   create_table "primary_diagnosis_visits", id: false, force: :cascade do |t|

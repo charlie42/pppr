@@ -682,7 +682,7 @@ class VisitsController < ApplicationController
 
     @names = params['visit']["condition_visits"]
     
-    #if @names
+    if @names
       @names.each do |name|
         @ids = name[1]["condition_value_id"]
         @details = name[1]["details"]
@@ -693,11 +693,11 @@ class VisitsController < ApplicationController
           end
         end
       end
-    #end
+    end
 
     @names = params['visit']["anamnesis_visits"]
     
-    #if @names
+    if @names
       @names.each do |name|
         @ids = name[1]["anamnesis_value_id"]
         @details = name[1]["details"]
@@ -708,7 +708,7 @@ class VisitsController < ApplicationController
           end
         end
       end
-    #end
+    end
 
     # @details = params['visit']["treatments"]["details"]
     # @amount = params['visit']["treatments"]["amount"]
