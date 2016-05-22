@@ -4,16 +4,16 @@ class VisitsController < ApplicationController
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
   before_action :set_params
 
-  @@report_hash = Hash.new 
-  
- 
+  @@report_hash = Hash.new
+
+
   @@ri = ReportItem.order("created_at").last
   @@vertical_counter = 0
 
 
   def set_params
     #logger.debug "before set params param #{@@param.inspect} all #{@@all}"
-    @@param ||= Hash.new 
+    @@param ||= Hash.new
     @@all ||= 0
     logger.debug "after set params param #{@@param.inspect} all #{@@all}"
   end
@@ -44,18 +44,18 @@ class VisitsController < ApplicationController
     @arr = [10, 20, 30]
 
     if !ReportItem.roots.first
-      @ri = ReportItem.find_or_create_by(name: "Отчет") do |x| 
-        x.quantity = -1 
+      @ri = ReportItem.find_or_create_by(name: "Отчет") do |x|
+        x.quantity = -1
         x.horizontal_counter = 0
         x.full_name = "Отчет"
-      end 
-      @ri = @ri.children.find_or_create_by(name: "Всего") do |x| 
+      end
+      @ri = @ri.children.find_or_create_by(name: "Всего") do |x|
         x.quantity = @all
-        x.horizontal_counter = 0 
+        x.horizontal_counter = 0
         @@vertical_counter = 1
         x.full_name = "Всего"
-      end 
-      
+      end
+
     end
 
     @ri = ReportItem.order("created_at").last
@@ -88,7 +88,7 @@ class VisitsController < ApplicationController
     logger.debug "a in name #{a}"
 
     @name = "поле "
-    @name +=  I18n.t a.last.to_a.last.first.second.first.second["name"].to_s, scope: 'report' 
+    @name +=  I18n.t a.last.to_a.last.first.second.first.second["name"].to_s, scope: 'report'
     @name += " "
     @name +=  t a.last.to_a.last["p"]
     @name += ' "'
@@ -101,9 +101,9 @@ class VisitsController < ApplicationController
 
     logger.debug "A #{a}"
 
-    a.each { |x| 
+    a.each { |x|
       @full_name += "поле "
-      @full_name += I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report' 
+      @full_name += I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report'
       @full_name += " "
       @full_name += t x.last.to_a.second.last.to_s
       @full_name += ' "'
@@ -125,12 +125,12 @@ class VisitsController < ApplicationController
     @last_name = a.last.last["a"]["0"]["name"]
     while @last_name == ""
       if a.count > 1
-        a = a.first a.count - 1 
+        a = a.first a.count - 1
 
         logger.debug "a #{a}"
 
         @last_name = a.last.last["a"]["0"]["name"] if a.last.last["a"]["0"]
-      else 
+      else
         if name != ""
           a = []
         end
@@ -141,7 +141,7 @@ class VisitsController < ApplicationController
     #a.push ["99", {"a"=>{"0"=>{"name"=>name}}, "p"=> predicate, "v"=>{"0"=>{"value"=>""}}}]
   end
 
-  def add_to_report 
+  def add_to_report
     @doctor = Doctor.find(params[:doctor_id])
     visits = @doctor.visits
 
@@ -163,9 +163,9 @@ class VisitsController < ApplicationController
     logger.debug "add to report @all #{@all} @@all #{@@all}"
     @@all = @all if !defined? @@all && @all != 0
     logger.debug "add to report @@all #{@@all}"
-    @param = @@param.to_s#.tr('"', "'") 
+    @param = @@param.to_s#.tr('"', "'")
     @ri = @@ri
-    
+
     @@report_hash.merge!(@param => @@all)
     @report_hash = @@report_hash
 
@@ -173,28 +173,28 @@ class VisitsController < ApplicationController
     logger.debug " RI #{@@ri} QUANTITY  #{@ri.quantity} ALL #{@@all}"
 
     # firs_loop_visited = false
-    # while @ri.quantity <= @@all do 
+    # while @ri.quantity <= @@all do
     #   logger.debug " RI QUANTITY loop1 #{@ri.quantity}"
-    #   @ri = @ri.parent 
+    #   @ri = @ri.parent
     #   @@vertical_counter -= 1
     #   firs_loop_visited = true
     #   if not (@ri && @ri.parent)
     #      break
-    #   end   
+    #   end
     # end
 
     # if !firs_loop_visited
-    #   while @ri.quantity > @@all do 
+    #   while @ri.quantity > @@all do
     #     logger.debug " RI QUANTITY loop2 #{@ri.quantity}"
-        
+
     #     if @ri.children.first
-    #       @ri = @ri.children.first 
+    #       @ri = @ri.children.first
     #       @@vertical_counter += 1
     #     end
     #     if not (@ri && @ri.children.first)
     #        break
-    #     end 
-        
+    #     end
+
     #   end
     # end
 
@@ -210,21 +210,21 @@ class VisitsController < ApplicationController
 
     #@name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last
 
-    # logger.debug "before last_name #{@@param}"    
+    # logger.debug "before last_name #{@@param}"
     # last_name = @@param.to_unsafe_h.to_a.last.last.to_a.last.to_a.last.first.second.first.second["name"].to_s if @@param != {}
 
     # logger.debug "before if param and empty #{@@param}"
     # logger.debug "before if param and empty #{last_name}"
 
     # if @@param && @@param != {} && (last_name != "" || (last_name == "" && @@param.to_a.last.last.to_a.count > 1) )
-      
+
     #   @name = "Поле "
 
     #   logger.debug "inside if #{@@param}"
 
     #   if last_name == ""
-    #     a = @@param.to_a.last.last.to_a.first @@param.to_a.last.last.to_a.count - 1 
-    #   else 
+    #     a = @@param.to_a.last.last.to_a.first @@param.to_a.last.last.to_a.count - 1
+    #   else
     #     a = @@param.to_a.last.last.to_a
     #   end
 
@@ -242,8 +242,8 @@ class VisitsController < ApplicationController
     # #@full_name += @@param.to_unsafe_h.to_a.first.to_a.last.to_a.to_s + " = "
 
     #   logger.debug "A #{a}"
-    
-    #   a.to_a.each { |x| 
+
+    #   a.to_a.each { |x|
     #     #@full_name += x.last.to_a.last.to_a.last.first.second.first.second["name"].to_s
     #     #@full_name += x.last.to_a.last.to_a.last["p"].to_s
     #     #@full_name += x.last.to_a.last.to_a.last["v"].first.second.first.second.to_s
@@ -278,12 +278,12 @@ class VisitsController < ApplicationController
     #   if a.count > 1
 
     #   else
-    #     @ri = ReportItem.roots.first.children.last.children.create(name: @name, 
+    #     @ri = ReportItem.roots.first.children.last.children.create(name: @name,
     #       full_name: @full_name, quantity: @@all)
     #   end
     #   @ri = @ri.patient
 
-    # else 
+    # else
     #   @name = "Всего"
     #   @full_name = "Всего посещений"
 
@@ -294,7 +294,7 @@ class VisitsController < ApplicationController
 
     # if ReportItem.first.descendants.exists?(name: @name, full_name: @full_name)
     #   logger.debug " IF "
-    #   @ri = ReportItem.find_by(name: @name, full_name: @full_name).siblings.create(name: @name, 
+    #   @ri = ReportItem.find_by(name: @name, full_name: @full_name).siblings.create(name: @name,
     #         quantity: @@all, full_name: @full_name)
     # else
     #   @ri = @ri.children.create(name: @name, full_name: @full_name, quantity: @@all)
@@ -302,7 +302,7 @@ class VisitsController < ApplicationController
 
     # @repeated_items_popup = 0
     # ReportItem.where.not(id: ReportItem.group(:full_name, :quantity, :ancestry).pluck('max(report_items.id)')).each { |x|
-    #   x.delete if x.is_childless? 
+    #   x.delete if x.is_childless?
     #   @repeated_items_popup += 1
     # }
     # @ri = ReportItem.order("created_at").last
@@ -322,12 +322,12 @@ class VisitsController < ApplicationController
     # last_name = a.last.last["a"]["0"]["name"]
     # while last_name == ""
     #   if a.count > 1
-    #     a = a.first a.count - 1 
+    #     a = a.first a.count - 1
 
     #     logger.debug "a #{a}"
 
     #     last_name = a.last.last["a"]["0"]["name"] if a.last.last["a"]["0"]
-    #   else 
+    #   else
     #     break
     #   end
     # end
@@ -339,7 +339,7 @@ class VisitsController < ApplicationController
     logger.debug "fullname #{fullname}"
 
     if a.count > 1
-      a_popped = a.first a.count - 1 
+      a_popped = a.first a.count - 1
       a_popped_name = fullname(a.first a.count - 1)
       temp_ri = ReportItem.where(full_name: a_popped_name).last
       if temp_ri
@@ -372,7 +372,7 @@ class VisitsController < ApplicationController
     end
   end
 
-  def build_report 
+  def build_report
     # @report_hash = @@report_hash
     # @report = Hash.new
     # @c = Array.new
@@ -382,7 +382,7 @@ class VisitsController < ApplicationController
     #   @c << key
     #   @c.last.each do |key1, value1|
     #     @first << value1
-    #     @first.each do |key2, value2| 
+    #     @first.each do |key2, value2|
     #       @each_c << value2
     #     end
     #   end
@@ -401,20 +401,20 @@ class VisitsController < ApplicationController
     @all = @visits.count
     @@all = @all
 
-    @ri = ReportItem.find_or_create_by(name: "Отчет") do |x| 
-      x.quantity = -1 
+    @ri = ReportItem.find_or_create_by(name: "Отчет") do |x|
+      x.quantity = -1
       x.horizontal_counter = 0
       x.full_name = "Отчет"
-    end 
-    @ri = @ri.children.find_or_create_by(name: "Всего") do |x| 
+    end
+    @ri = @ri.children.find_or_create_by(name: "Всего") do |x|
       x.quantity = @all
       #logger.debug "#{x.inspect}"
       #logger.debug "ALL #{@all}"
       #sdfghjk
-      x.horizontal_counter = 0 
+      x.horizontal_counter = 0
       @@vertical_counter = 1
       x.full_name = "Всего"
-    end 
+    end
 
     @ri = ReportItem.order("created_at").last
     @@ri = @ri
@@ -425,7 +425,7 @@ class VisitsController < ApplicationController
   end
 
   def all_records
-    
+
     @doctor = Doctor.find(params[:doctor_id])
     visits = @doctor.visits
 
@@ -469,15 +469,15 @@ class VisitsController < ApplicationController
     # @chart1 = LazyHighCharts::HighChart.new('graph') do |f|
     #   f.title({ :text=>"Combination chart"})
     #   f.options[:xAxis][:categories] = ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
-    #   f.labels(:items=>[:html=>"Total fruit consumption", :style=>{:left=>"40px", :top=>"8px", :color=>"black"} ]) 
+    #   f.labels(:items=>[:html=>"Total fruit consumption", :style=>{:left=>"40px", :top=>"8px", :color=>"black"} ])
     #   f.series(:type=> 'column',:name=> 'Jane',:data=> [3, 2, 1, 3, 4])
     #   f.series(:type=> 'column',:name=> 'John',:data=> [2, 3, 5, 7, 6])
     #   f.series(:type=> 'column', :name=> 'Joe',:data=> [4, 3, 3, 9, 0])
     #   f.series(:type=> 'column', :name=> 'Joe',:data=> [4, 3, 3, 9, 0])
     #   f.series(:type=> 'spline',:name=> 'Average', :data=> [3, 2.67, 3, 6.33, 3.33])
-    #   f.series(:type=> 'pie',:name=> 'Total consumption', 
+    #   f.series(:type=> 'pie',:name=> 'Total consumption',
     #   :data=> [
-    #     {:name=> 'Jane', :y=> 13, :color=> 'red'}, 
+    #     {:name=> 'Jane', :y=> 13, :color=> 'red'},
     #     {:name=> 'John', :y=> 23,:color=> 'green'},
     #     {:name=> 'Joe', :y=> 19,:color=> 'blue'}
     #   ],
@@ -508,7 +508,7 @@ class VisitsController < ApplicationController
     #       ['Firefox', 45.0],
     #       ['IE', 26.8],
     #      {
-    #         :name=> 'Chrome', 
+    #         :name=> 'Chrome',
     #         :y=> 12.8,
     #         :sliced=> true,
     #         :selected=> true
@@ -520,10 +520,10 @@ class VisitsController < ApplicationController
     #   }
     #   f.series(series)
     #   f.options[:title][:text] = "THA PIE"
-    #   f.legend(:layout=> 'vertical',:style=> {:left=> 'auto', :bottom=> 'auto',:right=> '50px',:top=> '100px'}) 
+    #   f.legend(:layout=> 'vertical',:style=> {:left=> 'auto', :bottom=> 'auto',:right=> '50px',:top=> '100px'})
     #   f.plot_options(:pie=>{
-    #     :allowPointSelect=>true, 
-    #     :cursor=>"pointer" , 
+    #     :allowPointSelect=>true,
+    #     :cursor=>"pointer" ,
     #     :dataLabels=>{
     #       :enabled=>true,
     #       :color=>"black",
@@ -536,7 +536,7 @@ class VisitsController < ApplicationController
 
     #  @chart4 = LazyHighCharts::HighChart.new('column') do |f|
     #   f.series(:name=>'John',:data=> [3, 20, 3, 5, 4, 10, 12 ])
-    #   f.series(:name=>'Jane',:data=>[1, 3, 4, 3, 3, 5, 4,-46] ) 
+    #   f.series(:name=>'Jane',:data=>[1, 3, 4, 3, 3, 5, 4,-46] )
     #   f.title({ :text=>"example test title from controller"})
 
     #   ### Options for Bar
@@ -567,7 +567,7 @@ class VisitsController < ApplicationController
     #   f.lang(thousandsSep: ",")
     #   f.colors(["#90ed7d", "#f7a35c", "#8085e9", "#f15c80", "#e4d354"])
     # end
-    
+
   end
 
   # GET /visits/new
@@ -576,6 +576,7 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @complaints_list = Visit.complaint_counts
     @visit = Visit.new
+    @final_diagnosis_list = FinalDiagnosisList.new
 
     @visit.treatments.build
     @visit.medications.build
@@ -583,7 +584,7 @@ class VisitsController < ApplicationController
 
 
     #@visit.condition_visits.build
-    
+
     #@biz.save
 
     #@visit.primary_diagnosis_visits.build
@@ -591,7 +592,7 @@ class VisitsController < ApplicationController
     #@visit.complication_diagnosis_visits.build
 
 
-    #if @visit.save 
+    #if @visit.save
       #params[:liver_conditions_attributes].each do |key, value|
         #@visit.liver_conditions << LiverConditionVisit.new(:visit_id => params[:id], :liver_condition_id => value, :details => params[:details])
      # @visit.liver_condition_visits << LiverConditionVisit.new(:visit_id => params[:id], :liver_condition_id => params[:liver_condition_id], :details => params[:details])
@@ -638,8 +639,9 @@ class VisitsController < ApplicationController
     @doctor = Doctor.find(params[:doctor_id])
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new(visit_params)
+    @final_diagnosis_list = FinalDiagnosisList.create(final_diagnosis_list_params)
 
-    if @patient.visits.count > 1 
+    if @patient.visits.count > 1
       @visit.update_attribute(:secondary, true)
     end
 
@@ -681,7 +683,7 @@ class VisitsController < ApplicationController
     end
 
     @names = params['visit']["condition_visits"]
-    
+
     if @names
       @names.each do |name|
         @ids = name[1]["condition_value_id"]
@@ -696,7 +698,7 @@ class VisitsController < ApplicationController
     end
 
     @names = params['visit']["anamnesis_visits"]
-    
+
     if @names
       @names.each do |name|
         @ids = name[1]["anamnesis_value_id"]
@@ -723,7 +725,7 @@ class VisitsController < ApplicationController
     # end
 
 
-    # @lc = @visit.treatments.build(:visit_id => params[:id], :factor_id => params['visit']['treatment']['treatment_factor_id'], 
+    # @lc = @visit.treatments.build(:visit_id => params[:id], :factor_id => params['visit']['treatment']['treatment_factor_id'],
     #       :amount => params['visit']['treatment']['amount'], :details => params['visit']['treatment']['details'])
     # @lc.save
 
@@ -833,18 +835,18 @@ class VisitsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def visit_params
       #{:post => params.require(:post).permit(:title, :body, images_posts_attributes: [:caption, image_attributes: [:image]] )}
-      params.require(:visit).permit(:from, 
-        :date, :complaints, :anamnesis, :allerg, :general_state_option_id, 
-        :diagnosis, :doctor_id, :patient_id, :constitution_option_id, 
-        :effleurage_option_id, :postural_pose_option_id, 
+      params.require(:visit).permit(:from,
+        :date, :complaints, :anamnesis, :allerg, :general_state_option_id,
+        :diagnosis, :doctor_id, :patient_id, :constitution_option_id,
+        :effleurage_option_id, :postural_pose_option_id,
         :subcutanious_fat_option_id, :from_id, :complaint_list,
         treatments_attributes:
           [:id, :treatment_factor_id, :amount, :details, :_destroy],
-        medications_attributes: 
+        medications_attributes:
           [:id, :medicine_id, :dosage, :duration, :details, :_destroy],
         examination_results_attributes:
           [:id, :examinations, :examination_id, :result, :details, :_destroy],
-        consultations_attributes: 
+        consultations_attributes:
           [:result, :specialists],
         primary_diagnosis_visits_attributes:
           [:primary_diagnoses],
@@ -852,15 +854,20 @@ class VisitsController < ApplicationController
           [:concomitant_diagnoses],
         complication_diagnosis_visits_attributes:
           [:complication_diagnoses],
-        condition_visits_attributes: 
+        condition_visits_attributes:
           [:condition_name_id, :details, condition_value_id:[]],
-        anamnesis_visits_attributes: 
+        anamnesis_visits_attributes:
           [:anamnesis_name_id, :details, anamnesis_value_id:[]]
         #,
         # condition_names_attributes:
         #   [:names, :detailss]
         )
+
       #params.require(:visit).permit(:from, :date, :complaints, :anamnesis, :allerg, :general_state_option_id, :diagnosis, :doctor_id, :patient_id, :constitution_option_id, :effleurage_option_id, :postural_pose_option_id, :subcutanious_fat_option_id)
       #params.require(:liver_condition).permit(:details, :liver_condition_id)
+    end
+
+    def final_diagnosis_list_params
+      params.require(:final_diagnosis_list).permit(:diagnosis_id, :doctor_id, :patient_id, :seconsary)
     end
 end
