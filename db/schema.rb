@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160522164124) do
+ActiveRecord::Schema.define(version: 20160522172234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -198,21 +198,6 @@ ActiveRecord::Schema.define(version: 20160522164124) do
     t.string   "code"
   end
 
-  create_table "examinations", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", :null=>false
-    t.datetime "updated_at", :null=>false
-  end
-
-  create_table "examination_results", force: :cascade do |t|
-    t.integer  "examination_id", :index=>{:name=>"index_examination_results_on_examination_id"}, :foreign_key=>{:references=>"examinations", :name=>"examination_results_examination_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
-    t.string   "result"
-    t.string   "details"
-    t.integer  "visit_id",       :index=>{:name=>"index_examination_results_on_visit_id"}
-    t.datetime "created_at",     :null=>false
-    t.datetime "updated_at",     :null=>false
-  end
-
   create_table "patients", force: :cascade do |t|
     t.string   "name"
     t.integer  "age"
@@ -248,6 +233,31 @@ ActiveRecord::Schema.define(version: 20160522164124) do
     t.string   "insurance_certificate"
     t.string   "allergy"
     t.boolean  "bool_test"
+  end
+
+  create_table "dispanserisations", force: :cascade do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "diagnosis_id", :index=>{:name=>"index_dispanserisations_on_diagnosis_id"}, :foreign_key=>{:references=>"diagnoses", :name=>"fk_dispanserisations_diagnosis_id", :on_update=>:no_action, :on_delete=>:no_action}
+    t.datetime "created_at",   :null=>false
+    t.datetime "updated_at",   :null=>false
+    t.integer  "patient_id",   :index=>{:name=>"index_dispanserisations_on_patient_id"}, :foreign_key=>{:references=>"patients", :name=>"fk_dispanserisations_patient_id", :on_update=>:no_action, :on_delete=>:no_action}
+    t.integer  "doctor_id",    :index=>{:name=>"index_dispanserisations_on_doctor_id"}, :foreign_key=>{:references=>"doctors", :name=>"fk_dispanserisations_doctor_id", :on_update=>:no_action, :on_delete=>:no_action}
+  end
+
+  create_table "examinations", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", :null=>false
+    t.datetime "updated_at", :null=>false
+  end
+
+  create_table "examination_results", force: :cascade do |t|
+    t.integer  "examination_id", :index=>{:name=>"index_examination_results_on_examination_id"}, :foreign_key=>{:references=>"examinations", :name=>"examination_results_examination_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
+    t.string   "result"
+    t.string   "details"
+    t.integer  "visit_id",       :index=>{:name=>"index_examination_results_on_visit_id"}
+    t.datetime "created_at",     :null=>false
+    t.datetime "updated_at",     :null=>false
   end
 
   create_table "final_diagnosis_lists", force: :cascade do |t|

@@ -91,5 +91,27 @@
         <tbody><td>-</td><td>-</td><td>-</td></tbody>
       <% end %>
   </table>
+  <br>
+  <strong>Заболевания, подлежащие диспансерному наблюдению</strong>
+  <table class="table table-striped">
+    <thead>
+      <tr><td>Дата начала</td><td>Дата окончания</td><td>Диагноз</td><td>Код по МКБ-10</td></tr>
+    </thead>
+    <tbody>
+      <% if @patient.dispanserisations.first %>
+        <% @patient.dispanserisations.each do |l| %>
+          <tr>
+
+            <td><%= l.start_date.strftime("%d.%m.%Y") %></td>
+            <td><%= l.end_date.strftime("%d.%m.%Y") %></td>
+            <td><%= l.diagnosis.name %></td>
+            <td><%= l.diagnosis.code %></td>
+          </tr>
+        <% end %>
+    </tbody>
+      <% else %>
+        <tbody><td>-</td><td>-</td><td>-</td><td>-</td></tbody>
+      <% end %>
+  </table>
 
 </dl>
