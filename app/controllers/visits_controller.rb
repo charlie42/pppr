@@ -577,6 +577,7 @@ class VisitsController < ApplicationController
     @complaints_list = Visit.complaint_counts
     @visit = Visit.new
     @final_diagnosis_list = FinalDiagnosisList.new
+    @dispanserisation = Dispanserisation.new
 
     @visit.treatments.build
     @visit.medications.build
@@ -640,6 +641,7 @@ class VisitsController < ApplicationController
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new(visit_params)
     @final_diagnosis_list = FinalDiagnosisList.create(final_diagnosis_list_params)
+    @dispanserisation = Dispanserisation.create(dispanserisation_params)
 
     if @patient.visits.count > 1
       @visit.update_attribute(:secondary, true)
@@ -869,5 +871,9 @@ class VisitsController < ApplicationController
 
     def final_diagnosis_list_params
       params.require(:final_diagnosis_list).permit(:diagnosis_id, :doctor_id, :patient_id, :seconsary)
+    end
+
+    def dispanserisation_params
+      params.require(:dispanserisation).permit(:diagnosis_id, :start_date, :end_date, :doctor_id, :patient_id)
     end
 end

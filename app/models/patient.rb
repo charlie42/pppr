@@ -2,6 +2,7 @@ class Patient < ActiveRecord::Base
   has_many :visits
   has_many :doctors, through: :visits
   has_many :final_diagnosis_lists
+  has_many :dispanserisations
 
   UNRANSACKABLE_ATTRIBUTES = ["id"]
 

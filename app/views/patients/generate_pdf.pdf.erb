@@ -72,10 +72,24 @@
     <%= @patient.document_number %> <br>
   12. Заболевания, по поводу которых осуществляется диспансерное наблюдение: <br>
   <table class = "in-record-table">
-    <thead><th>Дата начала диспансерного наблюдения</th>
-      <th>Дата прекращения диспансерного наблюдения</th>
-      <th>Диагноз</th><th>Код по МКБ-10</th></thead>
-      <tbody><td>-</td><td>-</td><td>-</td><td>-</td></tbody>
+    <thead>
+      <tr><td>Дата начала</td><td>Дата окончания</td><td>Диагноз</td><td>Код по МКБ-10</td></tr>
+    </thead>
+    <tbody>
+      <% if @patient.dispanserisations.first %>
+        <% @patient.dispanserisations.each do |l| %>
+          <tr>
+
+            <td><%= l.start_date.strftime("%d.%m.%Y") %></td>
+            <td><%= l.end_date.strftime("%d.%m.%Y") %></td>
+            <td><%= l.diagnosis.name %></td>
+            <td><%= l.diagnosis.code %></td>
+          </tr>
+        <% end %>
+    </tbody>
+      <% else %>
+        <tbody><td>-</td><td>-</td><td>-</td><td>-</td></tbody>
+      <% end %>
   </table>
   13. <%= t(:martial_status) %>:
     <%= @patient.martial_status %> <br>
