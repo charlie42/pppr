@@ -70,6 +70,26 @@
   <dd><%= @patient.blood_type %></dd>
   <dt><strong><%= t(:Rh_factor) %>:</strong></dt>
   <dd><%= t @patient.Rh_factor if @patient.Rh_factor %></dd>
+  <br>
+  <strong>Лист заключительных диагнозов</strong>
+  <table class="table table-striped">
+    <thead>
+      <tr><td>Диагноз</td><td>Дата</td><td>Установлен повторно</td></tr>
+    </thead>
+    <tbody>
+      <% if @patient.final_diagnosis_lists.first %>
+        <% @patient.final_diagnosis_lists.each do |l| %>
+          <tr>
+            <td><%= l.diagnosis.name %></td><td><%= l.created_at.strftime("%d.%m.%Y") %></td>
+            <td>
+              <% if l.seconsary %> + <% else %> - <% end %>
+            </td>
+          </tr>
+        <% end %>
+    </tbody>
+      <% else %>
+        <tbody><td>-</td><td>-</td><td>-</td></tbody>
+      <% end %>
+  </table>
 
 </dl>
-
