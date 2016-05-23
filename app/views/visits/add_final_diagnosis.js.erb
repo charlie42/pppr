@@ -1,0 +1,6 @@
+<% fields_for @final_diagnosis_list do |l|
+   l.hidden_field :doctor_id, :value => @doctor.id
+   l.hidden_field :patient_id, :value => @patient.id
+   @l = l
+ end%>
+$("#add-final-diagnosis").html('<%= escape_javascript(render partial: "final_diagnosis_partial", locals: { l: @l }) %> ');
