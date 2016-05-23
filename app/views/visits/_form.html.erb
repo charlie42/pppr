@@ -269,32 +269,22 @@
     <%=f.error_span(:next) %>
   </div>
 
+
   <%= fields_for @final_diagnosis_list do |l| %>
-    <div class="form-group" id = "final-diagnosis">
-      <%= l.label "Добавить диагноз в список уточненных диагнозов", :class => 'control-label col-lg-2' %>
-        <div class="col-lg-10">
-          <%= l.collection_select(:diagnosis_id, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => false, :class => 'form-control'}) %>
-          Установлен повторно: <%= l.check_box :seconsary %>
-          <%= l.hidden_field :doctor_id, :value => @doctor.id  %>
-          <%= l.hidden_field :patient_id, :value => @patient.id  %>
-        </div>
+    <%= l.hidden_field :doctor_id, :value => @doctor.id  %>
+    <%= l.hidden_field :patient_id, :value => @patient.id  %>
+    <%=  link_to 'Добавить диагноз в список заключительных диагнозов', doctor_patient_visits_new_add_final_diagnosis_path(@patient, @doctor),  l: l , remote: true %>
+  <div id = "add-final-diagnosis"></div>
   <% end %>
-    <%=f.error_span(:next) %>
-    </div>
+  <br>
 
   <%= fields_for @dispanserisation do |d| %>
-    <div class="form-group" id = "final-diagnosis">
-      <%= d.label "Добавить заболевания, подлежащие диспансерному наблюдению", :class => 'control-label col-lg-2' %>
-        <div class="col-lg-10">
-          <%= d.collection_select(:diagnosis_id, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => false, :class => 'form-control'}) %>
-          <%= d.date_select :start_date, {order: [:day, :month, :year], prompt: { day: 'День', month: 'Месяц', year: 'Год' }, start_year: Date.today.year - 100, end_year: Date.today.year + 10}, {required: true, :class => 'form-control'} %>
-          <%= d.date_select :end_date, {order: [:day, :month, :year], prompt: { day: 'День', month: 'Месяц', year: 'Год' }, start_year: Date.today.year - 100, end_year: Date.today.year + 10}, {required: true, :class => 'form-control'} %>
-          <%= d.hidden_field :doctor_id, :value => @doctor.id  %>
-          <%= d.hidden_field :patient_id, :value => @patient.id  %>
-        </div>
+    <%= d.hidden_field :doctor_id, :value => @doctor.id  %>
+    <%= d.hidden_field :patient_id, :value => @patient.id  %>
+    <%=  link_to 'Добавить заболевания, подлежащие диспансерному наблюдению', doctor_patient_visits_new_add_dispanserisation_path(@patient, @doctor),  d: d , remote: true %>
+  <div id = "dispanserisation"></div>
   <% end %>
-    <%=f.error_span(:next) %>
-    </div>
+  <br>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">

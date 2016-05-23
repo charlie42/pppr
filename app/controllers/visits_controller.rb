@@ -65,6 +65,29 @@ class VisitsController < ApplicationController
 
   end
 
+  def add_final_diagnosis
+    @doctor = current_doctor
+    @patient = Patient.find(params[:patient_id])
+    @final_diagnosis_list = FinalDiagnosisList.new
+
+    #@visit = Visit.find(params[:id])
+
+    respond_to do |format|
+      format.js #add_question.js.erb
+    end
+  end
+
+  def add_dispanserisation
+    @doctor = current_doctor
+    @patient = Patient.find(params[:patient_id])
+    @dispanserisation = Dispanserisation.new
+    #@visit = Visit.find(params[:id])
+
+    respond_to do |format|
+      format.js #add_question.js.erb
+    end
+  end
+
   def generate_pdf
 
       #@doctor = current_doctor
@@ -640,8 +663,10 @@ class VisitsController < ApplicationController
     @doctor = Doctor.find(params[:doctor_id])
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.new(visit_params)
-    @final_diagnosis_list = FinalDiagnosisList.create(final_diagnosis_list_params)
-    @dispanserisation = Dispanserisation.create(dispanserisation_params)
+    @final_diagnosis_list = FinalDiagnosisList.create(final_diagnosis_list_params) if final_diagnosis_list_params["diagnosis_id"]
+    @dispanserisation = Dispanserisation.create(dispanserisation_params) if dispanserisation_params["diagnosis_id"]
+    
+    #lkj
 
     if @patient.visits.count > 1
       @visit.update_attribute(:secondary, true)
@@ -869,11 +894,13 @@ class VisitsController < ApplicationController
       #params.require(:liver_condition).permit(:details, :liver_condition_id)
     end
 
+    def dispanserisation_params
+      params.require(:dispanserisation).permit(:diagnosis_id, :start_date, :end_date, :doctor_id, :patient_id)
+    end
+
     def final_diagnosis_list_params
       params.require(:final_diagnosis_list).permit(:diagnosis_id, :doctor_id, :patient_id, :seconsary)
     end
 
-    def dispanserisation_params
-      params.require(:dispanserisation).permit(:diagnosis_id, :start_date, :end_date, :doctor_id, :patient_id)
-    end
+
 end

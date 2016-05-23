@@ -1,0 +1,13 @@
+
+  <div class="form-group" id = "final-diagnosis">
+      <div class="col-lg-10">
+      Диагноз:
+        <%= d.collection_select(:diagnosis_id, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => false, :class => 'form-control'}) %>
+      Дата начала:  <%= d.date_select :start_date, {order: [:day, :month, :year], prompt: { day: 'День', month: 'Месяц', year: 'Год' }, start_year: Date.today.year - 100, end_year: Date.today.year + 10}, {required: true, :class => 'form-control'} %>
+      Дата окончания:  <%= d.date_select :end_date, {order: [:day, :month, :year], prompt: { day: 'День', month: 'Месяц', year: 'Год' }, start_year: Date.today.year - 100, end_year: Date.today.year + 10}, {required: true, :class => 'form-control'} %>
+        <!-- <%= d.hidden_field :doctor_id, :value => @doctor.id  %>
+        <%= d.hidden_field :patient_id, :value => @patient.id  %> -->
+      </div>
+
+
+  </div>

@@ -1,0 +1,11 @@
+<%
+# @doctor = current_doctor
+# @patient = Patient.find(params[:patient_id])
+# @dispanserisation = Dispanserisation.new
+fields_for @dispanserisation do |d|
+  d.hidden_field :doctor_id, :value => @doctor.id
+  d.hidden_field :patient_id, :value => @patient.id  
+  @d = d
+end
+%>
+$("#dispanserisation").html('<%= escape_javascript(render partial: "dispanserisation_partial", locals: { d: @d }) %> ');

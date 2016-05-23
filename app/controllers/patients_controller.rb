@@ -20,7 +20,7 @@ class PatientsController < ApplicationController
 
     @q.build_condition
   end
-  
+
   # GET /patients/1
   # GET /patients/1.json
   def show
@@ -60,7 +60,7 @@ class PatientsController < ApplicationController
     @patient = Patient.new
     @doctor = Doctor.find(params[:doctor_id])
     @allergy_list = Patient.allergy_counts
-   
+
   end
 
   # GET /patients/1/edit
@@ -76,7 +76,7 @@ class PatientsController < ApplicationController
      @patient = Patient.new(patient_params.except(:document_name, :allergy))
      @patient.allergy_list.add(@params["allergy"])
      @patient.document_name_list.add(@params["document_name"])
-     
+
     respond_to do |format|
       if @patient.save
         format.html { redirect_to doctor_patient_path(@doctor.id, @patient.id), notice: 'Patient was successfully created.' }
@@ -121,7 +121,7 @@ class PatientsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def patient_params
       params.require(:patient).permit(:doctor_id, :name, :age, :gender, :birthday, :surname, :second_name,
-        :address, :registration_address, :phone, :work_phone, :disability, :work_place, :work_position, :dependant, :area, 
+        :address, :registration_address, :phone, :work_phone, :disability, :work_place, :work_position, :dependant, :area,
         :insurance_police_series, :insurance_police_number, :social_benefit_code, :document_series, :document_number,
         :martial_status, :education, :employment, :disability_time, :disability_date, :blood_type, :Rh_factor, :insurance_company,
         :document_name, :insurance_policy_series, :insurance_policy_number, :insurance_certificate, :allergy => [])
