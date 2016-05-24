@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160522172234) do
+ActiveRecord::Schema.define(version: 20160524065446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,7 +87,6 @@ ActiveRecord::Schema.define(version: 20160522172234) do
     t.integer  "general_state_option_id",    :index=>{:name=>"index_visits_on_general_state_option_id"}, :foreign_key=>{:references=>"general_state_options", :name=>"visits_general_state_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
     t.integer  "postural_pose_option_id",    :index=>{:name=>"index_visits_on_postural_pose_option_id"}, :foreign_key=>{:references=>"postural_pose_options", :name=>"visits_postural_pose_option_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
     t.integer  "subcutanious_fat_option_id", :index=>{:name=>"index_visits_on_subcutanious_fat_option_id"}
-    t.integer  "effleurage_option_id",       :index=>{:name=>"index_visits_on_effleurage_option_id"}
     t.integer  "from_id",                    :index=>{:name=>"fk__visits_from_id"}, :foreign_key=>{:references=>"specialists", :name=>"fk_visits_from_id", :on_update=>:no_action, :on_delete=>:no_action}
     t.string   "an_morbi"
     t.string   "height"

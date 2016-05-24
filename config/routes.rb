@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
 
   #devise_for :admins
+  devise_for :doctors
+  
+  resources :doctors, :only => [] do
+    resources :patients do
+      resources :visits
+    end
+  end
 
 
   resources :medicines
@@ -22,8 +29,6 @@ Rails.application.routes.draw do
   end
   root to: redirect('/doctors/sign_in')
 
-  devise_for :doctors
-
   mount RailsAdmin::Engine => '/manage', as: 'rails_admin'
 
   get 'static_pages/help'
@@ -31,11 +36,7 @@ Rails.application.routes.draw do
   get 'static_pages/about'
 
 
-    resources :doctors do
-      resources :patients do
-        resources :visits
-      end
-    end
+
 
     get '/doctors/:doctor_id/visits', to: 'visits#index', as: 'doctor_visits'
     get '/doctors/:doctor_id/visits/build_report', to: 'visits#build_report', as: 'doctor_visits_build_report'
