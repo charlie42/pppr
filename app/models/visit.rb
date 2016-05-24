@@ -2,7 +2,7 @@ class Visit < ActiveRecord::Base
 
   UNRANSACKABLE_ATTRIBUTES = ["id", "updated_at", "anamnesis", "allerg", "patient_id",
    "doctor_id", "constitution_option_id", "general_state_option_id", "postural_pose_option_id",
-   "subcutanious_fat_option_id", "from_id", "effleurage_option_id", "height", "weight", "temp", "next",
+   "subcutanious_fat_option_id", "from_id", "height", "weight", "temp", "next",
    "general_state", "diagnosis", "created_at", "next", "complaints"]
 
   def self.ransackable_attributes auth_object = nil
@@ -18,7 +18,7 @@ class Visit < ActiveRecord::Base
   end
 
   ransacker :id do
-    Arel.sql("to_char(id, '9999999')") 
+    Arel.sql("to_char(id, '9999999')")
   end
 
 
@@ -46,7 +46,7 @@ class Visit < ActiveRecord::Base
   belongs_to :constitution_option
   belongs_to :general_state_option
   belongs_to :postural_pose_option
-  
+
   has_many :concomitant_diagnoses, through: :concomitant_diagnosis_visits
   has_many :concomitant_diagnosis_visits
   has_many :complication_diagnoses, through: :complication_diagnosis_visits

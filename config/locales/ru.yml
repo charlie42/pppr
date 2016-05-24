@@ -22,7 +22,7 @@ ru:
   document_series: Cерия
   document_number: Номер
   created_at: Создан
-  area: Местность 
+  area: Местность
   insurance_company: Страховая компания
   social_benefit_code: Код льготы
   martial_status: Семейное положение
@@ -72,7 +72,7 @@ ru:
   report:
     specialists_name: Специалист
     treatment_factors_name: Фактор лечения
-    #primary_diagnoses_name: 
+    #primary_diagnoses_name:
     primary_diagnoses_name: Основной диагноз
     concomitant_diagnoses_name: Сопутствующий диагноз
     complication_diagnoses_name: Осложнение
@@ -102,25 +102,25 @@ ru:
   rural: сельская
 
   martial_status_scope:
-    married: состоит в зарегистрированном браке 
+    married: состоит в зарегистрированном браке
     single: не состоит в брак
     unknown: неизвестно
 
-  married: состоит в зарегистрированном браке 
+  married: состоит в зарегистрированном браке
   single: не состоит в брак
   unknown: неизвестно
 
   education_scope:
     higher: "профессиональное высшее"
     secondary: "профессиональное среднее"
-    general_secondary: "общее среднеe" 
+    general_secondary: "общее среднеe"
     general_basic: "общее основное"
     general_primary: "общее начальное"
     unknown: "неизвестно"
 
   higher: "профессиональное высшее"
   secondary: "профессиональное среднее"
-  general_secondary: "общее среднеe" 
+  general_secondary: "общее среднеe"
   general_basic: "общее основное"
   general_primary: "общее начальное"
   unknown: "неизвестно"
@@ -338,34 +338,133 @@ ru:
         next: Следующее посещение
       from:
         name: Специалист
-      specialist: 
+      specialist:
         name: Специалист
       condition_value:
         name: Значениe
-      consultation: 
+      consultation:
         name: Специалист
-      examination_result: 
+      examination_result:
         name: Вид обследования
         result: Результат обследования
-      examination: 
+      examination:
         name: Вид обследования
-      medication: 
+      medication:
         name: Название препарата
         code: Код препарата
-      medicine: 
+      medicine:
         name: Название
-      treatment_factor: 
+      treatment_factor:
         name: Название
-      primary_diagnose: 
+      primary_diagnose:
         name: Название
-      concomitant_diagnosis: 
+      concomitant_diagnosis:
         name: Название
-      complication_diagnosis: 
+      complication_diagnosis:
         name: Название
-      treatment: 
+      treatment:
         name: Название
 
   activerecord:
+    models:
+      visit: Посещение
+      doctor: Врач
+      patient: Пациент
+      admin: Администратор
+      anamnesis_name: Название элемента анамнеза
+      anamnesis_type: Тип элемента анамнеза
+      anamnesis_value: Значение элемента анамнеза
+      anamnesis_visit: "Связь: значение элемента анамнеза и посещение"
+      assignment: "Связь: роль и пользователь"
+      complication_diagnosis: Осложнение
+      complication_diagnosis_visit: "Связь: осложенение и посещение"
+      concomitant_diagnosis: Сопутствующий диагноз
+      concomitant_diagnosis_visit: "Связь: сопутствующий диагноз и посещение"
+      condition_name: Название элемента осмотра
+      condition_type: Тип элемента осмотра
+      condition_value: Значение элемента осмотра
+      condition_visit: "Связь: значение элемента осмотра и посещение"
+      constitution_option: Вариант телосложения
+      consultation: Консультация
+      diagnosis: Диагноз
+      dispanserisation: Диспансеризация
+      examination: Обследование
+      examination_result: Результат обследования
+      final_diagnosis_list: Заключительный диагноз
+      general_state_option: Вариант общего состояния
+      medication: Медикаментозное лечения
+      medicine: Лекарственное стредство
+      postural_pose_option: Вариант положения тела
+      primary_diagnosis: Первичный диагноз
+      primary_diagnosis_visit: "Связь: первичный диагноз и посещение"
+      report_item: Пункт отчета
+      role: Роль
+      social_benefit: Код социальной льготы
+      specialist: Специалист
+      subcutanious_fat_option: Вариант состояния подкожной клетчатки
+      treatment: Лечение
+      treatment_factor: Фактор лечения
+    attributes:
+      patient:
+        name: Имя
+        gender: Пол
+        birthday: Дата рождения
+        phone: Телефон
+        insurance_certificate: СНИЛС
+        insurance_policy_series: "Полис: серия"
+        insurance_policy_number: "Полис: номер"
+        document_name: "Документ"
+        document_series: Cерия
+        document_number: Номер
+        created_at: Создан
+      visit:
+        from: От
+        complaints: Жалобы
+        anamnesis: Анамнез
+        allerg: Аллергоанамнез
+        general_state: Общее состояние
+        diagnosis: Диагноз
+        postural_pose_option: Положение тела
+        subcutanious_fat_option: Подкожно-жировая клетчатка
+        created_at: Создан
+        an_morbi: An. Morbi
+        anamnesis: An. Vitae
+        weight: Вес
+        height: Рост
+        temp: Температура
+        next: Следующее посещение
+      from:
+        name: Специалист
+      specialist:
+        name: Специалист
+      condition_value:
+        name: Значениe
+      consultation:
+        name: Специалист
+      examination_result:
+        name: Вид обследования
+        result: Результат обследования
+      examination:
+        name: Вид обследования
+      medication:
+        name: Название препарата
+        code: Код препарата
+      medicine:
+        name: Название
+      treatment_factor:
+        name: Название
+      primary_diagnose:
+        name: Название
+      concomitant_diagnosis:
+        name: Название
+      complication_diagnosis:
+        name: Название
+      treatment:
+        name: Название
+    successful:
+      messages:
+        created: "Создание прошло успешно."
+        updated: "Изменение прошло успешно."
     errors:
       messages:
         record_invalid: 'Возникли ошибки: %{errors}'
@@ -555,7 +654,7 @@ ru:
         document_series: Cерия
         document_number: Номер
         created_at: Создан
-        area: Местность 
+        area: Местность
         insurance_company: Страховая компания
         social_benefit_code: Код льготы
         martial_status: Семейное положение
