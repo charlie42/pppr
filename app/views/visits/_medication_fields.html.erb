@@ -1,8 +1,14 @@
-<div class="form-group nested-fields"> 
+<div class="form-group nested-fields well" >
   <div class="col-lg-10">
     <%= f.hidden_field :_destroy, :class => 'removable' %>
     <%= f.label "Медикаментозное лечение", :class => 'control-label col-lg-2' %>
-    <%= f.collection_select(:medicine_id, Medicine.all, :id, :name, {}, {:multiple => false, :class => "form-control"}) %>
+
+    <!-- <select id="teens_select2" id = "visit[consultations][medicine_id]", class = 'form-control'>
+      <option value="3620194" selected="selected">select2/select2</option>
+    </select> -->
+
+    <%= f.collection_select(:medicine_id, Medicine.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => false, :class => 'form-control', :id => 'teens_select2'}) %>
+
     <br>
     <%= f.label "Дополнительно", :class => 'control-label col-lg-2' %>
     <%= f.text_field :details, :class => 'form-control' %>
@@ -13,4 +19,3 @@
     <%= link_to_remove_association " Удалить ", f, :class => 'control-label col-lg-2' %>
   </div>
 </div>
-

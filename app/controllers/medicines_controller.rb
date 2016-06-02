@@ -3,8 +3,21 @@ class MedicinesController < ApplicationController
 
   # GET /medicines
   # GET /medicines.json
+
   def index
     @medicines = Medicine.all
+    @find = Medicine.where('name LIKE ?', "%#{params[:q]}%").select("DISTINCT ON (name) *") 
+    #@medicines = @find.page(params[:page]).per(100)
+    @title = "Potential pals"
+
+    respond_to do |format|
+      format.html
+      format.js {
+        @find = @find
+        #@medicines = @medicines
+      }
+      format.json { render json: @find, :only => [:id, :name] }
+    end
   end
 
   # GET /medicines/1

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   #devise_for :admins
   devise_for :doctors
-  
+
   resources :doctors, :only => [] do
     resources :patients do
       resources :visits
@@ -37,7 +37,9 @@ Rails.application.routes.draw do
 
 
 
-
+    get 'medicines/search/name', to: 'medicines#search_for_name',    as: 'search_medicine_names'
+    get '/medicines/medicine_list' => 'medicines#medicine_list'
+    get '/medicines' => 'medicines#index'
     get '/doctors/:doctor_id/visits', to: 'visits#index', as: 'doctor_visits'
     get '/doctors/:doctor_id/visits/build_report', to: 'visits#build_report', as: 'doctor_visits_build_report'
     get '/doctors/:doctor_id/visits/all_records', to: 'visits#all_records', as: 'doctor_visits_all_records'

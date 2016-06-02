@@ -10,6 +10,24 @@ class VisitsController < ApplicationController
   @@ri = ReportItem.order("created_at").last
   @@vertical_counter = 0
 
+  def medicines
+    вапрол
+    @medicines = Medicine.all
+    @find = Medicine.where('name LIKE ?', "%#{params[:q]}%")
+    @medicines = @find.page(params[:page]).per(100)
+    @title = "Potential pals"
+    dfghjk
+    respond_to do |format|
+      format.html
+      format.js {
+        @find = @find
+        @medicines = @medicines
+      }
+      format.json { render json: @find }
+    end
+  end
+
+
 
   def set_params
     #logger.debug "before set params param #{@@param.inspect} all #{@@all}"
@@ -601,6 +619,7 @@ class VisitsController < ApplicationController
     @visit = Visit.new
     @final_diagnosis_list = FinalDiagnosisList.new
     @dispanserisation = Dispanserisation.new
+    @medicine = Medicine.new
 
     @visit.treatments.build
     @visit.medications.build
@@ -665,7 +684,7 @@ class VisitsController < ApplicationController
     @visit = Visit.new(visit_params)
     @final_diagnosis_list = FinalDiagnosisList.create(final_diagnosis_list_params) if final_diagnosis_list_params["diagnosis_id"]
     @dispanserisation = Dispanserisation.create(dispanserisation_params) if dispanserisation_params["diagnosis_id"]
-    
+
     #lkj
 
     if @patient.visits.count > 1

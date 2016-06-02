@@ -23,7 +23,7 @@
 
  *= require jquery.suggestions
 
- */  
+ */
 *= require_tree .
 *= require devise_bootstrap_views
 *= require nprogress
