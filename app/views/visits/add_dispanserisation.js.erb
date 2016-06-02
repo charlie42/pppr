@@ -4,8 +4,31 @@
 # @dispanserisation = Dispanserisation.new
 fields_for @dispanserisation do |d|
   d.hidden_field :doctor_id, :value => @doctor.id
-  d.hidden_field :patient_id, :value => @patient.id  
+  d.hidden_field :patient_id, :value => @patient.id
   @d = d
 end
 %>
 $("#dispanserisation").html('<%= escape_javascript(render partial: "dispanserisation_partial", locals: { d: @d }) %> ');
+$("#disp_select2").select2({
+    placeholder: "Select an ingredient...",
+    minimumInputLength: 3,
+    ajax: {
+      url: "/diagnoses.json",
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: data
+        }
+      },
+      cache: true
+    },
+    formatResult: function (post) {
+        markup = '<strong>' + post.text + '</strong>';
+    }
+  })

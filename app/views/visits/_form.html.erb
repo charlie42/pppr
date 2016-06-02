@@ -1,4 +1,4 @@
-<%= form_for ([@doctor, @patient, @visit]), :html => { :class => "form-horizontal visit" } do |f| %>
+<%= form_for ([@doctor, @patient, @visit]), :html => { :class => "form-horizontal visit " } do |f| %>
 
   <% if @visit.errors.any? %>
     <div id="error_expl" class="panel panel-danger">
@@ -179,61 +179,69 @@
   </div>
 </div>
 
-  <div class="form-group">
 
-    <div class="col-lg-10">
-      <%= f.fields_for :primary_diagnosis_visits do |s| %>
-        <%= s.label "Основной диагноз", :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:primary_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'primary_select2'}) %>
-        <%= s.label "Дополнительно", :class => 'control-label col-lg-2' %>
-        <%= s.text_field :details, :class => 'form-control' %>
-      <% end %>
+  <div class="form-group ">
+      <%= f.label :diagnosis, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10 well">
+        <%= f.label :primary_diagnosis, :class => 'control-label ' %>
+        <%= f.fields_for :primary_diagnosis_visits do |s| %>
+
+          <%= s.collection_select(:primary_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'primary_select2'}) %>
+          <%= s.label "Дополнительно", :class => 'control-label ' %>
+          <%= s.text_field :details, :class => 'form-control' %>
+        <% end %>
+
+      <hr>
+      <%= f.label :concomitant_diagnosis, :class => 'control-label ' %>
+
+        <%= f.fields_for :concomitant_diagnosis_visits do |s| %>
+
+          <%= s.collection_select(:concomitant_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'concomitant_select2'}) %>
+          <%= s.label "Дополнительно", :class => 'control-label' %>
+          <%= s.text_field :details, :class => 'form-control' %>
+        <% end %>
+
+      <hr>
+      <%= f.label :complication_diagnosis, :class => 'control-label ' %>
+
+        <%= f.fields_for :complication_diagnosis_visits do |s| %>
+
+          <%= s.collection_select(:complication_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'complication_select2'}) %>
+          <%= s.label "Дополнительно", :class => 'control-label ' %>
+          <%= s.text_field :details, :class => 'form-control' %>
+        <% end %>
+
+      <%=f.error_span(:diagnosis) %>
     </div>
-    <div class="col-lg-10">
-      <%= f.fields_for :concomitant_diagnosis_visits do |s| %>
-        <%= s.label "Сопутствующий диагноз", :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:concomitant_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'concomitant_select2'}) %>
-        <%= s.label "Дополнительно", :class => 'control-label col-lg-2' %>
-        <%= s.text_field :details, :class => 'form-control' %>
-      <% end %>
-    </div>
-    <div class="col-lg-10">
-      <%= f.fields_for :complication_diagnosis_visits do |s| %>
-        <%= f.label "Осложнения", :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:complication_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'complication_select2'}) %>
-        <%= s.label "Дополнительно", :class => 'control-label col-lg-2' %>
-        <%= s.text_field :details, :class => 'form-control' %>
-      <% end %>
-    </div>
-    <%=f.error_span(:diagnosis) %>
   </div>
 
   <div class="form-group">
-    <div class="col-lg-10">
+
       <%= f.fields_for :treatments do |treatment| %>
         <%= render 'treatment_fields', :f => treatment %>
         <%= link_to_add_association 'ДОБАВИТЬ ЛЕЧЕНИЕ', f, :treatments %>
       <% end %>
-    </div>
+
     <%= f.error_span(:constitution_option_id) %>
   </div>
 
   <div class="form-group">
-    <div class="col-lg-10">
+
       <%= f.fields_for :medications do |medication| %>
         <%= render 'medication_fields', :f => medication %>
-        <%= link_to_add_association 'ДОБАВИТЬ МЕДИКАМЕНТОЗНОЕ ЛЕЧЕНИЕ', f, :medications %>
+        <%= link_to_add_association 'ДОБАВИТЬ МЕДИКАМЕНТОЗНОЕ ЛЕЧЕНИЕ', f, :medications, {:class => "col-lg-10"} %>
       <% end %>
-      </div>
+
     <%= f.error_span(:constitution_option_id) %>
   </div>
 
   <div class="form-group">
     <%= f.label :consultation, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
+    <div class="col-lg-10 well">
       <%= f.fields_for :consultations do |s| %>
-        <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
-        <%= s.label "Результаты прошлых назначений", :class => 'control-label col-lg-2' %>
+        <%= s.label "Специалисты", :class => 'control-label' %>
+        <%= s.collection_select(:specialist_ids, Specialist.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control '}) %>
+        <%= s.label "Результаты прошлых назначений", :class => 'control-label' %>
         <%= s.text_field :result, :class => 'form-control' %>
       <% end %>
     </div>
@@ -241,7 +249,7 @@
   </div>
   <div class="form-group">
     <%= f.label :examination, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
+    <div class="col-lg-10 well">
       <%= f.fields_for :examination_result do |s| %>
         <%= s.collection_select(:examination_ids, Examination.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
         <%= s.hidden_field :result, :value => ""  %>
@@ -250,14 +258,14 @@
     </div>
     <%=f.error_span(:constitution_option_id) %>
   </div>
-  <div class="form-group">
-    <%= f.label :examination_result, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
+  <div class="form-group ">
+
+
       <%= f.fields_for :examination_results do |examination_result| %>
         <%= render 'examination_result_fields', :f => examination_result %>
         <%= link_to_add_association 'ДОБАВИТЬ РЕЗУЛЬТАТ ОБСЛЕДОВАНИЯ', f, :examination_results %>
       <% end %>
-    </div>
+
     <%=f.error_span(:general_state_option_id) %>
   </div>
 
@@ -269,22 +277,23 @@
     <%=f.error_span(:next) %>
   </div>
 
+  <div class="form-group" >
+    <%= fields_for @final_diagnosis_list do |l| %>
+      <%= l.hidden_field :doctor_id, :value => @doctor.id  %>
+      <%= l.hidden_field :patient_id, :value => @patient.id  %>
+      <%=  link_to 'ДОБАВИТЬ ДИАГНОЗ В СПИСОК ЗАКЛЮЧИТЕЛЬНЫХ ДИАГНОЗОВ', doctor_patient_visits_new_add_final_diagnosis_path(@patient, @doctor),  l: l , remote: true,  :id => 'list' %>
+    <div id = "add-final-diagnosis"></div>
+    <% end %>
+    <br>
 
-  <%= fields_for @final_diagnosis_list do |l| %>
-    <%= l.hidden_field :doctor_id, :value => @doctor.id  %>
-    <%= l.hidden_field :patient_id, :value => @patient.id  %>
-    <%=  link_to 'Добавить диагноз в список заключительных диагнозов', doctor_patient_visits_new_add_final_diagnosis_path(@patient, @doctor),  l: l , remote: true %>
-  <div id = "add-final-diagnosis"></div>
-  <% end %>
-  <br>
-
-  <%= fields_for @dispanserisation do |d| %>
-    <%= d.hidden_field :doctor_id, :value => @doctor.id  %>
-    <%= d.hidden_field :patient_id, :value => @patient.id  %>
-    <%=  link_to 'Добавить заболевания, подлежащие диспансерному наблюдению', doctor_patient_visits_new_add_dispanserisation_path(@patient, @doctor),  d: d , remote: true %>
-  <div id = "dispanserisation"></div>
-  <% end %>
-  <br>
+    <%= fields_for @dispanserisation do |d| %>
+      <%= d.hidden_field :doctor_id, :value => @doctor.id  %>
+      <%= d.hidden_field :patient_id, :value => @patient.id  %>
+      <%=  link_to 'ДОБАВИТЬ ЗАБОЛЕВАНИЯ, ПОДЛЕЖАЩИЕ ДИСПАНСЕРНОМУ НАБЛЮДЕНИЮ', doctor_patient_visits_new_add_dispanserisation_path(@patient, @doctor),  d: d , remote: true %>
+    <div id = "dispanserisation"></div>
+    <% end %>
+    <br>
+  </div>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
@@ -441,8 +450,8 @@ $(document).ready(function() {
   });
 
   $(function() {
-      $('.col-lg-10').on('cocoon:after-insert', function() {
-        alert("1");
+      $('.form-group').on('cocoon:after-insert', function() {
+        //alert("1");
         $("#teens_select2").select2({
           placeholder: "Select an ingredient...",
           minimumInputLength: 3,
@@ -468,6 +477,5 @@ $(document).ready(function() {
         })
       });
     });
-
 
 </script>
