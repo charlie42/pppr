@@ -100,7 +100,7 @@
    <b><%= t(:primary_diagnosis) %>: </b>
 
     <% if @visit.primary_diagnoses.any? %>
-      <%@visit.concomitant_diagnoses.each do |pd| %>
+      <% @visit.primary_diagnoses.each do |pd| %>
         <%= pd.name %>,
       <% end %>
       <% if @visit.primary_diagnosis_visits.first.details %>

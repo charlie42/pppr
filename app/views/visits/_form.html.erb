@@ -184,7 +184,7 @@
     <div class="col-lg-10">
       <%= f.fields_for :primary_diagnosis_visits do |s| %>
         <%= s.label "Основной диагноз", :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:primary_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
+        <%= s.collection_select(:primary_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'primary_select2'}) %>
         <%= s.label "Дополнительно", :class => 'control-label col-lg-2' %>
         <%= s.text_field :details, :class => 'form-control' %>
       <% end %>
@@ -192,7 +192,7 @@
     <div class="col-lg-10">
       <%= f.fields_for :concomitant_diagnosis_visits do |s| %>
         <%= s.label "Сопутствующий диагноз", :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:concomitant_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
+        <%= s.collection_select(:concomitant_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'concomitant_select2'}) %>
         <%= s.label "Дополнительно", :class => 'control-label col-lg-2' %>
         <%= s.text_field :details, :class => 'form-control' %>
       <% end %>
@@ -200,7 +200,7 @@
     <div class="col-lg-10">
       <%= f.fields_for :complication_diagnosis_visits do |s| %>
         <%= f.label "Осложнения", :class => 'control-label col-lg-2' %>
-        <%= s.collection_select(:complication_diagnosis_ids, Diagnosis.all, :id, :name, {:include_hidden => false}, {:multiple => true, :class => 'form-control'}) %>
+        <%= s.collection_select(:complication_diagnosis_ids, Diagnosis.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => true, :class => 'form-control', :id => 'complication_select2'}) %>
         <%= s.label "Дополнительно", :class => 'control-label col-lg-2' %>
         <%= s.text_field :details, :class => 'form-control' %>
       <% end %>
@@ -316,6 +316,88 @@ $(document).ready(function() {
     //           return undefined;
     //      }
     //   });
+      $("#primary_select2").select2({
+        tags: true,
+        createTag: function(params) {
+            return undefined;
+        },
+        placeholder: "Select an ingredient...",
+        minimumInputLength: 3,
+        ajax: {
+          url: "/diagnoses.json",
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return {
+              q: params.term
+            };
+          },
+          processResults: function (data) {
+            return {
+              results: data
+            }
+          },
+          cache: true
+        },
+        formatResult: function (post) {
+            markup = '<strong>' + post.text + '</strong>';
+        }
+      });
+      $("#concomitant_select2").select2({
+        tags: true,
+        createTag: function(params) {
+            return undefined;
+        },
+        placeholder: "Select an ingredient...",
+        minimumInputLength: 3,
+        ajax: {
+          url: "/diagnoses.json",
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return {
+              q: params.term
+            };
+          },
+          processResults: function (data) {
+            return {
+              results: data
+            }
+          },
+          cache: true
+        },
+        formatResult: function (post) {
+            markup = '<strong>' + post.text + '</strong>';
+        }
+      });
+      $("#complication_select2").select2({
+        tags: true,
+        createTag: function(params) {
+            return undefined;
+        },
+        placeholder: "Select an ingredient...",
+        minimumInputLength: 3,
+        ajax: {
+          url: "/diagnoses.json",
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return {
+              q: params.term
+            };
+          },
+          processResults: function (data) {
+            return {
+              results: data
+            }
+          },
+          cache: true
+        },
+        formatResult: function (post) {
+            markup = '<strong>' + post.text + '</strong>';
+        }
+      });
+
     // $('#visit_concomitant_diagnosis_visits_concomitant_diagnosis_ids')
     //   .select2( {
     //       tags: true,
