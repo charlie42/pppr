@@ -3,7 +3,7 @@
   <% if @visit.errors.any? %>
     <div id="error_expl" class="panel panel-danger">
       <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@visit.errors.count, "error") %> prohibited this visit from being saved:</h3>
+        <h3 class="panel-title"><%= pluralize(@visit.errors.count, "ошибок") %> возникли при сохранении:</h3>
       </div>
       <div class="panel-body">
         <ul>
@@ -112,21 +112,21 @@
   <div class="form-group">
     <%= f.label :weight, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :weight, options_for_select((1..500)), {}, :class => 'form-control' %>
+      <%= f.select :weight, options_for_select((1..500), :selected => 80), {}, :class => 'form-control' %>
     </div>
     <%=f.error_span(:weight) %>
   </div>
   <div class="form-group">
     <%= f.label :height, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :height, options_for_select((10..250)), {}, :class => 'form-control' %>
+      <%= f.select :height, options_for_select((10..250), :selected => 180), {}, :class => 'form-control' %>
     </div>
     <%=f.error_span(:height) %>
   </div>
   <div class="form-group">
     <%= f.label :temp, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :temp, options_for_select((35.0..42.0).step(0.1).to_a), {}, :class => 'form-control' %>
+      <%= f.select :temp, options_for_select((35.0..42.0).step(0.1).to_a, :selected => 36.6), {}, :class => 'form-control' %>
     </div>
     <%=f.error_span(:temp) %>
   </div>

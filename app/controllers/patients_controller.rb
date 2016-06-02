@@ -57,14 +57,20 @@ class PatientsController < ApplicationController
 
   # GET /patients/new
   def new
+
+    @allergy_list = Patient.allergy_counts
     @patient = Patient.new
     @doctor = Doctor.find(params[:doctor_id])
-    @allergy_list = Patient.allergy_counts
+
 
   end
 
   # GET /patients/1/edit
   def edit
+    @allergy_list = Patient.allergy_counts
+    @patient = Patient.find(params[:id])
+    @doctor = Doctor.find(params[:doctor_id])
+    @allergy_list = Patient.allergy_counts
   end
 
   # POST /patients
@@ -74,12 +80,13 @@ class PatientsController < ApplicationController
      @params = patient_params
      @doctor = Doctor.find(params[:doctor_id])
      @patient = Patient.new(patient_params.except(:document_name, :allergy))
+     @allergy_list = Patient.allergy_counts
      @patient.allergy_list.add(@params["allergy"])
      @patient.document_name_list.add(@params["document_name"])
 
     respond_to do |format|
       if @patient.save
-        format.html { redirect_to doctor_patient_path(@doctor.id, @patient.id), notice: 'Patient was successfully created.' }
+        format.html { redirect_to doctor_patient_path(@doctor.id, @patient.id), notice: "#{t 'activerecord.successful.messages.created'}" }
         format.json { render :show, status: :created, location: @patient }
       else
         format.html { render :new }
@@ -91,9 +98,39 @@ class PatientsController < ApplicationController
   # PATCH/PUT /patients/1
   # PATCH/PUT /patients/1.json
   def update
+
+    @doctor = Doctor.find(params[:doctor_id])
+    @allergy_list = Patient.allergy_counts
+    @patient.allergy_list.clear
+    @patient.document_name_list.clear
+    @patient.allergy_list.add("ИЗМЕНЕНО " + Time.new.to_s + ": " + patient_params["allergy"].to_s)
+    @patient.document_name_list.add("ИЗМЕНЕНО " + Time.new.to_s + ": " + patient_params["document_name"].to_s)
+    @current_params = patient_params.except("birthday(3i)", "birthday(2i)", "birthday(1i)", "disability_date(3i)", "disability_date(2i)", "disability_date(1i)", "allergy", "document_name")
+    @new_params = patient_params.except("birthday(3i)", "birthday(2i)", "birthday(1i)", "disability_date(3i)", "disability_date(2i)", "disability_date(1i)", "allergy", "document_name")
+    @new_params.each do |p|
+        key = p.first
+
+        if @current_params[key].kind_of?(Array)
+          @new_value = @current_params[key].to_s.to_s!(", ")
+        else
+          @new_value = @current_params[key].to_s
+        end
+
+        if @current_params[key] != @patient.send(key) && @current_params[key] != ""
+
+          @new_params[key] = @patient.send(key).to_s + " ИЗМЕНЕНО " + Time.new.to_s + ": " + @new_value
+        end
+        if @current_params[key] == "" && @patient.send(key) != ""
+          @new_params[key] = "ДОБАВЛЕНО " + Time.new.to_s + ": " + @new_value
+        end
+    end
+
+    #fghj
+
     respond_to do |format|
-      if @patient.update(patient_params)
-        format.html { redirect_to @patient, notice: "#{t 'activerecord.successful.messages.created'}" }
+      if @patient.update(@new_params)
+        #dfghjkl
+        format.html { redirect_to doctor_patient_path(@doctor.id, @patient.id), notice: "#{t 'activerecord.successful.messages.updated'}" }
         format.json { render :show, status: :ok, location: @patient }
       else
         format.html { render :edit }

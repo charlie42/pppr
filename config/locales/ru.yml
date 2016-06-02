@@ -103,11 +103,11 @@ ru:
 
   martial_status_scope:
     married: состоит в зарегистрированном браке
-    single: не состоит в брак
+    single: не состоит в браке
     unknown: неизвестно
 
   married: состоит в зарегистрированном браке
-  single: не состоит в брак
+  single: не состоит в браке
   unknown: неизвестно
 
   education_scope:
@@ -320,6 +320,8 @@ ru:
         document_series: Cерия
         document_number: Номер
         created_at: Создан
+        social_benefit_code: Код льготы
+        disability: Группа инвалидности
       visit:
         from: От
         complaints: Жалобы
@@ -417,6 +419,8 @@ ru:
         document_series: Cерия
         document_number: Номер
         created_at: Создан
+        social_benefit_code: Код льготы
+        disability: Группа инвалидности
       visit:
         from: От
         complaints: Жалобы

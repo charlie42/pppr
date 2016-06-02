@@ -5,8 +5,10 @@
 
 <%= link_to t('.back', :default => "Назад"),
               doctor_patients_path(@doctor), :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => "Новое посещение"),
+<%= link_to t('.new_visits', :default => "Новое посещение"),
               new_doctor_patient_visit_path(@doctor, @patient), :class => 'btn btn-default' %>
+<%= link_to t('.edit', :default => "Внести изменения"),
+              edit_doctor_patient_path(@doctor, @patient), :class => 'btn btn-default' %>
 <%= link_to 'Получить карту в PDF', doctor_patient_generate_pdf_path(:patient_id=>@patient.id, format: :pdf, :method => :get)%>
 <hr>
 
@@ -70,6 +72,8 @@
   <dd><%= @patient.blood_type %></dd>
   <dt><strong><%= t(:Rh_factor) %>:</strong></dt>
   <dd><%= t @patient.Rh_factor if @patient.Rh_factor %></dd>
+  <dt><strong><%= t(:allergy) %>:</strong></dt>
+  <dd><%= @patient.allergy_list.to_a.join(", ").to_s %></dd>
   <br>
   <strong>Лист заключительных диагнозов</strong>
   <table class="table table-striped">

@@ -1,9 +1,9 @@
-<%= form_for ([@doctor, @patient]), :html => { :class => "form-horizontal patient" } do |f| %>
+<%= form_for ([@doctor, @patient]), url: doctor_patient_path(@doctor, @patient), :html => { :class => "form-horizontal patient" } do |f| %>
 
   <% if @patient.errors.any? %>
     <div id="error_expl" class="panel panel-danger">
       <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@patient.errors.count, "error") %> prohibited this patient from being saved:</h3>
+        <h3 class="panel-title"> Ошибок при сохранении - <%= @patient.errors.count %></h3>
       </div>
       <div class="panel-body">
         <ul>
