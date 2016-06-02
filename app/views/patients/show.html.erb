@@ -102,10 +102,10 @@
         <% @patient.dispanserisations.each do |l| %>
           <tr>
 
-            <td><%= l.start_date.strftime("%d.%m.%Y") %></td>
-            <td><%= l.end_date.strftime("%d.%m.%Y") %></td>
-            <td><%= l.diagnosis.name %></td>
-            <td><%= l.diagnosis.code %></td>
+            <td><%= l.start_date.strftime("%d.%m.%Y") if l.start_date %></td>
+            <td><%= l.end_date.strftime("%d.%m.%Y") if l.end_date %></td>
+            <td><%= l.diagnosis.name if l.diagnosis %></td>
+            <td><%= l.diagnosis.code if l.diagnosis%></td>
           </tr>
         <% end %>
     </tbody>
