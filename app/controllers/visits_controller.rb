@@ -839,7 +839,7 @@ class VisitsController < ApplicationController
 
     respond_to do |format|
       if @visit.save
-        format.html { redirect_to doctor_patient_visit_path(@doctor.id, @patient.id, @visit.id), notice: 'Visit was successfully created.' }
+        format.html { redirect_to doctor_patient_visit_path(@doctor.id, @patient.id, @visit.id), notice: "#{t 'activerecord.successful.messages.created'}" }
         format.json { render :show, status: :created, location: @visit }
       else
         format.html { render :new }

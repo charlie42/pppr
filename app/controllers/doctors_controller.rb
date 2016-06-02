@@ -63,7 +63,7 @@ class DoctorsController < ApplicationController
   def destroy
     @doctor.destroy
     respond_to do |format|
-      format.html { redirect_to doctors_url, notice: 'Doctor was successfully destroyed.' }
+      format.html { redirect_to doctors_url, notice: "#{t 'activerecord.successful.messages.created'}" }
       format.json { head :no_content }
     end
   end
@@ -76,8 +76,8 @@ class DoctorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def doctor_params
-      params.require(:doctor).permit(:password, :password_conformation, 
-        :specialization, :name, :company_name, :company_address, 
+      params.require(:doctor).permit(:password, :password_conformation,
+        :specialization, :name, :company_name, :company_address,
         :company_code, :documentation_code, roles: [])
     end
 end
