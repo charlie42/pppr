@@ -49,14 +49,7 @@
   <dd><%= t(@patient.education) if @patient.education %></dd>
   <dt><strong><%= t(:employment) %>:</strong></dt>
   <dd><%= t @patient.employment if @patient.employment %></dd>
-  <% if !@patient.disability %>
-    <dt><strong><%= t(:disability) %>:</strong></dt>
-    <dd> -</dd>
-    <dt><strong><%= t(:disability_time) %>:</strong></dt>
-    <dd> -</dd>
-    <dt><strong><%= t(:disability_date) %>:</strong></dt>
-    <dd> -</dd>
-  <% else %>
+  <% if @patient.disability && @patient.disability != 0 %>
     <dt><strong><%= t(:disability) %>:</strong></dt>
     <dd><%= t @patient.disability %></dd>
     <dt><strong><%= t(:disability_time) %>:</strong></dt>

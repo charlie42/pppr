@@ -1,4 +1,4 @@
-<%= form_for ([@doctor, @patient]), url: doctor_patient_path(@doctor, @patient), :html => { :class => "form-horizontal patient" } do |f| %>
+<%= form_for ([@doctor, @patient]), :html => { :class => "form-horizontal patient" } do |f| %>
 
   <% if @patient.errors.any? %>
     <div id="error_expl" class="panel panel-danger">

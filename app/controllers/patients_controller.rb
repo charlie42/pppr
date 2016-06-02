@@ -98,20 +98,25 @@ class PatientsController < ApplicationController
   # PATCH/PUT /patients/1
   # PATCH/PUT /patients/1.json
   def update
-
+    @time = Time.new.strftime('%d.%m.%Y %H:%M:%S')
     @doctor = Doctor.find(params[:doctor_id])
     @allergy_list = Patient.allergy_counts
-    @patient.allergy_list.clear
+    @patient.allergy_list.each { |a| a.replace ("УДАЛЕНО: [" + @time + ": " + a.to_s + "]") }
+    @current_document = @patient.document_name_list.to_a.first
     @patient.document_name_list.clear
-    @patient.allergy_list.add("ИЗМЕНЕНО " + Time.new.to_s + ": " + patient_params["allergy"].to_s)
-    @patient.document_name_list.add("ИЗМЕНЕНО " + Time.new.to_s + ": " + patient_params["document_name"].to_s)
+    @new_allergies = patient_params["allergy"].to_a.reject!(&:empty?).join(", ").to_s
+    if @new_allergies != ""
+      @patient.allergy_list.add("ДОБАВЛЕНО " + @time + ": " + @new_allergies)
+    end
+    @patient.document_name_list.add(@current_document.to_s + " ИЗМЕНЕНО " + @time  + ": " + patient_params["document_name"].to_s)
     @current_params = patient_params.except("birthday(3i)", "birthday(2i)", "birthday(1i)", "disability_date(3i)", "disability_date(2i)", "disability_date(1i)", "allergy", "document_name")
     @new_params = patient_params.except("birthday(3i)", "birthday(2i)", "birthday(1i)", "disability_date(3i)", "disability_date(2i)", "disability_date(1i)", "allergy", "document_name")
     @new_params.each do |p|
         key = p.first
 
         if @current_params[key].kind_of?(Array)
-          @new_value = @current_params[key].to_s.to_s!(", ")
+          @new_value = @current_params[key].to_a.join(", ").to_s
+          ывапрол
         else
           @new_value = @current_params[key].to_s
         end
@@ -121,7 +126,7 @@ class PatientsController < ApplicationController
           @new_params[key] = @patient.send(key).to_s + " ИЗМЕНЕНО " + Time.new.to_s + ": " + @new_value
         end
         if @current_params[key] == "" && @patient.send(key) != ""
-          @new_params[key] = "ДОБАВЛЕНО " + Time.new.to_s + ": " + @new_value
+          @new_params[key] = "ДОБАВЛЕНО " + @time + ": " + @new_value
         end
     end
 
