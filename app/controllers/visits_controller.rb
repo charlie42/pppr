@@ -109,7 +109,7 @@ class VisitsController < ApplicationController
 
   def generate_pdf
 
-      #@doctor = current_doctor
+      @doctor = current_doctor
       #@patient = Patient.find(params[:patient_id])
       #@visits = @patient.visits.all
 
@@ -120,7 +120,7 @@ class VisitsController < ApplicationController
           :disposition => "inline",
           :template => "visits/generate_pdf.pdf.erb",
           :layout => "pdf_layout.html",
-          :locals => {}
+          :locals => {:visits => @visits, :doctor => @doctor}
       end
     end
   end
@@ -424,10 +424,12 @@ class VisitsController < ApplicationController
         end
         @ri.children.create!(name: name, full_name: fullname, quantity: @@all)
       else
-        if @last_name != ""
+        if @last_name && @last_name != ""
+          logger.debug "@last_name (#{!@last_name.nil?}) || (#{@last_name != ""}) if"
           @ri = ReportItem.roots.first.children.last.children.create(name: name, full_name: fullname,
             quantity: @@all)
         else
+          logger.debug "@last_name #{@last_name} else"
           name = "Всего"
           @ri = ReportItem.roots.first.children.create(name: name, full_name: name, quantity: @@all)
         end

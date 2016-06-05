@@ -338,6 +338,7 @@ ru:
         height: Рост
         temp: Температура
         next: Следующее посещение
+        secondary: Вторичное
       from:
         name: Специалист
       specialist:
@@ -349,16 +350,19 @@ ru:
       examination_result:
         name: Вид обследования
         result: Результат обследования
+        details: Дополнительно
       examination:
         name: Вид обследования
       medication:
         name: Название препарата
-        code: Код препарата
+      examination:
+        name: Вид обследования
       medicine:
         name: Название
+        code: Код препарата
       treatment_factor:
         name: Название
-      primary_diagnose:
+      primary_diagnosis:
         name: Название
       concomitant_diagnosis:
         name: Название
@@ -402,7 +406,7 @@ ru:
       report_item: Пункт отчета
       role: Роль
       social_benefit: Код социальной льготы
-      specialist: Специалист
+      specialist: Консультация специалиста
       subcutanious_fat_option: Вариант состояния подкожной клетчатки
       treatment: Лечение
       treatment_factor: Фактор лечения

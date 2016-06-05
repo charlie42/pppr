@@ -1,1 +1,40 @@
+<table id = "header-table">
+  <tr>
+    <td>
+    Министерство здравоохранения и<br>
+     социального развитии Российской<br>
+               Федерации
+
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <%= doctor.company_name %>
+    </td>
+    <td>
+    Медицинская документация<br>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <%= doctor.company_address %>
+    </td>
+    <td>
+    </td>
+  </tr>
+   <tr>
+    <td>
+    Код ОГРН: <%= doctor.company_code %>
+    </td>
+    <td>
+
+    </td>
+  </tr>
+</table>
+
+<br>
+
+<h3> СТАТИСТИЧЕСКИЕ ДАННЫЕ </h3>
+
+
 <%= print_report(ReportItem.roots.first, 0) %>

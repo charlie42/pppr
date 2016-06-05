@@ -6,10 +6,10 @@
 
 <div id = "testdiv">
   <%= print_report(ReportItem.roots.first, 0) %>
-</div> 
+</div>
 
 <%= search_form_for @q, url: doctor_visits_path do |f| %>
-  <%= f.condition_fields do |c| %> 
+  <%= f.condition_fields do |c| %>
     <%= render "condition_fields", f: c %>
   <% end %>
   <p><%= link_to_add_fields "Добавить условие", f, :condition %>
@@ -32,10 +32,10 @@
 
 <div style = "overflow-x: auto; width: 100%" id = "visits-index-table">
   <table class="table table-striped">
-    <thead> 
+    <thead>
       <tr>
         <th><%= t(:created_at) %></th>
-        <th><%= t(:from_id) %></th>
+        <th><%= t(:from) %></th>
         <th><%= t(:an_morbi) %></th>
         <th><%= t(:primary_diagnosis) %></th>
         <th><%= t(:concomitant_diagnosis) %></th>
@@ -48,42 +48,42 @@
         <th><%= I18n.t :secondary, scope: 'visits.index' %></th>
         <th><%= I18n.t :next, scope: 'visits.index' %></th>
 
-        <th> id </th>
+
 
         <th> Данные осмотра: </th>
 
         <% @condition_headers = Array.new %>
         <% ConditionName.all.each do |name| %>
 
-          <% @visit_has_value_of_this_name = false %>  
+          <% @visit_has_value_of_this_name = false %>
 
           <% name.condition_values.each do |value| %>
-             
+
             <% @visits.each do |visit| %>
 
               <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id) %>
 
-                <% @visit_has_value_of_this_name = true %>  
+                <% @visit_has_value_of_this_name = true %>
 
-              <% end %>  
-            <% end %> 
-          <% end %> 
-             
+              <% end %>
+            <% end %>
+          <% end %>
+
           <% if @visit_has_value_of_this_name %>
             <% @condition_headers << name %>
-            
-            <% @visit_has_value_of_this_name = false %>  
-          <% end %> 
+
+            <% @visit_has_value_of_this_name = false %>
+          <% end %>
 
               <!-- <br> -->
-          
+
         <% end %>
           <!-- <hr> -->
 
         <% @condition_headers.each do |h| %>
-          <th><%= h.condition_type.name.to_s + ": " if h.condition_type.name != h.name %> 
-            
-            <%= h.name %></th> 
+          <th><%= h.condition_type.name.to_s + ": " if h.condition_type.name != h.name %>
+
+            <%= h.name %></th>
         <% end %>
 
       </tr>
@@ -136,9 +136,9 @@
               <% if @exs.any? %>
                 <% @exs.each do |e| %>
                   <% if e.examination %>
-                    <%= e.examination.name%>: 
+                    <%= e.examination.name%>:
                     <%= e.result %>
-                   <% end %>      
+                   <% end %>
                 <% end %>
               <% end %>
             </ul>
@@ -165,20 +165,19 @@
             </ul>
           </td>
           <td>
-            <% if visit.secondary == true %> Вторичный <% else %> Первичный 
+            <% if visit.secondary == true %> Вторичный <% else %> Первичный
             <% end %>
           </td>
 
           <td><%= visit.next.strftime("%d.%m.%Y") if visit.next %></td>
 
-          <td> <%= visit.id %> </td>
-            
+          
           <td> <%#=@condition_headers %> </td>
 
           <% @condition_headers.each do |h| %>
             <% #dfghjk %>
             <td>
-              
+
             <% h.condition_values.each do |v| %>
             <% #dfghjk %>
               <% visit.condition_values.each do |value| %>
