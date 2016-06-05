@@ -3,3 +3,8 @@ $("#testdiv").html('<%= render partial: "report" %> ');
 	//sweetAlert("Awesome!");
 	swal("Ой", "<%= @repeated_items_popup %> Такой пункт в отчете уже есть!", "error");
 <% end %>
+//alert(<%=@reload%>)
+<% if @reload == 1 %>
+	//sweetAlert("Awesome!");
+	swal("Ой", "Нечего добавлять! Выполните новый поиск", "error");
+<% end %>

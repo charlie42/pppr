@@ -55,6 +55,7 @@ class VisitsController < ApplicationController
     @param = params[:q]
     @all = @visits.count
     @@all = @all
+    @reload = 0
     logger.debug "index all #{@@all}"
     @@param = @param
     @first = 10
@@ -128,13 +129,21 @@ class VisitsController < ApplicationController
 
     logger.debug "a in name #{a}"
 
-    @name = "поле "
-    @name +=  I18n.t a.last.to_a.last.first.second.first.second["name"].to_s, scope: 'report'
-    @name += " "
-    @name +=  t a.last.to_a.last["p"]
-    @name += ' "'
-    @name +=  a.last.to_a.last["v"].first.second.first.second
-    @name += '" '
+    if a.empty? && @@all == 0
+      @name = ""
+    elsif a.empty?
+      @name = "Всего"
+    else
+
+
+      @name = "поле "
+      @name +=  if a.last.to_a.last.first.second.first.second["name"].to_s != "" then I18n.t a.last.to_a.last.first.second.first.second["name"].to_s, scope: 'report' else a.last.to_a.last.first.second.first.second["name"].to_s end
+      @name += " "
+      @name +=  t a.last.to_a.last["p"]
+      @name += ' "'
+      @name +=  a.last.to_a.last["v"].first.second.first.second
+      @name += '" '
+    end
   end
 
   def fullname(a)
@@ -142,9 +151,15 @@ class VisitsController < ApplicationController
 
     logger.debug "A #{a}"
 
+    if a.empty? && @@all == 0
+      @full_name = ""
+    elsif a.empty?
+      @full_name = "Всего"
+    end
+
     a.each { |x|
       @full_name += "поле "
-      @full_name += I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report'
+      @full_name += if x.last.to_a.first.second.first.second["name"].to_s != "" then I18n.t x.last.to_a.first.second.first.second["name"].to_s, scope: 'report' else x.last.to_a.first.second.first.second["name"].to_s end
       @full_name += " "
       @full_name += t x.last.to_a.second.last.to_s
       @full_name += ' "'
@@ -159,25 +174,40 @@ class VisitsController < ApplicationController
 
   def array_from_params(p)
     name = ""
-    if p.to_a.last.first != "c"
-      name, predicate = p.to_a.last.first.split "_"
-    end
-    a = p["c"].to_a
-    @last_name = a.last.last["a"]["0"]["name"]
-    while @last_name == ""
-      if a.count > 1
-        a = a.first a.count - 1
+    logger.debug " @all #{@all} @@all #{@@all}"
+    a_param = p["c"]
+    a_h = a_param.to_h
+    if p.to_a.last
 
-        logger.debug "a #{a}"
+      a = a_param.to_a
+      @last_name = a.last.last["a"]["0"]["name"]
+      while @last_name == ""
+        if a.count > 1
+          a = a.first a.count - 1
+          a_h = a.to_h
 
-        @last_name = a.last.last["a"]["0"]["name"] if a.last.last["a"]["0"]
-      else
-        if name != ""
-          a = []
+          logger.debug "a #{a}"
+
+          @last_name = a.last.last["a"]["0"]["name"] if a.last.last["a"]["0"]
+        else
+          if name != "" then a = [] end
+          break
         end
-        break
       end
+      if p.to_a.last.first != "c"
+        name, predicate = p.to_a.last.first.split "_"
+        value = ""
+        if predicate == "false" || predicate == "true"
+           value = "1"
+           a_h.merge!({"1000"=>{"a"=>{"0"=>{"name"=>name}},"p"=>predicate, "v"=>{"0"=>{"value"=>value}}}})
+           a = a_h.to_a
+         end
+      end
+    else
+      a = []
     end
+    if @@all == 0 && a.empty? then @reload = 1 end
+    logger.debug " reload #{@reload} "
     a
     #a.push ["99", {"a"=>{"0"=>{"name"=>name}}, "p"=> predicate, "v"=>{"0"=>{"value"=>""}}}]
   end
@@ -377,26 +407,32 @@ class VisitsController < ApplicationController
     name = name(a)
     fullname = fullname(a)
 
-    logger.debug "fullname #{fullname}"
-
-    if a.count > 1
-      a_popped = a.first a.count - 1
-      a_popped_name = fullname(a.first a.count - 1)
-      temp_ri = ReportItem.where(full_name: a_popped_name).last
-      if temp_ri
-        @ri = temp_ri
-      else
-        @ri = ReportItem.roots.first.children.last
-      end
-      @ri.children.create!(name: name, full_name: fullname, quantity: @@all)
+    if name == ""
+      #@reload = 1
     else
-      if @last_name != ""
-        @ri = ReportItem.roots.first.children.last.children.create(name: name, full_name: fullname,
-          quantity: @@all)
+
+      logger.debug "fullname #{fullname}"
+
+      if a.count > 1
+        a_popped = a.first a.count - 1
+        a_popped_name = fullname(a.first a.count - 1)
+        temp_ri = ReportItem.where(full_name: a_popped_name).last
+        if temp_ri
+          @ri = temp_ri
+        else
+          @ri = ReportItem.roots.first.children.last
+        end
+        @ri.children.create!(name: name, full_name: fullname, quantity: @@all)
       else
-        name = "Всего"
-        @ri = ReportItem.roots.first.children.create(name: name, full_name: name, quantity: @@all)
+        if @last_name != ""
+          @ri = ReportItem.roots.first.children.last.children.create(name: name, full_name: fullname,
+            quantity: @@all)
+        else
+          name = "Всего"
+          @ri = ReportItem.roots.first.children.create(name: name, full_name: name, quantity: @@all)
+        end
       end
+
     end
 
     @@ri = @ri

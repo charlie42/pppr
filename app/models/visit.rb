@@ -17,18 +17,22 @@ class Visit < ActiveRecord::Base
     Arel.sql("TO_CHAR(next, 'DD.MM.YYYY')")
   end
 
+  ransacker :created_at do
+    Arel.sql("TO_CHAR(visits.created_at, 'DD.MM.YYYY')")
+  end
+
   ransacker :id do
     Arel.sql("to_char(id, '9999999')")
   end
 
 
-  ransacker :created_at do
-    Arel::Nodes::SqlLiteral.new("date(visits.created_at)")
-  end
+  # ransacker :created_at do
+  #   Arel::Nodes::SqlLiteral.new("date(visits.created_at)")
+  # end
 
-  ransacker :next do
-    Arel::Nodes::SqlLiteral.new("date(visits.next)")
-  end
+  # ransacker :next do
+  #   Arel::Nodes::SqlLiteral.new("date(visits.next)")
+  # end
 
 
   # ransacker :from do
