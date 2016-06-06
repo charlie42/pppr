@@ -726,7 +726,7 @@ class VisitsController < ApplicationController
     @visit.complaint_list.add(visit_params["complaints"])
     #lkj
 
-    if @patient.visits.count > 1
+    if @patient.visits.count > 0
       @visit.update_attribute(:secondary, true)
     end
 
