@@ -232,7 +232,8 @@ $("#patient_address").suggestions({
 $(document).ready(function() {
     $('#patient_allergy')
         .select2( {
-            tags: true, width: '100%'
+            tags: true, width: '100%',
+            language: "ru"
             //tokenSeparators: [',', ' '],
             //tags: [{value: 1, text: 'Паспорт'}]
         });
@@ -242,9 +243,28 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#patient_document_name')
         .select2( {
-            tags: true, width: '100%'
+            tags: true, width: '100%',
+            language: "ru"
             //tokenSeparators: [',', ' '],
             //tags: [{value: 1, text: 'Паспорт'}]
         });
 });
+// hack for iPhone 7.0.3 multiselects bug
+    if(navigator.userAgent.match(/iPhone/i)) {
+        $('select[multiple]').each(function(){
+            var select = $(this).on({
+                "focusout": function(){
+                    var values = select.val() || [];
+                    setTimeout(function(){
+                        select.val(values.length ? values : ['']).change();
+                    }, 1000);
+                }
+            });
+            var firstOption = '<option value="" disabled="disabled"';
+            firstOption += (select.val() || []).length > 0 ? '' : ' selected="selected"';
+            firstOption += '>« Select ' + (select.attr('title') || 'Options') + ' »';
+            firstOption += '</option>';
+            select.prepend(firstOption);
+        });
+    }
 </script>

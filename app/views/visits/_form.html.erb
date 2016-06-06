@@ -57,7 +57,7 @@
                     <% if type.name != v.name %><%= v.name %><% end %>
 
                     <% @values = AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values %>
-                    <% if @values.any? %>
+                    <% if @values.any? && @values.count > 1 && @values.first != "" %>
 
                         <select style = "width: 100%" multiple="multiple" name="visit[anamnesis_visits][<%= v.id %>][anamnesis_value_id][]" id="visit_anamnesis_visits_<%= v.id %>_anamnesis_value_id" class = "form-control">
 
@@ -148,7 +148,7 @@
                     <%= v.name %>
 
                     <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
-                    <% if @values.any? %>
+                    <% if @values.any? && @values.count > 1 && @values.first != "" %>
 
                         <select style = "width: 100%" multiple="multiple" name="visit[condition_visits][<%= v.id %>][condition_value_id][]" id="visit_condition_visits_<%= v.id %>_condition_value_id" class = "form-control">
 
@@ -311,6 +311,7 @@ $(document).ready(function() {
         .select2( {
             theme: "bootstrap",
             tags: true,
+            language: "ru",
             tokenSeparators: [',', ' '],
             tags: []
         })
@@ -427,7 +428,8 @@ $(document).ready(function() {
     //   });
     $('#complaints')
     .select2( {
-        tags: true, width: '100%'
+        tags: true, width: '100%',
+        language: "ru"
     });
 
     $("#teens_select2").select2({
@@ -484,5 +486,24 @@ $(document).ready(function() {
         })
       });
     });
+
+    // hack for iPhone 7.0.3 multiselects bug
+    if(navigator.userAgent.match(/iPhone/i)) {
+        $('select[multiple]').each(function(){
+            var select = $(this).on({
+                "focusout": function(){
+                    var values = select.val() || [];
+                    setTimeout(function(){
+                        select.val(values.length ? values : ['']).change();
+                    }, 1000);
+                }
+            });
+            var firstOption = '<option value="" disabled="disabled"';
+            firstOption += (select.val() || []).length > 0 ? '' : ' selected="selected"';
+            firstOption += '>« Select ' + (select.attr('title') || 'Options') + ' »';
+            firstOption += '</option>';
+            select.prepend(firstOption);
+        });
+    }
 
 </script>
