@@ -59,7 +59,7 @@
                     <% @values = AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values %>
                     <% if @values.any? && @values.count > 1 && @values.first != "" %>
 
-                        <select style = "width: 100%" multiple="multiple" name="visit[anamnesis_visits][<%= v.id %>][anamnesis_value_id][]" id="visit_anamnesis_visits_<%= v.id %>_anamnesis_value_id" class = "form-control">
+                        <select style = "width: 100%" multiple="multiple" name="visit[anamnesis_visits][<%= v.id %>][anamnesis_value_id][]" id="visit_anamnesis_visits_<%= v.id %>_anamnesis_value_id" class = "form-control bug">
 
                           <%  AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values.each do |value| %>
                             <option value= <%= value.id %> > <%= value.name %> </option>
@@ -150,7 +150,7 @@
                     <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
                     <% if @values.any? && @values.count > 1 && @values.first != "" %>
 
-                        <select style = "width: 100%" multiple="multiple" name="visit[condition_visits][<%= v.id %>][condition_value_id][]" id="visit_condition_visits_<%= v.id %>_condition_value_id" class = "form-control">
+                        <select style = "width: 100%" multiple="multiple" name="visit[condition_visits][<%= v.id %>][condition_value_id][]" id="visit_condition_visits_<%= v.id %>_condition_value_id" class = "form-control bug">
 
                           <%  ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
                             <option value= <%= value.id %> > <%= value.name %> </option>
@@ -489,7 +489,7 @@ $(document).ready(function() {
 
     // hack for iPhone 7.0.3 multiselects bug
     if(navigator.userAgent.match(/iPhone/i)) {
-        $('select[multiple]').each(function(){
+        $('.bug').each(function(){
             var select = $(this).on({
                 "focusout": function(){
                     var values = select.val() || [];
