@@ -305,6 +305,7 @@
 <% end %>
 
 <script>
+$.fn.select2.defaults.set('language', 'ru');
 $(document).ready(function() {
     $('#visit_complaint_list')
         .select2( {
@@ -317,6 +318,7 @@ $(document).ready(function() {
 });
 </script>
 <script>
+$.fn.select2.defaults.set('language', 'ru');
 $(document).ready(function() {
     // $('#visit_primary_diagnosis_visits_primary_diagnosis_ids')
     //   .select2( {
@@ -330,8 +332,9 @@ $(document).ready(function() {
         createTag: function(params) {
             return undefined;
         },
-        placeholder: "Select an ingredient...",
+        placeholder: "Начините набирать название",
         minimumInputLength: 3,
+        language: "ru",
         ajax: {
           url: "/diagnoses.json",
           dataType: 'json',
@@ -357,12 +360,14 @@ $(document).ready(function() {
         createTag: function(params) {
             return undefined;
         },
-        placeholder: "Select an ingredient...",
+        placeholder: "Начините набирать название",
         minimumInputLength: 3,
+        language: "ru",
         ajax: {
           url: "/diagnoses.json",
           dataType: 'json',
           delay: 250,
+          language: "ru",
           data: function (params) {
             return {
               q: params.term
@@ -384,8 +389,9 @@ $(document).ready(function() {
         createTag: function(params) {
             return undefined;
         },
-        placeholder: "Select an ingredient...",
+        placeholder: "Начините набирать название",
         minimumInputLength: 3,
+        language: "ru",
         ajax: {
           url: "/diagnoses.json",
           dataType: 'json',
@@ -425,7 +431,7 @@ $(document).ready(function() {
     });
 
     $("#teens_select2").select2({
-      placeholder: "Select an ingredient...",
+      placeholder: "Начините набирать название",
       minimumInputLength: 3,
       ajax: {
         url: "/medicines.json",
@@ -453,8 +459,9 @@ $(document).ready(function() {
       $('.form-group').on('cocoon:after-insert', function() {
         //alert("1");
         $("#teens_select2").select2({
-          placeholder: "Select an ingredient...",
+          placeholder: "Начините набирать название",
           minimumInputLength: 3,
+          language: "ru",
           ajax: {
             url: "/medicines.json",
             dataType: 'json',

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160524065446) do
+ActiveRecord::Schema.define(version: 20160606074648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -296,7 +296,7 @@ ActiveRecord::Schema.define(version: 20160524065446) do
   create_table "medications", force: :cascade do |t|
     t.integer  "medicine_id", :index=>{:name=>"index_medications_on_medicine_id"}, :foreign_key=>{:references=>"medicines", :name=>"medications_medicine_id_fkey", :on_update=>:no_action, :on_delete=>:no_action}
     t.string   "duration"
-    t.integer  "dosage"
+    t.string   "dosage"
     t.string   "details"
     t.integer  "visit_id",    :index=>{:name=>"index_medications_on_visit_id"}
     t.datetime "created_at",  :null=>false

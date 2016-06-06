@@ -10,23 +10,23 @@ class VisitsController < ApplicationController
   @@ri = ReportItem.order("created_at").last
   @@vertical_counter = 0
 
-  def medicines
-    вапрол
-    @medicines = Medicine.all
-    @find = Medicine.where('name LIKE ?', "%#{params[:q]}%")
-    @medicines = @find.page(params[:page]).per(100)
-    @title = "Potential pals"
-    dfghjk
-    respond_to do |format|
-      format.html
-      format.js {
-        @find = @find
-        @medicines = @medicines
-      }
-      format.json { render json: @find }
-    end
-  end
-
+  # def medicines
+  #   вапрол
+  #   @medicines = Medicine.all
+  #   @find = Medicine.where('name LIKE ?', "%#{params[:q]}%")
+  #   @medicines = @find.page(params[:page]).per(100)
+  #   @title = "Potential pals"
+  #   dfghjk
+  #   respond_to do |format|
+  #     format.html
+  #     format.js {
+  #       @find = @find
+  #       @medicines = @medicines
+  #     }
+  #     format.json { render json: @find }
+  #   end
+  # end
+  #
 
 
   def set_params
@@ -719,10 +719,11 @@ class VisitsController < ApplicationController
   def create
     @doctor = Doctor.find(params[:doctor_id])
     @patient = Patient.find(params[:patient_id])
-    @visit = Visit.new(visit_params)
+    @visit = Visit.new(visit_params.except(:complaints))
     @final_diagnosis_list = FinalDiagnosisList.create(final_diagnosis_list_params) if final_diagnosis_list_params["diagnosis_id"]
     @dispanserisation = Dispanserisation.create(dispanserisation_params) if dispanserisation_params["diagnosis_id"]
-
+    @complaints_list = Visit.complaint_counts
+    @visit.complaint_list.add(visit_params["complaints"])
     #lkj
 
     if @patient.visits.count > 1
@@ -767,7 +768,6 @@ class VisitsController < ApplicationController
     end
 
     @names = params['visit']["condition_visits"]
-
     if @names
       @names.each do |name|
         @ids = name[1]["condition_value_id"]
@@ -777,6 +777,9 @@ class VisitsController < ApplicationController
             @lc = @visit.condition_visits.build(:visit_id => params[:id], :condition_value_id => v, :details => @details)
             @lc.save
           end
+        elsif @details != ""
+          empty_value = ConditionValue.where(condition_name_id:name[0], name:"").first
+          @lc = @visit.condition_visits.build(:visit_id => params[:id], :condition_value_id => empty_value.id, :details => @details)
         end
       end
     end
@@ -792,6 +795,9 @@ class VisitsController < ApplicationController
             @lc = @visit.anamnesis_visits.build(:visit_id => params[:id], :anamnesis_value_id => v, :details => @details)
             @lc.save
           end
+        elsif @details != ""
+          empty_value = AnamnesisValue.where(anamnesis_name_id:name[0], name:"").first
+          @lc = @visit.anamnesis_visits.build(:visit_id => params[:id], :anamnesis_value_id => empty_value.id, :details => @details)
         end
       end
     end
@@ -920,10 +926,10 @@ class VisitsController < ApplicationController
     def visit_params
       #{:post => params.require(:post).permit(:title, :body, images_posts_attributes: [:caption, image_attributes: [:image]] )}
       params.require(:visit).permit(:from,
-        :date, :complaints, :anamnesis, :allerg, :general_state_option_id,
+        :date, :anamnesis, :allerg, :general_state_option_id,
         :diagnosis, :doctor_id, :patient_id, :constitution_option_id,
         :effleurage_option_id, :postural_pose_option_id,
-        :subcutanious_fat_option_id, :from_id, :complaint_list,
+        :subcutanious_fat_option_id, :from_id, :complaint_list, :next, :height, :weight, :temp, :an_morbi,
         treatments_attributes:
           [:id, :treatment_factor_id, :amount, :details, :_destroy],
         medications_attributes:
@@ -941,7 +947,7 @@ class VisitsController < ApplicationController
         condition_visits_attributes:
           [:condition_name_id, :details, condition_value_id:[]],
         anamnesis_visits_attributes:
-          [:anamnesis_name_id, :details, anamnesis_value_id:[]]
+          [:anamnesis_name_id, :details, anamnesis_value_id:[]], :complaints => []
         #,
         # condition_names_attributes:
         #   [:names, :detailss]

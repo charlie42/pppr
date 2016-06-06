@@ -45,7 +45,7 @@
   2. <%= t :name %>:
     <%= @patient.name %> <br>
   3. <%= t(:gender) %>:
-    <%= @patient.gender %> <br>
+    <%= t @patient.gender %> <br>
   4. <%= t(:birthday) %>:
     <%= @patient.birthday %> <br>
   5. <%= t(:address) %>:
@@ -53,7 +53,7 @@
     <%= t(:phone) %>:
     <%= @patient.phone %> <br>
   6. <%= t(:area) %>:
-    <%= @patient.area %> <br>
+    <%= t @patient.area %> <br>
   7. <%= t(:insurance_policy_series) %>:
     <%= @patient.insurance_policy_series %>
     <%= t(:insurance_policy_number) %>:
@@ -92,15 +92,15 @@
       <% end %>
   </table>
   13. <%= t(:martial_status) %>:
-    <%= @patient.martial_status %> <br>
+    <%= t @patient.martial_status %> <br>
   14. <%= t(:education) %>:
-    <%= @patient.education %> <br>
+    <%= t @patient.education %> <br>
   15. <%= t(:employment) %>:
-    <%= @patient.employment %> <br>
+    <%= t @patient.employment %> <br>
   16. <%= t(:disability) %>:
     <%= @patient.disability %>
     <%= t(:disability_time) %>:
-    <%= @patient.disability_time %>
+    <%= t @patient.disability_time, scope: 'disability_scope' if @patient.disability %>
     <%= t(:disability_date) %>:
     <%= @patient.disability_date %> <br>
   17. <%= t(:work_place) %>:
@@ -131,7 +131,7 @@
   21. <%= t(:blood_type) %>:
     <%= @patient.blood_type %> <br>
   22. <%= t(:Rh_factor) %>:
-    <%= @patient.Rh_factor %> <br>
+    <%= t @patient.Rh_factor %> <br>
   23. <%= t(:allergy) %>:
     <% @patient.allergy.each do |a| %> <%= a %> <br> <% end %>  <br>
 
@@ -149,42 +149,55 @@
    <b><%= t(:an_morbi) %>: </b>
     <%= visit.an_morbi %> <br>
    <b><%= t(:complaints) %>: </b>
-    <% visit.complaints.each do |c| %> <% c.name %>, <% end %> <br>
+    <% visit.complaints.each do |c| %> <%= c.name %>&emsp;<% end %> <br><br>
    <b><%= t(:anamnesis) %>: </b>
 
     <br>
 
-   <% AnamnesisType.all.each do |type| %>
-    <%= type.name %>:
-    <% AnamnesisName.all.each do |v| %>
-      <% if AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id) %>
-        <% if v.name != type.name %>
-          <%= v.name %>
+    <% AnamnesisType.all.each do |type| %>
+      <%= type.name %>:
+      <% AnamnesisName.all.each do |name| %>
+        <% if AnamnesisName.find_by(:name => name.name, :anamnesis_type_id => type.id) %>
+          <% if name.name != type.name %>
+            <%= name.name %>:
+          <% end %>
+          <% @values = AnamnesisName.find_by(:name => name.name, :anamnesis_type_id => type.id).anamnesis_values %>
 
-          <% @values = AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values %>
           <% if @values.any? %>
 
-            <% AnamnesisName.find_by(:name => v.name, :anamnesis_type_id => type.id).anamnesis_values.each do |value| %>
-               <% if AnamnesisVisit.find_by(:anamnesis_value_id => value.id, :visit_id => visit.id) %>
-                <u><%= value.name %></u>
-                <% @anamnesis_value_details = AnamnesisVisit.find_by(:anamnesis_value_id => value.id, :visit_id => visit.id).details %>
-               <% else %>
-                <%= value.name %>
-                <% @anamnesis_value_details = nil %>
-               <% end %>
+            <% value_count = 0 %>
+            <% if @values.count == 1 && @values.first.name == "" && AnamnesisVisit.find_by(:anamnesis_value_id => AnamnesisValue.find_by(anamnesis_name_id: name.id).id, :visit_id => visit.id) %>
+              <% #dfghj %>
+              <%= AnamnesisVisit.find_by(:anamnesis_value_id => AnamnesisValue.find_by(anamnesis_name_id: name.id).id, :visit_id => visit.id).details %>
+              <% value_count -= 1 %>
+            <% else %>
+
+              <% @anamnesis_value_details = "" %>
+              <% @values.each do |value| %>
+
+                <% if AnamnesisVisit.find_by(:anamnesis_value_id => value.id, :visit_id => visit.id) %>
+
+                  <%= value.name %>
+                  <% @anamnesis_value_details = AnamnesisVisit.find_by(:anamnesis_value_id => value.id, :visit_id => visit.id).details %>
+
+                  <% value_count += 1 %>
+                <% end %>
+              <% end %>
+
+              <% if @anamnesis_value_details != "" %>
+                (<%= @anamnesis_value_details %>)
+              <% end %>
+              <% if value_count == 0 %>
+                -
+              <% end %>
+
             <% end %>
 
-            <% if @anamnesis_value_details %>
-              (<%= @anamnesis_value_details %>)
-            <% end %>
-
-
+            <br>
+              <!-- <br> -->
           <% end %>
-
-            <!-- <br> -->
         <% end %>
       <% end %>
-    <% end %>
     <br>
     <!-- <hr> -->
   <% end %>
@@ -204,46 +217,61 @@
    <%= t(:from) %>:
     <%= visit.from.name if visit.from %> <br>
 
-  <% ConditionType.all.each do |type| %>
-    <%= type.name %>:
-    <% ConditionName.all.each do |v| %>
-      <% if ConditionName.find_by(:name => v.name, :condition_type_id => type.id) %>
-        <% if v.name != type.name %>
-          <%= v.name %>:
+    <% ConditionType.all.each do |type| %>
+      <h5><%= type.name %>:</h5>
+      <% ConditionName.all.each do |name| %>
+        <% if ConditionName.find_by(:name => name.name, :condition_type_id => type.id) %>
+          <% if name.name != type.name %>
+            <%= name.name %>:
+          <% end %>
+          <% @values = ConditionName.find_by(:name => name.name, :condition_type_id => type.id).condition_values %>
 
-          <% @values = ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values %>
           <% if @values.any? %>
 
-            <% ConditionName.find_by(:name => v.name, :condition_type_id => type.id).condition_values.each do |value| %>
-              <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id) %>
-                <u><%= value.name %></u>
-                <% @condition_value_details = ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id).details %>
-              <% else %>
-                <%= value.name %>
-                <% @condition_value_details = nil %>
+            <% value_count = 0 %>
+            <% if @values.count == 1 && @values.first.name == "" && ConditionVisit.find_by(:condition_value_id => ConditionValue.find_by(condition_name_id: name.id).id, :visit_id => visit.id) %>
+              <% #dfghj %>
+              <%= ConditionVisit.find_by(:condition_value_id => ConditionValue.find_by(condition_name_id: name.id).id, :visit_id => visit.id).details %>
+              <% value_count -= 1 %>
+            <% else %>
+
+              <% @condition_value_details = "" %>
+              <% @values.each do |value| %>
+
+                <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id) %>
+
+                  <%= value.name %>
+                  <% @condition_value_details = ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => visit.id).details %>
+
+                  <% value_count += 1 %>
+                <% end %>
               <% end %>
+
+              <% if @condition_value_details != "" %>
+                (<%= @condition_value_details %>)
+              <% end %>
+              <% if value_count == 0 %>
+                -
+              <% end %>
+
             <% end %>
 
-            <% if @condition_value_details %>
-              (<%= @condition_value_details %>)
-            <% end %>
+            <br>
+              <!-- <br> -->
           <% end %>
-          <br>
-            <!-- <br> -->
         <% end %>
       <% end %>
-    <% end %>
     <br>
-
     <!-- <hr> -->
   <% end %>
+
    <b><%= t(:primary_diagnosis) %>: </b>
 
     <% if visit.primary_diagnoses.any? %>
       <% visit.concomitant_diagnoses.each do |pd| %>
         <%= pd.name %>,
       <% end %>
-      <% if visit.primary_diagnosis_visits.first.details %>
+      <% if visit.primary_diagnosis_visits.first.details && visit.primary_diagnosis_visits.first.details != "" %>
         (<%= visit.primary_diagnosis_visits.first.details %>)
       <% end %>
     <% end %>
@@ -254,7 +282,7 @@
       <% visit.concomitant_diagnoses.each do |pd| %>
         <%= pd.name %>,
       <% end %>
-      <% if visit.concomitant_diagnosis_visits.first.details %>
+      <% if visit.concomitant_diagnosis_visits.first.details && visit.concomitant_diagnosis_visits.first.details != "" %>
         (<%= visit.concomitant_diagnosis_visits.first.details %>)
       <% end %>
     <% end %>
@@ -265,7 +293,7 @@
       <% visit.complication_diagnoses.each do |pd| %>
         <%= pd.name %>,
       <% end %>
-      <% if visit.complication_diagnosis_visits.first.details %>
+      <% if visit.complication_diagnosis_visits.first.details &&  visit.complication_diagnosis_visits.first.details != ""%>
         (<%= visit.complication_diagnosis_visits.first.details %>)
       <% end %>
     <% end %>
@@ -276,7 +304,7 @@
     <% visit.treatments.each do |t| %>
       <%= t.treatment_factor.name if t.treatment_factor %>
       <%= t.amount %>
-      <% if t.details %>
+      <% if t.details && t.details != "" %>
         (<%= t.details %>)
       <% end %>
     <% end %>
@@ -287,7 +315,7 @@
      <% if visit.medications.any? %>
       <% visit.medications.each do |m| %>
         <%= m.medicine.name if m.medicine %>
-        <%= m.dosage %>
+        <%= m.dosage  %>
         <% if m.details %>
           <%= m.details %>
         <% end %>
@@ -310,7 +338,7 @@
     <% if @exs.any? %>
       <% @exs.each do |e| %>
         <%= e.examination.name if e.examination %>
-        <% if e.details %>
+        <% if e.details && e.details != "" %>
           (<%= e.details %>)
         <% end %>
       <% end %>
@@ -327,7 +355,7 @@
       <% @exs.each do |e| %>
         <%= e.examination.name if e.examination %>
         <%= e.result %>
-        <% if e.details %>
+        <% if e.details && e.details != ""%>
           (<%= e.details %>)
         <% end %>
       <% end %>
