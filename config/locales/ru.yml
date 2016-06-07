@@ -411,6 +411,14 @@ ru:
       treatment: Лечение
       treatment_factor: Фактор лечения
     attributes:
+      doctor:
+        company_name: Название компании
+        company_code: ОГРН
+        company_address: Адрес компании
+        password: Пароль
+        password_confirmation: Подтверждение пароля
+        email: Электронная почта
+        login: Логин
       patient:
         name: Имя
         gender: Пол

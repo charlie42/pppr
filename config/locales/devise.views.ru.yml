@@ -9,10 +9,10 @@ ru:
     failure:
       already_authenticated: Вы уже вошли в свой аккаунт.
       inactive: Ваш Email еще не активирован.
-      invalid: "Неверный %{authentication_keys} или пароль."
+      invalid: "Неверный ОГРН или пароль."
       locked: Ваш аккаунт заблокирован.
       last_attempt: У вас осталась крайняя попытка перед тем как Ваш аккаунт будет заблокирован.
-      not_found_in_database: "Неверный %{authentication_keys} или пароль."
+      not_found_in_database: "Неверный ОГРН или пароль."
       timeout: Время Вашей сессии истекло, войдите еще раз.
       unauthenticated: Вам необходимо войти или зарегистрироваться перед тем как продолжить.
       unconfirmed: Вам необходимо подтвердить Email перед тем как продолжить.

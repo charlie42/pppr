@@ -39,6 +39,10 @@ class VisitsController < ApplicationController
   # GET /visits.json
   def index
     @doctor = Doctor.find(params[:doctor_id])
+
+    unless @doctor == current_doctor
+       redirect_to :back, :alert => "Доступ запрещен."
+    end
     visits = @doctor.visits
 
     if (params[:patient_id])
@@ -528,6 +532,9 @@ class VisitsController < ApplicationController
     @doctor = Doctor.find(params[:doctor_id])
     @patient = Patient.find(params[:patient_id])
     @visit = Visit.find(params[:id])
+    unless @doctor == @visit.doctor
+       redirect_to :back, :alert => "Доступ запрещен."
+     end
 
 
     # @chart = LazyHighCharts::HighChart.new('graph') do |f|

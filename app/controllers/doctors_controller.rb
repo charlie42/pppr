@@ -14,7 +14,7 @@ class DoctorsController < ApplicationController
 
    @doctor = Doctor.find(params[:id])
     unless @doctor == current_doctor
-      redirect_to :back, :alert => "Access denied."
+      redirect_to :back, :alert => "Доступ запрещен."
     end
     @patients = @doctor.patients
   end
@@ -78,6 +78,6 @@ class DoctorsController < ApplicationController
     def doctor_params
       params.require(:doctor).permit(:password, :password_conformation,
         :specialization, :name, :company_name, :company_address,
-        :company_code, :documentation_code, roles: [])
+        :company_code, :documentation_code, :email, roles: [])
     end
 end

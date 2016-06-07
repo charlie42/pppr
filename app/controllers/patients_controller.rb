@@ -10,8 +10,12 @@ class PatientsController < ApplicationController
   end
 
   def index
+
     #@patients = Patient.all
     @doctor = current_doctor
+    unless @doctor == Doctor.find(params[:doctor_id])
+       redirect_to :back, :alert => "Доступ запрещен."
+    end
     patients = @doctor.patients
 
     @q = patients.search(params[:q]);
@@ -33,6 +37,10 @@ class PatientsController < ApplicationController
 
      @doctor = current_doctor
      @patient = Patient.find(params[:id])
+     unless @doctor == @patient.doctor
+        redirect_to :back, :alert => "Доступ запрещен."
+      end
+
      @visits = @patient.visits.all
   end
 
