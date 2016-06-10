@@ -62,7 +62,8 @@ Rails.application.routes.draw do
     get '/doctors/:doctor_id/patients/:patient_id/visits/new/add_final_diagnosis' => 'visits#add_final_diagnosis', as: 'doctor_patient_visits_new_add_final_diagnosis'
     get '/doctors/:doctor_id/patients/:patient_id/visits/new/add_dispanserisation' => 'visits#add_dispanserisation', as: 'doctor_patient_visits_new_add_dispanserisation'
 
-get '*path', :to => 'application#raise_not_found!'
+    get '*path', :to => 'application#raise_not_found!'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

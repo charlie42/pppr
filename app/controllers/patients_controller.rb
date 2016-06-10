@@ -6,14 +6,20 @@ class PatientsController < ApplicationController
 
   def index_for_doctor
     @doctor = current_doctor
+
+    logger.debug("index_for_doctor")
+
     redirect_to "/doctors/#{@doctor.id}/patients"
   end
 
   def index
 
+    logger.debug("index")
     #@patients = Patient.all
     @doctor = current_doctor
+    logger.debug("#{@doctor.id} #{current_doctor.id} #{Doctor.find(params[:doctor_id]).id}")
     unless @doctor == Doctor.find(params[:doctor_id])
+       logger.debug("if #{@doctor.id} #{current_doctor.id} #{Doctor.find(params[:doctor_id]).id}")
        redirect_to :back, :alert => "Доступ запрещен."
     end
     patients = @doctor.patients
@@ -29,6 +35,8 @@ class PatientsController < ApplicationController
   # GET /patients/1.json
   def show
 
+    logger.debug("show")
+
     # @doctor = Doctor.find(params[:id])
     # unless @doctor == current_doctor
     #   redirect_to :back, :alert => "Access denied."
@@ -37,7 +45,9 @@ class PatientsController < ApplicationController
 
      @doctor = current_doctor
      @patient = Patient.find(params[:id])
-     unless @doctor == @patient.doctor
+     logger.debug("#{@doctor.id} #{current_doctor.id} #{Doctor.find(params[:doctor_id]).id}")
+     unless @doctor == @patient.visits.first.doctor
+       logger.debug("if #{@doctor.id} #{current_doctor.id} #{Doctor.find(params[:doctor_id]).id}")
         redirect_to :back, :alert => "Доступ запрещен."
       end
 
@@ -92,9 +102,12 @@ class PatientsController < ApplicationController
      @patient.allergy_list.add(@params["allergy"])
      @patient.document_name_list.add(@params["document_name"])
 
+     logger.debug("create")
+
     respond_to do |format|
       if @patient.save
-        format.html { redirect_to doctor_patient_path(@doctor.id, @patient.id), notice: "#{t 'activerecord.successful.messages.created'}" }
+        logger.debug("#{@doctor.id} #{@patient.id}")
+        format.html { redirect_to new_doctor_patient_visit_path(@doctor.id, @patient.id), notice: "#{t 'activerecord.successful.messages.created'}" }
         format.json { render :show, status: :created, location: @patient }
       else
         format.html { render :new }

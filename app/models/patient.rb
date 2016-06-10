@@ -10,7 +10,7 @@ class Patient < ActiveRecord::Base
     #(column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
     ["name", "gender", "birthday", "phone", "insurance_certificate",
      "insurance_policy_series", "insurance_policy_number", "document_name",
-      "document_series", "document_number", "created_at", "bool_test"]
+      "document_series", "document_number", "created_at"]
   end
 
   extend Enumerize
