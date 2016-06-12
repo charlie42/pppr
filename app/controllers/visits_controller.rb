@@ -180,6 +180,16 @@ class VisitsController < ApplicationController
     if p.to_a.last
 
       a = a_param.to_a
+
+      if p.to_a.last.first != "c"
+        name, predicate = p.to_a.last.first.split "_"
+        value = ""
+        if predicate == "false" || predicate == "true"
+           value = "1"
+           a_h.merge!({"1000"=>{"a"=>{"0"=>{"name"=>name}},"p"=>predicate, "v"=>{"0"=>{"value"=>value}}}})
+           a = a_h.to_a
+         end
+      end
       @last_name = a.last.last["a"]["0"]["name"]
       while @last_name == ""
         if a.count > 1
@@ -193,15 +203,6 @@ class VisitsController < ApplicationController
           if name != "" then a = [] end
           break
         end
-      end
-      if p.to_a.last.first != "c"
-        name, predicate = p.to_a.last.first.split "_"
-        value = ""
-        if predicate == "false" || predicate == "true"
-           value = "1"
-           a_h.merge!({"1000"=>{"a"=>{"0"=>{"name"=>name}},"p"=>predicate, "v"=>{"0"=>{"value"=>value}}}})
-           a = a_h.to_a
-         end
       end
     else
       a = []
@@ -404,6 +405,7 @@ class VisitsController < ApplicationController
     # end
 
     a = array_from_params(@@param)
+    logger.debug "@last_name #{@last_name} after array_from_params"
     name = name(a)
     fullname = fullname(a)
 
@@ -424,6 +426,7 @@ class VisitsController < ApplicationController
         end
         @ri.children.create!(name: name, full_name: fullname, quantity: @@all)
       else
+        logger.debug "@last_name #{@last_name} before if"
         if @last_name && @last_name != ""
           logger.debug "@last_name (#{!@last_name.nil?}) || (#{@last_name != ""}) if"
           @ri = ReportItem.roots.first.children.last.children.create(name: name, full_name: fullname,

@@ -12,7 +12,7 @@ module ApplicationHelper
 	   content_tag :ul do
         attributes.each do |attribute|
             concat(content_tag(:li, attribute.first.name))
-            if attribute.first.has_children? 
+            if attribute.first.has_children?
                 concat(nested_attributes(attribute.first.children.arrange))
             end
         end
@@ -23,7 +23,7 @@ module ApplicationHelper
     html = content_tag(:ul) {
       ul_contents = ""
       ul_contents << content_tag(:li, hash[:parent])
-      if hash[:children] 
+      if hash[:children]
       	hash[:children].each do |child|
           ul_contents << hash_list_tag(child)
         end
@@ -34,12 +34,12 @@ module ApplicationHelper
 
   def print_report(r, margin)
 
-    ('<table class="table table-striped">' + print_report_inner(r, margin) + '</table>').html_safe 
+    ('<table class="table table-striped">' + print_report_inner(r, margin) + '</table>').html_safe
   end
 
-  def print_report_inner(r, margin) 
+  def print_report_inner(r, margin)
     final = Array.new
-    # final << 
+    # final <<
     if r
       r.children.each do |i|
         logger.debug "i #{i}"
@@ -47,16 +47,18 @@ module ApplicationHelper
         if i.parent.quantity > 0
           percentage = ((100*i.quantity)/i.parent.quantity).to_s + "%"
         end
+				i.full_name.gsub!('поле Вторичный ложь "1"', 'являются первичными')
+				i.full_name.gsub!('поле Вторичный является истинным "1"', 'являются вторичными')
         final << content_tag(:tr, content_tag(:td, i.full_name + " (" + i.quantity.to_s + " записей, " + percentage + ")", {:style => "padding-left: #{margin}px"}))
         if i.has_children?
           # hfhewjfhe
 
           final << print_report_inner(i, margin + 30)
-          
+
         end
       end
     end
-    # final << 
+    # final <<
     final.join(' ')
   end
 
@@ -78,5 +80,5 @@ module ApplicationHelper
 
     html.html_safe
   end
-  
+
 end
