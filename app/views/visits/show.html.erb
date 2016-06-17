@@ -129,7 +129,7 @@
 
     <% if @visit.primary_diagnoses.any? %>
       <% @visit.primary_diagnoses.each do |pd| %>
-        <%= pd.name %>,
+        <%= pd.name %>&emsp;
       <% end %>
       <% if @visit.primary_diagnosis_visits.first.details && @visit.primary_diagnosis_visits.first.details != "" %>
         (<%= @visit.primary_diagnosis_visits.first.details %>)
@@ -140,7 +140,7 @@
 
     <% if @visit.concomitant_diagnoses.any? %>
       <%@visit.concomitant_diagnoses.each do |pd| %>
-        <%= pd.name %>,
+        <%= pd.name %>&emsp;
       <% end %>
       <% if @visit.concomitant_diagnosis_visits.first.details && @visit.concomitant_diagnosis_visits.first.details != "" %>
         (<%= @visit.concomitant_diagnosis_visits.first.details %>)
@@ -151,7 +151,7 @@
 
     <% if @visit.complication_diagnoses.any? %>
       <%@visit.complication_diagnoses.each do |pd| %>
-        <%= pd.name %>,
+        <%= pd.name %>&emsp;
       <% end %>
       <% if @visit.complication_diagnosis_visits.first.details &&  @visit.complication_diagnosis_visits.first.details != ""%>
         (<%= @visit.complication_diagnosis_visits.first.details %>)

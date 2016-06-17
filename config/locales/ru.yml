@@ -86,6 +86,7 @@ ru:
     secondary: Вторичный
     created_at: Дата создания
     next: Дата следующего посещения
+    an_morbi: An. Morbi
 
   gender_scope:
     male: мужской
@@ -269,7 +270,9 @@ ru:
       not_in_all: "Не во всех"
       not_in_any: "Не в любом"
       not_null: "Не пустой"
-      not_start: "Не начинается с"
+      not_null: "Не пустой"
+      not_true: "Не истина"
+      not_false: "Не ложь"
       not_start_all: "Не начинается со всех"
       not_start_any: "Не начинается с любого"
       'null': "Пустой"

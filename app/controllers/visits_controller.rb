@@ -180,24 +180,39 @@ class VisitsController < ApplicationController
     name = ""
     logger.debug " @all #{@all} @@all #{@@all}"
     a_param = p["c"]
-    a_h = a_param.to_h
+    logger.debug " a_param in array_from_params #{a_param} "
+
+    #a_h = a_param.to_h
+    a_h = a_param
+    logger.debug " a_h in array_from_params #{a_h.inspect} a_param #{a_param} p['c'].to_h.count #{p["c"].to_h.count}"
     if p.to_a.last
 
       a = a_param.to_a
+
+      logger.debug " a in array_from_params #{a} "
 
       if p.to_a.last.first != "c"
         name, predicate = p.to_a.last.first.split "_"
         value = ""
         if predicate == "false" || predicate == "true"
            value = "1"
+           logger.debug " a_h before merge #{a_h} "
            a_h.merge!({"1000"=>{"a"=>{"0"=>{"name"=>name}},"p"=>predicate, "v"=>{"0"=>{"value"=>value}}}})
+           logger.debug " a_h after merge #{a_h} "
            a = a_h.to_a
+           logger.debug " a after merge #{a} "
+
          end
       end
+      logger.debug " a1 in array_from_params #{a} "
+      #binding.pry
       @last_name = a.last.last["a"]["0"]["name"]
       while @last_name == ""
         if a.count > 1
           a = a.first a.count - 1
+
+          logger.debug " a2 in array_from_params popped #{a} "
+
           a_h = a.to_h
 
           logger.debug "a #{a}"
