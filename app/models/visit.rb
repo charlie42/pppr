@@ -17,8 +17,24 @@ class Visit < ActiveRecord::Base
     Arel.sql("TO_CHAR(next, 'DD.MM.YYYY')")
   end
 
-  ransacker :created_at do
-    Arel.sql("TO_CHAR(visits.created_at, 'DD.MM.YYYY')")
+  ransacker :created_at, formatter: proc { |date|
+      a = date.to_s.split(".")
+      year = a.first
+      month = a.second
+      day = a.last.split.first
+      string = day + "." + month + "." + year
+    } do |parent|
+    #d = Arel.sql("visits.created_at")
+
+    #d = visits.created_at.to_s
+    # a = d.to_s.split("-")
+    # year = a.first
+    # month = a.second
+    # day = a.last.split.first
+    # string = day + "." + month + "." + year
+
+    parent.table[:created_at]
+    #Arel.sql("to_date(#{string}, 'DD.MM.YYYY')")
   end
 
   # ransacker :id do
