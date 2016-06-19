@@ -53,7 +53,7 @@
     <dt><strong><%= t(:disability) %>:</strong></dt>
     <dd><%= t @patient.disability %></dd>
     <dt><strong><%= t(:disability_time) %>:</strong></dt>
-    <dd><%= t @patient.disability_time if @patient.disability_time %></dd>
+    <dd><%= t @patient.disability_time, scope: 'disability_scope' if @patient.disability_time %></dd>
     <dt><strong><%= t(:disability_date) %>:</strong></dt>
     <dd><%= @patient.disability_date %></dd>
   <% end %>
