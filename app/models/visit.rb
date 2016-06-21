@@ -60,7 +60,7 @@ class Visit < ActiveRecord::Base
   belongs_to :doctor
 
   has_many :specialists, through: :consultations
-  has_many :consultations
+  has_many :consultations, dependent: :destroy
 
   belongs_to :from, :class_name => 'Specialist'
   belongs_to :constitution_option
@@ -68,18 +68,18 @@ class Visit < ActiveRecord::Base
   belongs_to :postural_pose_option
 
   has_many :concomitant_diagnoses, through: :concomitant_diagnosis_visits
-  has_many :concomitant_diagnosis_visits
+  has_many :concomitant_diagnosis_visits, dependent: :destroy
   has_many :complication_diagnoses, through: :complication_diagnosis_visits
-  has_many :complication_diagnosis_visits
+  has_many :complication_diagnosis_visits, dependent: :destroy
   has_many :primary_diagnoses, through: :primary_diagnosis_visits
-  has_many :primary_diagnosis_visits
+  has_many :primary_diagnosis_visits, dependent: :destroy
 
 
   has_many :condition_values, through: :condition_visits
-  has_many :condition_visits #, :dependent => :destroy
+  has_many :condition_visits, dependent: :destroy #, :dependent => :destroy
 
   has_many :anamnesis_values, through: :anamnesis_visits
-  has_many :anamnesis_visits
+  has_many :anamnesis_visits, dependent: :destroy
 
   has_many :treatment_factors, through: :treatments
   has_many :treatments, :dependent => :destroy
