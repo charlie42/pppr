@@ -91,7 +91,9 @@
     <tbody>
       <% @visits.last(15).each do |visit| %>
         <tr>
-          <td><%= link_to visit.created_at.strftime("%d.%m.%Y"), doctor_patient_visit_path(@doctor,visit.patient,visit) %></td>
+          <td>
+          <% if visit.patient then @visit_patient = visit.patient else @visit_patient = Patient.first end %>
+          <%= link_to visit.created_at.strftime("%d.%m.%Y"), doctor_patient_visit_path(@doctor,@visit_patient,visit) %></td>
           <td><%= visit.from.name if visit.from %></td>
           <td><%= visit.an_morbi %></td>
           <td>
