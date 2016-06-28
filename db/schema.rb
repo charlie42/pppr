@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160606074648) do
+ActiveRecord::Schema.define(version: 20160628080119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20160606074648) do
     t.datetime "next"
     t.boolean  "secondary",                  :default=>false
     t.boolean  "bool_test"
+    t.string   "recommendations"
   end
 
   create_table "anamnesis_visits", force: :cascade do |t|

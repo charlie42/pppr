@@ -268,7 +268,7 @@
    <b><%= t(:primary_diagnosis) %>: </b>
 
     <% if visit.primary_diagnoses.any? %>
-      <% visit.concomitant_diagnoses.each do |pd| %>
+      <% visit.primary_diagnoses.each do |pd| %>
         <%= pd.name %>,
       <% end %>
       <% if visit.primary_diagnosis_visits.first.details && visit.primary_diagnosis_visits.first.details != "" %>
@@ -362,6 +362,6 @@
     <% end %>
    <br>
    <b>Следующее посещение:</b> <%= visit.next.strftime("%d.%m.%Y") if visit.next %>
-   <div class="page-break"></div>
+   <b>Рекомендации:</b> <%= visit.recommendations if visit.recommendations != "" %>
 
 <% end %>

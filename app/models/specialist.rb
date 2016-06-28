@@ -7,4 +7,9 @@ class Specialist < ActiveRecord::Base
 	def self.ransackable_attributes auth_object = nil
 	    ["name"]
 	end
+
+	def self.get_empty_list
+ 	 []
   end
+	
+end

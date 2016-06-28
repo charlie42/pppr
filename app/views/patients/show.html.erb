@@ -111,4 +111,21 @@
       <% end %>
   </table>
 
+  <hr>
+    <h2>Посещения</h2>
+  <hr>
+    <table class="table table-striped">
+      <thead>
+        <tr><td><b>Дата</b></td><td><b>Жалобы</b></td></tr>
+      </thead>
+      <% @patient.visits.each {|visit| %>
+        <tr>
+          <td><%= link_to visit.created_at.strftime("%d.%m.%Y"),
+                    doctor_patient_visit_path(visit.doctor,visit.patient,visit) %></td>
+          <td><% visit.complaints.each do |c| %> <%= c.name %><br><% end %> <br><br></td>
+        </tr>
+      <% } %>
+    </table>
+  <hr>
+
 </dl>

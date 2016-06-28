@@ -12,6 +12,7 @@ class PatientsController < ApplicationController
     redirect_to "/doctors/#{@doctor.id}/patients"
   end
 
+
   def index
 
     logger.debug("index")

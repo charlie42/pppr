@@ -7,5 +7,5 @@
 development:
  host: localhost
  adapter: postgresql
- database: demo3
+ database: nevrolog
  username: Charlie

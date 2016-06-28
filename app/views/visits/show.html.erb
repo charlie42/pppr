@@ -1,8 +1,9 @@
 <%- model_class = Visit -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => @visit.created_at.strftime("%d.%m.%Y") %></h1>
+  <h1><%=t '.title', :default => @visit.patient.name %></h1>
 </div>
-
+<%= link_to 'Получить осмотр невролога в PDF', doctor_patient_visit_generate_examination_pdf_path(:visit_id=>@visit.id, format: :pdf, :method => :get)%>
+<hr>
     <h4>Дата:</h4>
    <%=@visit.created_at.strftime("%d.%m.%Y")%> <br>
 
@@ -12,59 +13,49 @@
     <%= @visit.an_morbi %> <br>
    <h4><%= t(:complaints) %>: </h4>
    <% @visit.complaints.each do |c| %> <%= c.name %>&emsp;<% end %> <br><br>
-   <h4><%= t(:anamnesis) %>: </h4>
 
-    <br>
+   <% types = Array.new %>
+   <% names = Array.new %>
+   <% values = Array.new %>
+   <% details = "" %>
 
-    <% AnamnesisType.all.each do |type| %>
-      <h5><%= type.name %>:</h5>
-      <% AnamnesisName.all.each do |name| %>
-        <% if AnamnesisName.find_by(:name => name.name, :anamnesis_type_id => type.id) %>
-          <% if name.name != type.name %>
-            <%= name.name %>:
-          <% end %>
-          <% @values = AnamnesisName.find_by(:name => name.name, :anamnesis_type_id => type.id).anamnesis_values %>
+   <% if AnamnesisVisit.find_by(:visit_id => @visit.id) %>
+      <h4><%= t(:anamnesis) %>: </h4>
 
-          <% if @values.any? %>
+      <% AnamnesisType.all.each { |type| %>
 
-            <% value_count = 0 %>
-            <% if @values.count == 1 && @values.first.name == "" && AnamnesisVisit.find_by(:anamnesis_value_id => AnamnesisValue.find_by(anamnesis_name_id: name.id).id, :visit_id => @visit.id) %>
-              <% #dfghj %>
-              <%= AnamnesisVisit.find_by(:anamnesis_value_id => AnamnesisValue.find_by(anamnesis_name_id: name.id).id, :visit_id => @visit.id).details %>
-              <% value_count -= 1 %>
-            <% else %>
+        <% type.anamnesis_names.all.each { |name| %>
 
-              <% @anamnesis_value_details = "" %>
-              <% @values.each do |value| %>
+          <% name.anamnesis_values.all.each { |value| %>
 
-                <% if AnamnesisVisit.find_by(:anamnesis_value_id => value.id, :visit_id => @visit.id) %>
-
-                  <%= value.name %>
-                  <% @anamnesis_value_details = AnamnesisVisit.find_by(:anamnesis_value_id => value.id, :visit_id => @visit.id).details %>
-
-                  <% value_count += 1 %>
-                <% end %>
-              <% end %>
-
-              <% if @anamnesis_value_details != "" %>
-                (<%= @anamnesis_value_details %>)
-              <% end %>
-              <% if value_count == 0 %>
-                -
-              <% end %>
-
+            <% if AnamnesisVisit.find_by(anamnesis_value_id:value.id, visit_id:@visit.id) %>
+              <% values.push(value) %>
+              <% details = AnamnesisVisit.find_by(anamnesis_value_id:value.id, visit_id:@visit.id).details %>
             <% end %>
 
-            <br>
-              <!-- <br> -->
-          <% end %>
-        <% end %>
-      <% end %>
-    <br>
-    <!-- <hr> -->
-  <% end %>
+          <% } %>
 
-  <br><h4>Status Praesens</h4><br>
+          <% if values.count > 0 %>
+            <%= name.name %>:
+            <% values.each { |value| %>
+              <%= value.name %> &emsp;
+            <% } %>
+            <% if details != "" %>
+               (<%= details %>)
+               <% details = "" %>
+            <% end %>
+            <br>
+          <% end %>
+          <% values.clear %>
+
+        <% } %>
+
+      <% } %>
+
+   <% end %>
+
+
+  <br><h4>Status Praesens:</h4><br>
 
    <%= t(:general_state_option) %>:
     <%=@visit.general_state_option.name if @visit.general_state_option %> <br>
@@ -75,55 +66,44 @@
    <%= t(:postural_pose_option) %>:
     <%=@visit.postural_pose_option.name if @visit.postural_pose_option %> <br>
 
+    <% types = Array.new %>
+    <% names = Array.new %>
+    <% values = Array.new %>
+    <% details = "" %>
 
+    <% if ConditionVisit.find_by(:visit_id => @visit.id) %>
 
-    <% ConditionType.all.each do |type| %>
-      <h5><%= type.name %>:</h5>
-      <% ConditionName.all.each do |name| %>
-        <% if ConditionName.find_by(:name => name.name, :condition_type_id => type.id) %>
-          <% if name.name != type.name %>
-            <%= name.name %>:
-          <% end %>
-          <% @values = ConditionName.find_by(:name => name.name, :condition_type_id => type.id).condition_values %>
+       <% ConditionType.all.each { |type| %>
 
-          <% if @values.any? %>
+         <% type.condition_names.all.each { |name| %>
 
-            <% value_count = 0 %>
-            <% if @values.count == 1 && @values.first.name == "" && ConditionVisit.find_by(:condition_value_id => ConditionValue.find_by(condition_name_id: name.id).id, :visit_id => @visit.id) %>
-              <% #dfghj %>
-              <%= ConditionVisit.find_by(:condition_value_id => ConditionValue.find_by(condition_name_id: name.id).id, :visit_id => @visit.id).details %>
-              <% value_count -= 1 %>
-            <% else %>
+           <% name.condition_values.all.each { |value| %>
 
-              <% @condition_value_details = "" %>
-              <% @values.each do |value| %>
+             <% if ConditionVisit.find_by(condition_value_id:value.id, visit_id:@visit.id) %>
+               <% values.push(value) %>
+               <% details = ConditionVisit.find_by(condition_value_id:value.id, visit_id:@visit.id).details %>
+             <% end %>
 
-                <% if ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => @visit.id) %>
+           <% } %>
 
-                  <%= value.name %>
-                  <% @condition_value_details = ConditionVisit.find_by(:condition_value_id => value.id, :visit_id => @visit.id).details %>
+           <% if values.count > 0 %>
+             <%= name.name %>:
+             <% values.each { |value| %>
+               <%= value.name %> &emsp;
+             <% } %>
+             <% if details != "" %>
+                (<%= details %>)
+                <% details = "" %>
+             <% end %>
+             <br>
+           <% end %>
+           <% values.clear %>
 
-                  <% value_count += 1 %>
-                <% end %>
-              <% end %>
+         <% } %>
 
-              <% if @condition_value_details != "" %>
-                (<%= @condition_value_details %>)
-              <% end %>
-              <% if value_count == 0 %>
-                -
-              <% end %>
+       <% } %>
 
-            <% end %>
-
-            <br>
-              <!-- <br> -->
-          <% end %>
-        <% end %>
-      <% end %>
-    <br>
-    <!-- <hr> -->
-  <% end %>
+    <% end %>
 
    <h4><%= t(:primary_diagnosis) %>: </h4>
 
@@ -222,6 +202,8 @@
     <% end %>
    <br>
    Следующее посещение: <%= @visit.next.strftime("%d.%m.%Y") if @visit.next %>
+   <br>
+   Рекомендации: <%= @visit.recommendations if @visit.recommendations != "" %>
    <br>
 
 <%= link_to t('.back', :default => "Назад"),

@@ -270,6 +270,14 @@
   </div>
 
   <div class="form-group" >
+    <%= f.label "Дополнительные рекомендации", :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :recommendations, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:next) %>
+  </div>
+
+  <div class="form-group" >
     <%= f.label "Следующее посещение", :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.date_select :next, {order: [:day, :month, :year], prompt: { day: 'День', month: 'Месяц', year: 'Год' }, start_year: Date.today.year, end_year: Date.today.year + 10}, {required: true, :class => 'form-control'} %>
@@ -328,6 +336,8 @@ $(document).ready(function() {
     //           return undefined;
     //      }
     //   });
+
+
       $("#primary_select2").select2({
         tags: true,
         createTag: function(params) {
@@ -435,6 +445,7 @@ $(document).ready(function() {
     $("#teens_select2").select2({
       placeholder: "Начините набирать название",
       minimumInputLength: 3,
+      language: "ru",
       ajax: {
         url: "/medicines.json",
         dataType: 'json',

@@ -8,7 +8,12 @@ module ApplicationHelper
     link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
   end
 
-	  def nested_groups(attributes)
+	def calculate_age(dob)
+    now = Time.now.utc.to_date
+    now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+  end
+
+	def nested_groups(attributes)
 	   content_tag :ul do
         attributes.each do |attribute|
             concat(content_tag(:li, attribute.first.name))

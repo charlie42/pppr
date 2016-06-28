@@ -9,10 +9,10 @@
       <option value="3620194" selected="selected">select2/select2</option>
     </select> -->
 
-    <%= f.collection_select(:medicine_id, Medicine.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => false, :class => 'form-control', :id => 'teens_select2'}) %>
+    <%#= f.collection_select(:medicine_id, Medicine.get_empty_list, :id, :name, {}, {:type => 'hidden', :multiple => false, :class => 'form-control', :id => 'teens_select2'}) %>
 
     <br>
-    <%= f.label "Дополнительно", :class => 'control-label ' %>
+    <%#= f.label "Дополнительно", :class => 'control-label ' %>
     <%= f.text_field :details, :class => 'form-control' %>
     <%= f.label "Дозировка", :class => 'control-label ' %>
     <%= f.text_field :dosage, :class => 'form-control' %>

@@ -5,6 +5,18 @@ class SpecialistsController < ApplicationController
   # GET /specialists.json
   def index
     @specialists = Specialist.all
+    @find = Specialist.where('name LIKE ?', "%#{params[:q]}%").select("DISTINCT ON (name) *")
+    #@medicines = @find.page(params[:page]).per(100)
+    @title = "Potential pals"
+
+    respond_to do |format|
+      format.html
+      format.js {
+        @find = @find
+        #@medicines = @medicines
+      }
+      format.json { render json: @find, :only => [:id, :name] }
+    end
   end
 
   # GET /specialists/1

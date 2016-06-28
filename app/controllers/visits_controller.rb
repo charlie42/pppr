@@ -29,6 +29,7 @@ class VisitsController < ApplicationController
   #
 
 
+
   def set_params
     #logger.debug "before set params param #{@@param.inspect} all #{@@all}"
     @@param ||= Hash.new
@@ -125,6 +126,21 @@ class VisitsController < ApplicationController
           :template => "visits/generate_pdf.pdf.erb",
           :layout => "pdf_layout.html",
           :locals => {:visits => @visits, :doctor => @doctor}
+      end
+    end
+  end
+
+  def generate_examination_pdf
+      @visit = Visit.find(params[:visit_id])
+
+      respond_to do |format|
+      format.html
+      format.pdf do
+        render :pdf => "report",   # Excluding ".pdf" extension.
+          :disposition => "inline",
+          :template => "visits/generate_examination_pdf.pdf.erb",
+          :layout => "pdf_layout.html",
+          :locals => {:visit => @visit}
       end
     end
   end
@@ -953,7 +969,7 @@ class VisitsController < ApplicationController
       params.require(:visit).permit(:from,
         :date, :anamnesis, :allerg, :general_state_option_id,
         :diagnosis, :doctor_id, :patient_id, :constitution_option_id,
-        :effleurage_option_id, :postural_pose_option_id,
+        :effleurage_option_id, :postural_pose_option_id, :recommendations,
         :subcutanious_fat_option_id, :from_id, :complaint_list, :next, :height, :weight, :temp, :an_morbi,
         treatments_attributes:
           [:id, :treatment_factor_id, :amount, :details, :_destroy],
