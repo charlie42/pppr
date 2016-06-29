@@ -17,9 +17,9 @@ class Doctor < ActiveRecord::Base
   def self.find_first_by_auth_conditions(warden_conditions)
 	  conditions = warden_conditions.dup
 	  if login = conditions.delete(:login)
-	    where(conditions).where(["company_code = :value", { :value => login }]).first
+	    where(conditions.to_h).where(["company_code = :value", { :value => login }]).first
 	  else
-	    where(conditions).first
+	    where(conditions.to_h).first
 	  end
 	end
 
