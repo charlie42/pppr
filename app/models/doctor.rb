@@ -10,7 +10,7 @@ class Doctor < ActiveRecord::Base
 
   validates :email, presence:true, length: {maximum:50}, uniqueness: {case_sensitive: false}, format: { with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, message: "Неверный формат" }
   validates :password, length: {minimum: 6}, presence:true
-  validates :company_code, presence: true, length: {maximum: 13, minimum: 13}, uniqueness: { case_sensitive: false }, format: { with: /\A[0-9]*\z/, message: "Может содержать только цифры" }
+  validates :company_code, presence: true, length: {maximum: 15, minimum: 13}, uniqueness: { case_sensitive: false }, format: { with: /\A[0-9]*\z/, message: "Может содержать только цифры" }
 
   attr_accessor :login
 
